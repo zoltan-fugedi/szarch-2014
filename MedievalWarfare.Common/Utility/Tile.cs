@@ -17,8 +17,6 @@ namespace MedievalWarfare.Common.Utility
         SW,
         W,
         NW
-
-
     }
 
     public class Tile
@@ -26,10 +24,16 @@ namespace MedievalWarfare.Common.Utility
         public Dictionary<Direction, Tile> Neighbours { get; set; }
         public List<EntityBase> ContentList { get; set; }
 
-        public Tile()
+        public int X { get; private set; }
+        public int Y { get; private set; }
+
+        public Tile(int x, int y)
         {
+            Y = y;
+            X = x;
             Neighbours = new Dictionary<Direction, Tile>();
             ContentList = new List<EntityBase>();
+
         }
 
         Tile this[Direction d]
@@ -57,7 +61,6 @@ namespace MedievalWarfare.Common.Utility
                         return Neighbours[Direction.NW];
                     default:
                         throw new ArgumentOutOfRangeException("d");
-
                 }
             }
 
