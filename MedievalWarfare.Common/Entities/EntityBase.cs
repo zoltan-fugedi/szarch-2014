@@ -7,7 +7,7 @@ using MedievalWarfare.Common.Components;
 
 namespace MedievalWarfare.Common.Entities
 {
-    class EntityBase
+    public class EntityBase
     {
         private List<ComponentBase> components;
 

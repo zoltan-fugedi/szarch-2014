@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common.Components
 {
-    class ComponentBase
+    public class ComponentBase
     {
         public Guid Id { get; set; }
     }
