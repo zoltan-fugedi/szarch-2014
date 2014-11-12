@@ -12,13 +12,13 @@ namespace MedievalWarfare.WcfLib
     [ServiceContract]
     public interface IClientCallback
     {
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void ActionResult(bool result);
-        
-        [OperationContract]
+
+        [OperationContract(IsOneWay = true)]
         void StartTurn(MapInfo mapInfo);
-        
-        [OperationContract]
+
+        [OperationContract(IsOneWay = true)]
         void Update(Command cmd);
 
 

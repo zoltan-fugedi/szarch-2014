@@ -176,13 +176,13 @@ namespace MedievalWarfare.Client.Proxy {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IServerMethodsCallback {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerMethods/ActionResult", ReplyAction="http://tempuri.org/IServerMethods/ActionResultResponse")]
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/ActionResult")]
         void ActionResult(bool result);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerMethods/StartTurn", ReplyAction="http://tempuri.org/IServerMethods/StartTurnResponse")]
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/StartTurn")]
         void StartTurn(MedievalWarfare.Client.Proxy.MapInfo mapInfo);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerMethods/Update", ReplyAction="http://tempuri.org/IServerMethods/UpdateResponse")]
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/Update")]
         void Update(MedievalWarfare.Client.Proxy.Command cmd);
     }
     

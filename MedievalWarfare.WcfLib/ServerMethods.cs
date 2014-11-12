@@ -28,9 +28,12 @@ namespace MedievalWarfare.WcfLib
             {
                 callbackList.Add(info.Id, registeredUser);
             }
+            else
+            {
+                registeredUser.ActionResult(false);
+            }
 
             registeredUser.ActionResult(true);
-
         }
 
         public void Leave(PlayerInfo info)

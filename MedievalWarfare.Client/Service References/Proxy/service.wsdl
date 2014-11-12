@@ -79,20 +79,11 @@
   <wsdl:message name="IServerMethods_ActionResult_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:ActionResult" />
   </wsdl:message>
-  <wsdl:message name="IServerMethods_ActionResult_InputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:ActionResultResponse" />
-  </wsdl:message>
   <wsdl:message name="IServerMethods_StartTurn_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:StartTurn" />
   </wsdl:message>
-  <wsdl:message name="IServerMethods_StartTurn_InputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:StartTurnResponse" />
-  </wsdl:message>
   <wsdl:message name="IServerMethods_Update_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:Update" />
-  </wsdl:message>
-  <wsdl:message name="IServerMethods_Update_InputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:UpdateResponse" />
   </wsdl:message>
   <wsdl:portType name="IServerMethods">
     <wsdl:operation name="Join">
@@ -121,15 +112,12 @@
     </wsdl:operation>
     <wsdl:operation name="ActionResult">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/ActionResult" message="tns:IServerMethods_ActionResult_OutputCallbackMessage" />
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerMethods/ActionResultResponse" message="tns:IServerMethods_ActionResult_InputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="StartTurn">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/StartTurn" message="tns:IServerMethods_StartTurn_OutputCallbackMessage" />
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerMethods/StartTurnResponse" message="tns:IServerMethods_StartTurn_InputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="Update">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/Update" message="tns:IServerMethods_Update_OutputCallbackMessage" />
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerMethods/UpdateResponse" message="tns:IServerMethods_Update_InputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_IServerMethods" type="tns:IServerMethods">
@@ -192,27 +180,18 @@
     </wsdl:operation>
     <wsdl:operation name="ActionResult">
       <soap12:operation soapAction="http://tempuri.org/IServerMethods/ActionResult" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="StartTurn">
       <soap12:operation soapAction="http://tempuri.org/IServerMethods/StartTurn" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="Update">
       <soap12:operation soapAction="http://tempuri.org/IServerMethods/Update" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

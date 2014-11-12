@@ -8,22 +8,22 @@ using MedievalWarfare.WcfLib.Entities;
 
 namespace MedievalWarfare.WcfLib
 {
-    [ServiceContract(CallbackContract = typeof (IClientCallback) )]
+    [ServiceContract(CallbackContract = typeof(IClientCallback))]
     public interface IServerMethods
     {
 
-        [OperationContract]
+        [OperationContract()]
         void Join(PlayerInfo info);
-       
+
         [OperationContract]
         void Leave(PlayerInfo info);
-        
+
         [OperationContract]
         MapInfo GetGameState();
-        
+
         [OperationContract]
         void EndTurn();
-        
+
         [OperationContract]
         void UpdateMap(MapInfo mapInfo, Command cmd);
 

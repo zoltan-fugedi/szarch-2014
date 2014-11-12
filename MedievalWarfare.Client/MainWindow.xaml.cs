@@ -36,6 +36,12 @@ namespace MedievalWarfare.Client
         public void ActionResult(bool result)
         {
             igaz = result;
+
+            Dispatcher.BeginInvoke(new Action(()=>
+            {
+                tbBox1.Text = igaz.ToString();
+            }));
+
             var a = 10;
         }
 
