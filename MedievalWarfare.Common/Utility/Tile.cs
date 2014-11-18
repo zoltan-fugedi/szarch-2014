@@ -11,11 +11,9 @@ namespace MedievalWarfare.Common.Utility
     {
         N,
         NE,
-        E,
         SE,
         S,
         SW,
-        W,
         NW
     }
 
@@ -47,16 +45,12 @@ namespace MedievalWarfare.Common.Utility
                         return Neighbours[Direction.N];
                     case Direction.NE:
                         return Neighbours[Direction.NE];
-                    case Direction.E:
-                        return Neighbours[Direction.E];
-                    case Direction.SE:
+                      case Direction.SE:
                         return Neighbours[Direction.SE];
                     case Direction.S:
                         return Neighbours[Direction.S];
                     case Direction.SW:
                         return Neighbours[Direction.SW];
-                    case Direction.W:
-                        return Neighbours[Direction.W];
                     case Direction.NW:
                         return Neighbours[Direction.NW];
                     default:
@@ -75,9 +69,6 @@ namespace MedievalWarfare.Common.Utility
                     case Direction.NE:
                         Neighbours[Direction.NE] = value;
                         break;
-                    case Direction.E:
-                        Neighbours[Direction.E] = value;
-                        break;
                     case Direction.SE:
                         Neighbours[Direction.SE] = value;
                         break;
@@ -86,9 +77,6 @@ namespace MedievalWarfare.Common.Utility
                         break;
                     case Direction.SW:
                         Neighbours[Direction.SW] = value;
-                        break;
-                    case Direction.W:
-                        Neighbours[Direction.W] = value;
                         break;
                     case Direction.NW:
                         Neighbours[Direction.N] = value;

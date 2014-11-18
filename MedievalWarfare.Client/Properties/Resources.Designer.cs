@@ -67,5 +67,14 @@ namespace MedievalWarfare.Client.Properties
                 resourceCulture = value;
             }
         }
+
+        internal static System.Drawing.Bitmap grass
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("grass", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

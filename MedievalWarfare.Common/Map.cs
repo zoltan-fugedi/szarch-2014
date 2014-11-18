@@ -16,6 +16,7 @@ namespace MedievalWarfare.Common
         private const int defaultY = 50;
 
         public List<Tile> TileList { get; set; }
+        public List<Object> ObjectList { get; set; }
         public int MaxX { get; set; }
         public int MaxY { get; set; }
 

@@ -25,12 +25,16 @@ namespace MedievalWarfare.Client
     {
         private Proxy.ServerMethodsClient proxy;
         private bool igaz = false;
+        private aHexMap myMap;
+        private int hexCols = 2;
+        private int hexRows = 2;
 
         public MainWindow()
         {
             InitializeComponent();
             proxy = new ServerMethodsClient(new InstanceContext(this));
-            proxy.Open();
+            //proxy.Open();
+            setupMap();
         }
 
         public void ActionResult(bool result)
@@ -39,7 +43,7 @@ namespace MedievalWarfare.Client
 
             Dispatcher.BeginInvoke(new Action(()=>
             {
-                tbBox1.Text = igaz.ToString();
+                //tbBox1.Text = igaz.ToString();
             }));
 
             var a = 10;
@@ -58,6 +62,25 @@ namespace MedievalWarfare.Client
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             proxy.Join(new PlayerInfo());
+        }
+
+        private void menu_new_Click(object sender, RoutedEventArgs e)
+        {
+            setupMap();
+        }
+        private void drawHexes_Click(object sender, RoutedEventArgs e)
+        {
+            if (myMap != null)
+                myMap.drawHexes();
+        }
+        private void menu_exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void setupMap()
+        {
+            myMap = new aHexMap(mapScroller);
+            mapCanvas.Children.Add(myMap);
         }
     }
 }
