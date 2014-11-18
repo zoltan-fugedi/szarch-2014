@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MedievalWarfare.Client.Proxy;
+using MedievalWarfare.Common;
 
 namespace MedievalWarfare.Client
 {
@@ -79,6 +80,8 @@ namespace MedievalWarfare.Client
         }
         private void setupMap()
         {
+            var map = new Map();
+            map.GenerateMap();
             myMap = new aHexMap(mapScroller);
             mapCanvas.Children.Add(myMap);
         }

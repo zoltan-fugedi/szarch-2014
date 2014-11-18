@@ -34,7 +34,7 @@ namespace MedievalWarfare.Common.Utility
 
         }
 
-        Tile this[Direction d]
+        public Tile this[Direction d]
         {
             get
             {
@@ -45,7 +45,7 @@ namespace MedievalWarfare.Common.Utility
                         return Neighbours[Direction.N];
                     case Direction.NE:
                         return Neighbours[Direction.NE];
-                      case Direction.SE:
+                    case Direction.SE:
                         return Neighbours[Direction.SE];
                     case Direction.S:
                         return Neighbours[Direction.S];
@@ -79,7 +79,7 @@ namespace MedievalWarfare.Common.Utility
                         Neighbours[Direction.SW] = value;
                         break;
                     case Direction.NW:
-                        Neighbours[Direction.N] = value;
+                        Neighbours[Direction.NW] = value;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("d");

@@ -137,6 +137,12 @@
   <ItemGroup>
     <Resource Include="resources\grass.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MedievalWarfare.Common\MedievalWarfare.Common.csproj">
+      <Project>{8198ea3d-ad71-41bd-a334-da4d9df32262}</Project>
+      <Name>MedievalWarfare.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

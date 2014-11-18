@@ -1,4 +1,5 @@
-﻿using MedievalWarfare.Common.Utility;
+﻿using MedievalWarfare.Common.Entities;
+using MedievalWarfare.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace MedievalWarfare.Common
         private const int defaultY = 50;
 
         public List<Tile> TileList { get; set; }
-        public List<Object> ObjectList { get; set; }
+        public List<EntityBase> ObjectList { get; set; }
         public int MaxX { get; set; }
         public int MaxY { get; set; }
 
@@ -61,7 +62,64 @@ namespace MedievalWarfare.Common
         /// </remarks>
         public void GenerateMap()
         {
-            // ToDo do this 
+            // Init boundaries
+            TileList.Add(new Tile(0, 0));
+
+            Direction dir;
+            Direction dir2;
+            for (int i = 1; i < MaxX; i++)
+            {
+                var newTile = new Tile(0, i);
+                dir = i % 2 == 0 ? Direction.SE : Direction.NE;
+                this[0, i - 1][dir] = newTile;
+                dir2 = i % 2 != 0 ? Direction.SW : Direction.NW;
+                newTile[dir2] = this[0, i - 1];
+
+                TileList.Add(newTile);
+
+            }
+
+            for (int j = 1; j < MaxY; j++)
+            {
+                var newTile = new Tile(j, 0);
+                this[j - 1, 0][Direction.S] = newTile;
+                newTile[Direction.N] = this[j - 1, 0];
+
+                TileList.Add(newTile);
+            }
+
+            // Fill up the interior
+            for (int i = 1; i < MaxX-1; i++)
+            {
+                for (int j = 1; j < MaxY-1; j++)
+                {
+                    var newTile = new Tile(i, j);
+                    if (j % 2 != 0)
+                    {
+                        // ps 4 szomszéd
+                        newTile[Direction.SW] = this[i, j - 1];
+                        newTile[Direction.NW] = this[i - 1, j - 1];
+                        newTile[Direction.N] = this[i - 1, j];
+                        newTile[Direction.NE] = this[i - 1, j + 1];
+
+                        this[i, j - 1][Direction.NE] = newTile;
+                        this[i - 1, j - 1][Direction.SE] = newTile;
+                        this[i - 1, j][Direction.S] = newTile;
+                        this[i - 1, j + 1][Direction.SW] = newTile;
+                    }
+                    else
+                    {
+                        // prt 2 szomszéd
+                        newTile[Direction.N] = this[i - 1, j];
+                        newTile[Direction.NW] = this[i, j - 1];
+
+                        this[i - 1, j][Direction.S] = newTile;
+                        this[i, j - 1][Direction.SE] = newTile;
+                    }
+
+                    TileList.Add(newTile);
+                }
+            }
         }
     }
 }
