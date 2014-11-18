@@ -89,9 +89,9 @@ namespace MedievalWarfare.Common
             }
 
             // Fill up the interior
-            for (int i = 1; i < MaxX-1; i++)
+            for (int i = 1; i <= MaxX - 1; i++)
             {
-                for (int j = 1; j < MaxY-1; j++)
+                for (int j = 1; j <= MaxY - 1; j++)
                 {
                     var newTile = new Tile(i, j);
                     if (j % 2 != 0)
@@ -100,12 +100,18 @@ namespace MedievalWarfare.Common
                         newTile[Direction.SW] = this[i, j - 1];
                         newTile[Direction.NW] = this[i - 1, j - 1];
                         newTile[Direction.N] = this[i - 1, j];
-                        newTile[Direction.NE] = this[i - 1, j + 1];
+                        if (j + 1 < MaxX)
+                        {
+                            newTile[Direction.NE] = this[i - 1, j + 1];
+                        }
 
                         this[i, j - 1][Direction.NE] = newTile;
                         this[i - 1, j - 1][Direction.SE] = newTile;
                         this[i - 1, j][Direction.S] = newTile;
-                        this[i - 1, j + 1][Direction.SW] = newTile;
+                        if (j + 1 < MaxX)
+                        {
+                            this[i - 1, j + 1][Direction.SW] = newTile;
+                        }
                     }
                     else
                     {
