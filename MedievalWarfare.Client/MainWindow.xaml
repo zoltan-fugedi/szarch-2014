@@ -12,8 +12,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         -->
-        <Menu Name="gameMenu" IsMainMenu="True" Width="1050"
-              HorizontalAlignment="Left" VerticalAlignment="Top" >
+        <Menu Name="gameMenu" IsMainMenu="True" VerticalAlignment="Top" >
             <MenuItem Header="_Game">
                 <MenuItem Header="_New Map" Name="menu_new"
                           Click="menu_new_Click"/>
@@ -24,12 +23,12 @@
                           Click="menu_exit_Click"/>
             </MenuItem>
         </Menu>
-        <ScrollViewer Name="mapScroller" Grid.Row="1" Grid.Column="1" 
+        <ScrollViewer Name="mapScroller" Grid.Row="1" 
                       HorizontalScrollBarVisibility="Auto"
                       HorizontalAlignment="Left"
                       VerticalAlignment="top"
-                      Width="1050" Height="780" >
-            <Canvas Name="mapCanvas" Width="1024" Height="768" >
+                      Grid.ColumnSpan="2" >
+            <Canvas Name="mapCanvas" Width="2000" Height="2000" >
             </Canvas>
         </ScrollViewer>
         <!--<TextBox Text="TBD" x:Name="tbBox1" HorizontalAlignment="Center" VerticalAlignment="Center"  Grid.Row="1" Margin="8,153,10,565"/>

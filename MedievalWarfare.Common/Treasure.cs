@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common
 {
-    public class Building : GameObject
+    public class Treasure : GameObject
     {
-        public int Population { get; set; }
-        public Building()
-        {
-            Population = 0;
-        }
+        public int Value { get; set; }
     }
 }

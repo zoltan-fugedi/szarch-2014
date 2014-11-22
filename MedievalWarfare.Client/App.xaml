@@ -4,5 +4,6 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <BitmapImage x:Key="grass" UriSource="resources/grass.png" />
+        <BitmapImage x:Key="castle" UriSource="resources/castle.png" />
     </Application.Resources>
 </Application>

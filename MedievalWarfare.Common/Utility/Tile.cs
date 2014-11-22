@@ -17,21 +17,35 @@ namespace MedievalWarfare.Common.Utility
         NW
     }
 
+    public enum TileType
+    {
+        Field,
+        Water,
+        Mountain
+    }
+
     public class Tile
     {
         public Dictionary<Direction, Tile> Neighbours { get; set; }
-        public List<EntityBase> ContentList { get; set; }
-
+        public List<GameObject> ContentList { get; set; }
         public int X { get; private set; }
         public int Y { get; private set; }
+        public bool traversable = true;
 
         public Tile(int x, int y)
         {
             Y = y;
             X = x;
             Neighbours = new Dictionary<Direction, Tile>();
-            ContentList = new List<EntityBase>();
+            ContentList = new List<GameObject>();
+            //Type = TileType.Field;
 
+        }
+
+        public TileType Type
+        {
+            get;
+            set;
         }
 
         public Tile this[Direction d]
@@ -60,7 +74,7 @@ namespace MedievalWarfare.Common.Utility
 
             set
             {
-                if (Neighbours.ContainsKey(d)) { throw new Exception(string.Format("The required neighbour is already set: {0}", d.ToString())); }
+                // (Neighbours.ContainsKey(d)) { throw new Exception(string.Format("The required neighbour is already set: {0}", d.ToString())); }
                 switch (d)
                 {
                     case Direction.N:
