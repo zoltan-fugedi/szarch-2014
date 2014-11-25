@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MedievalWarfare.WcfLib.Entities;
 using System.ServiceModel;
+using MedievalWarfare.Common;
+using MedievalWarfare.Common.Utility;
 
 namespace MedievalWarfare.WcfLib
 {
@@ -19,14 +20,14 @@ namespace MedievalWarfare.WcfLib
 
         }
 
-        public void Join(PlayerInfo info)
+        public void Join(Player info)
         {
             // Subscribe the user to the conversation
             var registeredUser = OperationContext.Current.GetCallbackChannel<IClientCallback>();
 
-            if (!callbackList.ContainsKey(info.Id))
+            if (!callbackList.ContainsKey(info.PlayerId))
             {
-                callbackList.Add(info.Id, registeredUser);
+                callbackList.Add(info.PlayerId, registeredUser);
             }
             else
             {
@@ -36,12 +37,12 @@ namespace MedievalWarfare.WcfLib
             registeredUser.ActionResult(true);
         }
 
-        public void Leave(PlayerInfo info)
+        public void Leave(Player info)
         {
             throw new NotImplementedException();
         }
 
-        public MapInfo GetGameState()
+        public Map GetGameState()
         {
             throw new NotImplementedException();
         }
@@ -51,14 +52,10 @@ namespace MedievalWarfare.WcfLib
             throw new NotImplementedException();
         }
 
-        public void UpdateMap(MapInfo mapInfo, Command cmd)
+        public void UpdateMap(Command command)
         {
             throw new NotImplementedException();
         }
 
-        public string GetData(int value)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

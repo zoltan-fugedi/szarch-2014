@@ -5,10 +5,13 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MedievalWarfare.WcfLib.Entities
+namespace MedievalWarfare.Common.Utility
 {
     [DataContract]
-    public class MapInfo
+    [KnownType(typeof(MoveUnit))]
+    [KnownType(typeof(ConstructBuilding))]
+    public class Command
     {
+
     }
 }

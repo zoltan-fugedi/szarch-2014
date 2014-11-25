@@ -1,21 +1,27 @@
-﻿using MedievalWarfare.Common.Entities;
-using MedievalWarfare.Common.Utility;
+﻿using MedievalWarfare.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common
 {
+    [DataContract]
     public class Map
     {
+        [DataMember]
         private const int defaultX = 50;
+        [DataMember]
         private const int defaultY = 50;
-
+        [DataMember]
         public List<Tile> TileList { get; set; }
+        [DataMember]
         public List<GameObject> ObjectList { get; set; }
+        [DataMember]
         public int MaxX { get; set; }
+        [DataMember]
         public int MaxY { get; set; }
 
         /// <summary>

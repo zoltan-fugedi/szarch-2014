@@ -94,15 +94,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\MedievalWarfare.Common.Map.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\Proxy\MedievalWarfare.Client.Proxy.MapInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
+    <None Include="Service References\Proxy\Arrays.xsd">
+      <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Proxy\MedievalWarfare.WcfLib.Entities.xsd">
+    <None Include="Service References\Proxy\MedievalWarfare.Common.Utility.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Proxy\MedievalWarfare.Common.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Proxy\service.wsdl" />

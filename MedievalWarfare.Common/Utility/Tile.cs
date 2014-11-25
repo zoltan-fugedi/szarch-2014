@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MedievalWarfare.Common.Entities;
+using System.Runtime.Serialization;
 
 namespace MedievalWarfare.Common.Utility
 {
@@ -24,14 +24,21 @@ namespace MedievalWarfare.Common.Utility
         Mountain
     }
 
+    [DataContract]
     public class Tile
     {
+        [DataMember]
         public Dictionary<Direction, Tile> Neighbours { get; set; }
+        [DataMember]
         public List<GameObject> ContentList { get; set; }
+        [DataMember]
         public int X { get; private set; }
+        [DataMember]
         public int Y { get; private set; }
+        [DataMember]
         public bool traversable = true;
-
+        [DataMember]
+        public TileType Type { get; set; }
         public Tile(int x, int y)
         {
             Y = y;
@@ -42,12 +49,7 @@ namespace MedievalWarfare.Common.Utility
 
         }
 
-        public TileType Type
-        {
-            get;
-            set;
-        }
-
+        
         public Tile this[Direction d]
         {
             get

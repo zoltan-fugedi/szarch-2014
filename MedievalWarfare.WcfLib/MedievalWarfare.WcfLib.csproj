@@ -57,9 +57,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Command.cs" />
-    <Compile Include="Entities\MapInfo.cs" />
-    <Compile Include="Entities\PlayerInfo.cs" />
     <Compile Include="IClientCallback.cs" />
     <Compile Include="IServerMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

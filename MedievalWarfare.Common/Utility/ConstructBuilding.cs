@@ -5,15 +5,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MedievalWarfare.WcfLib.Entities
+namespace MedievalWarfare.Common.Utility
 {
     [DataContract]
-    public class PlayerInfo
+    public class ConstructBuilding : Command
     {
-        [DataMember]
-        public Guid Id { get; set; }
-
-        [DataMember]
-        public string Name { get; set; }
     }
 }

@@ -5,7 +5,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using MedievalWarfare.WcfLib.Entities;
+using MedievalWarfare.Common;
+using MedievalWarfare.Common.Utility;
 
 namespace MedievalWarfare.WcfLib
 {
@@ -16,10 +17,10 @@ namespace MedievalWarfare.WcfLib
         void ActionResult(bool result);
 
         [OperationContract(IsOneWay = true)]
-        void StartTurn(MapInfo mapInfo);
+        void StartTurn(Game mapInfo);
 
         [OperationContract(IsOneWay = true)]
-        void Update(Command cmd);
+        void Update(Command command);
 
 
     }

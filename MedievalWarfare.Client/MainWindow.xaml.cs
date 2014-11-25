@@ -27,13 +27,14 @@ namespace MedievalWarfare.Client
         private Proxy.ServerMethodsClient proxy;
         private bool igaz = false;
         private aHexMap myMap;
+        private Game game;
 
         public MainWindow()
         {
             InitializeComponent();
             proxy = new ServerMethodsClient(new InstanceContext(this));
-            //proxy.Open();
-            setupMap();
+            proxy.Open();
+            
         }
 
         public void ActionResult(bool result)
@@ -47,24 +48,32 @@ namespace MedievalWarfare.Client
 
         }
 
-        public void StartTurn(Proxy.MapInfo mapInfo)
+        public void StartTurn(Common.Game mapInfo)
         {
-            throw new NotImplementedException();
+            game = mapInfo;
+            myMap = new aHexMap(mapScroller, game.Map, mapCanvas);
+            mapCanvas.Children.Add(myMap);
+            if (myMap != null)
+            {
+                myMap.drawHexes();
+                myMap.drawGameObjects();
+                myMap.drawFOW();
+            }
         }
 
-        public void Update(Proxy.Command cmd)
+        public void Update(Common.Utility.Command cmd)
         {
             throw new NotImplementedException();
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            proxy.Join(new PlayerInfo());
+            proxy.Join(new Player());
         }
 
         private void menu_new_Click(object sender, RoutedEventArgs e)
         {
-            setupMap();
+            //setupMap();
         }
         private void drawHexes_Click(object sender, RoutedEventArgs e)
         {
@@ -79,13 +88,6 @@ namespace MedievalWarfare.Client
         private void menu_exit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-        private void setupMap()
-        {
-            var map = new Map();
-            map.GenerateMap();
-            myMap = new aHexMap(mapScroller, map, mapCanvas);
-            mapCanvas.Children.Add(myMap);
         }
     }
 }

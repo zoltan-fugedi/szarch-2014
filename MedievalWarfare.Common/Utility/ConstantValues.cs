@@ -8,10 +8,10 @@ namespace MedievalWarfare.Common.Utility
 {
     public static class ConstantValues
     {
-        public static int InitialGold = 500;
-        public static int DefaultTreasure = 200;
-        public static int PopGrowth = 10;
-        public static int BaseUnitStr = 10;
-        public static int BaseMovement = 6;
+        public const int InitialGold = 500;
+        public const int DefaultTreasure = 200;
+        public const int PopGrowth = 10;
+        public const int BaseUnitStr = 10;
+        public const int BaseMovement = 6;
     }
 }

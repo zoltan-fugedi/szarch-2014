@@ -4,7 +4,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using MedievalWarfare.WcfLib.Entities;
+using MedievalWarfare.Common;
+using MedievalWarfare.Common.Utility;
 
 namespace MedievalWarfare.WcfLib
 {
@@ -13,23 +14,20 @@ namespace MedievalWarfare.WcfLib
     {
 
         [OperationContract()]
-        void Join(PlayerInfo info);
+        void Join(Player info);
 
         [OperationContract]
-        void Leave(PlayerInfo info);
+        void Leave(Player info);
 
         [OperationContract]
-        MapInfo GetGameState();
+        Map GetGameState();
 
         [OperationContract]
         void EndTurn();
 
         [OperationContract]
-        void UpdateMap(MapInfo mapInfo, Command cmd);
+        void UpdateMap(Command command);
 
-
-        [OperationContract]
-        string GetData(int value);
 
     }
 }
