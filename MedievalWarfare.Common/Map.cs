@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     public class Map
     {
-        [DataMember]
-        private const int defaultX = 50;
-        [DataMember]
-        private const int defaultY = 50;
+        private const int defaultX = 10;
+        private const int defaultY = 10;
         [DataMember]
         public List<Tile> TileList { get; set; }
         [DataMember]
@@ -259,7 +257,7 @@ namespace MedievalWarfare.Common
                     }
                 }
             }
-            AddWater(15, 15, 2);
+            //AddWater(15, 15, 2);
             var build = new Building();
             this.ObjectList.Add(build);
             this[2, 2].ContentList.Add(build);

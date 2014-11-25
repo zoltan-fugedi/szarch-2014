@@ -35,14 +35,14 @@ namespace MedievalWarfare.Client
             proxy = new ServerMethodsClient(new InstanceContext(this));
             game = new Game();
             proxy.Open();
-            
+
         }
 
         public void ActionResult(bool result)
         {
             igaz = result;
 
-            Dispatcher.BeginInvoke(new Action(()=>
+            Dispatcher.BeginInvoke(new Action(() =>
             {
                 //tbBox1.Text = igaz.ToString();
             }));
@@ -75,18 +75,27 @@ namespace MedievalWarfare.Client
         private async void menu_new_Click(object sender, RoutedEventArgs e)
         {
             await proxy.JoinAsync(new Player());
-            //game.Map = await proxy.GetGameStateAsync();
+            game.Map = await proxy.GetGameStateAsync();
 
-
-        }
-        private void drawHexes_Click(object sender, RoutedEventArgs e)
-        {
-            if (myMap != null) {
+            myMap = new aHexMap(mapScroller, game.Map, mapCanvas);
+            mapCanvas.Children.Add(myMap);
+            if (myMap != null)
+            {
                 myMap.drawHexes();
                 myMap.drawGameObjects();
                 myMap.drawFOW();
             }
-               
+
+        }
+        private void drawHexes_Click(object sender, RoutedEventArgs e)
+        {
+            if (myMap != null)
+            {
+                myMap.drawHexes();
+                myMap.drawGameObjects();
+                myMap.drawFOW();
+            }
+
 
         }
         private void menu_exit_Click(object sender, RoutedEventArgs e)

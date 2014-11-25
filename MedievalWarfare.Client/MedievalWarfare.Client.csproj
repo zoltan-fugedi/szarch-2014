@@ -100,7 +100,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\Proxy\Arrays1.xsd">
+    <None Include="Service References\Proxy\Arrays.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Proxy\MedievalWarfare.Common.Utility1.xsd">

@@ -9,7 +9,9 @@
     <GenerateInternalTypes>false</GenerateInternalTypes>
     <GenerateMessageContracts>false</GenerateMessageContracts>
     <NamespaceMappings />
-    <CollectionMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
     <GenerateSerializableTypes>true</GenerateSerializableTypes>
     <Serializer>Auto</Serializer>
     <UseSerializerForFaults>true</UseSerializerForFaults>
@@ -19,7 +21,7 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="net.tcp://localhost:8732/mex" Protocol="mex" SourceId="1" />
+    <MetadataSource Address="net.tcp://152.66.182.182:8732/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
     <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="857ea07e-8bc9-47ab-bf8f-53ca715b20e0" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
@@ -27,7 +29,7 @@
     <MetadataFile FileName="service21.xsd" MetadataType="Schema" ID="cda3d5d5-ffb4-4ff4-8ce3-ef28307ad2b0" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
     <MetadataFile FileName="MedievalWarfare.Common1.xsd" MetadataType="Schema" ID="62f8b06f-57b4-40d8-ae35-a71e0f4890e7" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
     <MetadataFile FileName="MedievalWarfare.Common.Utility1.xsd" MetadataType="Schema" ID="a529d511-86aa-4971-b433-5fc252ee7923" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
-    <MetadataFile FileName="Arrays1.xsd" MetadataType="Schema" ID="3e2c2798-83ba-4d50-be5d-54780acd6c38" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
+    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="8a5c8b66-3351-4020-8c50-b7f7fded5e3f" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
