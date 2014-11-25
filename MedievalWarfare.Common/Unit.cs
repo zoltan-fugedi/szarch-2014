@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common
 {
-    class Unit
+    public class Unit : GameObject
     {
         public int Movement { get; set; }
         public int Strength { get; set; }
 
-        public Unit()
+        public Unit(int movement, int strength)
         {
-
+            Movement = movement;
+            Strength = strength;
         }
     }
 }

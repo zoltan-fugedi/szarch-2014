@@ -10,14 +10,11 @@ namespace MedievalWarfare.Common
 {
     public class Map
     {
-
-        // ToDo Read This -> https://hexgridutilities.codeplex.com
-
-        private const int defaultX = 50;
-        private const int defaultY = 50;
+        private const int defaultX = 52;
+        private const int defaultY = 29;
 
         public List<Tile> TileList { get; set; }
-        public List<EntityBase> ObjectList { get; set; }
+        public List<GameObject> ObjectList { get; set; }
         public int MaxX { get; set; }
         public int MaxY { get; set; }
 
@@ -50,6 +47,7 @@ namespace MedievalWarfare.Common
         public Map()
         {
             TileList = new List<Tile>();
+            ObjectList = new List<GameObject>();
             MaxX = defaultX;
             MaxY = defaultY;
         }
@@ -69,11 +67,11 @@ namespace MedievalWarfare.Common
             Direction dir2;
             for (int i = 1; i < MaxX; i++)
             {
-                var newTile = new Tile(0, i);
+                var newTile = new Tile(i, 0);
                 dir = i % 2 == 0 ? Direction.SE : Direction.NE;
-                this[0, i - 1][dir] = newTile;
+                this[i - 1, 0][dir] = newTile;
                 dir2 = i % 2 != 0 ? Direction.SW : Direction.NW;
-                newTile[dir2] = this[0, i - 1];
+                newTile[dir2] = this[i - 1, 0];
 
                 TileList.Add(newTile);
 
@@ -81,45 +79,251 @@ namespace MedievalWarfare.Common
 
             for (int j = 1; j < MaxY; j++)
             {
-                var newTile = new Tile(j, 0);
-                this[j - 1, 0][Direction.S] = newTile;
-                newTile[Direction.N] = this[j - 1, 0];
+                var newTile = new Tile(0, j);
+                this[0, j - 1][Direction.S] = newTile;
+                newTile[Direction.N] = this[0, j - 1];
 
                 TileList.Add(newTile);
             }
-
-            // Fill up the interior
-            for (int i = 1; i < MaxX-1; i++)
+            for (int i = 1; i < MaxX; i++)
             {
-                for (int j = 1; j < MaxY-1; j++)
+                for (int j = 1; j < MaxY; j++)
                 {
                     var newTile = new Tile(i, j);
-                    if (j % 2 != 0)
-                    {
-                        // ps 4 szomszéd
-                        newTile[Direction.SW] = this[i, j - 1];
-                        newTile[Direction.NW] = this[i - 1, j - 1];
-                        newTile[Direction.N] = this[i - 1, j];
-                        newTile[Direction.NE] = this[i - 1, j + 1];
-
-                        this[i, j - 1][Direction.NE] = newTile;
-                        this[i - 1, j - 1][Direction.SE] = newTile;
-                        this[i - 1, j][Direction.S] = newTile;
-                        this[i - 1, j + 1][Direction.SW] = newTile;
-                    }
-                    else
-                    {
-                        // prt 2 szomszéd
-                        newTile[Direction.N] = this[i - 1, j];
-                        newTile[Direction.NW] = this[i, j - 1];
-
-                        this[i - 1, j][Direction.S] = newTile;
-                        this[i, j - 1][Direction.SE] = newTile;
-                    }
-
                     TileList.Add(newTile);
                 }
             }
+            // Fill up the interior
+            for (int i = 1; i < MaxX; i++)
+            {
+                for (int j = 1; j < MaxY; j++)
+                {
+                    var tile = this[i, j];
+                    if (i >= 1 && j >= 1)
+                    {
+                        if (j == MaxY - 1)
+                        {
+                            if (i == MaxX - 1)
+                            {
+                                if (i % 2 == 0)
+                                {
+                                    // add 2 neighbour
+                                    tile[Direction.N] = this[i, j - 1];
+                                    this[i, j - 1][Direction.S] = tile;
+
+                                    tile[Direction.NW] = this[i - 1, j - 1];
+                                    this[i - 1, j - 1][Direction.SE] = tile;
+                                }
+                                else
+                                {
+                                    // add 2 neighbour
+                                    tile[Direction.N] = this[i, j - 1];
+                                    this[i, j - 1][Direction.S] = tile;
+
+                                    tile[Direction.NW] = this[i - 1, j];
+                                    this[i - 1, j][Direction.SE] = tile;
+                                }
+                                
+                                
+
+                            }
+                            else
+                            {
+                                if (i % 2 == 0)
+                                {
+                                    //add 5 neighbour
+                                    tile[Direction.N] = this[i, j - 1];
+                                    this[i, j - 1][Direction.S] = tile;
+
+                                    tile[Direction.NE] = this[i + 1, j - 1];
+                                    this[i + 1, j - 1][Direction.SW] = tile;
+
+                                    tile[Direction.NW] = this[i - 1, j - 1];
+                                    this[i - 1, j - 1][Direction.SE] = tile;
+
+                                    tile[Direction.SE] = this[i + 1, j];
+                                    this[i + 1, j][Direction.NW] = tile;
+
+                                    tile[Direction.SW] = this[i - 1, j];
+                                    this[i - 1, j][Direction.NE] = tile;
+                                }
+                                else
+                                {
+                                    //add 3 neighbour
+
+                                    tile[Direction.N] = this[i, j - 1];
+                                    this[i, j - 1][Direction.S] = tile;
+
+                                    tile[Direction.NE] = this[i + 1, j];
+                                    this[i + 1, j][Direction.SW] = tile;
+
+                                    tile[Direction.NW] = this[i - 1, j];
+                                    this[i - 1, j][Direction.SE] = tile;
+
+
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (i == MaxX - 1)
+                            {
+                                if (i % 2 == 0)
+                                {
+                                    // add 4 neighbour
+                                    tile[Direction.N] = this[i, j - 1];
+                                    this[i, j - 1][Direction.S] = tile;
+
+                                    tile[Direction.S] = this[i, j + 1];
+                                    this[i, j + 1][Direction.N] = tile;
+
+                                    tile[Direction.NW] = this[i - 1, j - 1];
+                                    this[i - 1, j - 1][Direction.SE] = tile;
+                                    tile[Direction.SW] = this[i - 1, j];
+                                    this[i - 1, j][Direction.NE] = tile;
+                                }
+                                else
+                                {
+                                    // add 4 neighbour
+                                    tile[Direction.N] = this[i, j - 1];
+                                    this[i, j - 1][Direction.S] = tile;
+
+                                    tile[Direction.S] = this[i, j + 1];
+                                    this[i, j + 1][Direction.N] = tile;
+
+                                    tile[Direction.NW] = this[i - 1, j];
+                                    this[i - 1, j][Direction.SE] = tile;
+                                    tile[Direction.SW] = this[i - 1, j+1];
+                                    this[i - 1, j+1][Direction.NE] = tile;
+                                } 
+                            }
+                            else
+                            {
+                                if (i % 2 == 0) 
+                                {
+                                    // add 6 neighbour
+                                    tile[Direction.N] = this[i, j - 1];
+                                    this[i, j - 1][Direction.S] = tile;
+
+                                    tile[Direction.S] = this[i, j + 1];
+                                    this[i, j + 1][Direction.N] = tile;
+
+                                    tile[Direction.NE] = this[i + 1, j - 1];
+                                    this[i + 1, j - 1][Direction.SW] = tile;
+
+                                    tile[Direction.NW] = this[i - 1, j - 1];
+                                    this[i - 1, j - 1][Direction.SE] = tile;
+
+                                    tile[Direction.SE] = this[i + 1, j];
+                                    this[i + 1, j][Direction.NW] = tile;
+
+                                    tile[Direction.SW] = this[i - 1, j];
+                                    this[i - 1, j][Direction.NE] = tile;
+                                }
+                                else
+                                {
+                                    // add 6 neighbour
+                                    tile[Direction.N] = this[i, j - 1];
+                                    this[i, j - 1][Direction.S] = tile;
+
+                                    tile[Direction.S] = this[i, j + 1];
+                                    this[i, j + 1][Direction.N] = tile;
+
+                                    tile[Direction.NE] = this[i + 1,j];
+                                    this[i + 1, j][Direction.SW] = tile;
+
+                                    tile[Direction.NW] = this[i - 1,j];
+                                    this[i - 1, j][Direction.SE] = tile;
+
+                                    tile[Direction.SE] = this[i + 1, j+1];
+                                    this[i + 1, j+1][Direction.NW] = tile;
+
+                                    tile[Direction.SW] = this[i - 1, j+1];
+                                    this[i - 1, j+1][Direction.NE] = tile;
+                                }
+
+
+                               
+
+                            }
+                        }
+
+
+                    }
+                }
+            }
+            addWater(15, 15, 2);
+            var build = new Building();
+            this.ObjectList.Add(build);
+            this[2, 2].ContentList.Add(build);
         }
+
+        private void addMountain(int x, int y, int radius)
+        {
+            List<Tile> temptiles = new List<Tile>();
+            temptiles.Add(this[x, y]);
+            var nbs = this[x, y].Neighbours;
+            for (int i = 0; i < radius; i++)
+            {
+                List<Tile> temp = new List<Tile>();
+                foreach (var tile in temptiles)
+                {
+                    var neighbours = tile.Neighbours;
+                    foreach (var nb in neighbours)
+                    {
+                        if (!temp.Contains(nb.Value))
+                        {
+                            temp.Add(nb.Value);
+                        }
+                    }
+                }
+                foreach (var tile in temp)
+                {
+                    if (!temptiles.Contains(tile))
+                    {
+                        temptiles.Add(tile);
+                    }
+                }
+            }
+
+            foreach (var tile in temptiles)
+            {
+                tile.Type = TileType.Mountain;
+                tile.traversable = false;
+            }
+        }
+        private void addWater(int x, int y, int radius)
+        {
+            List<Tile> temptiles = new List<Tile>();
+            temptiles.Add(this[x, y]);
+            for (int i = 0; i < radius; i++)
+            {
+                List<Tile> temp = new List<Tile>();
+                foreach (var tile in temptiles)
+                {
+                    var neighbours = tile.Neighbours;
+                    foreach (var nb in neighbours)
+                    {
+                      
+                            temp.Add(nb.Value);
+                       
+                    }
+                }
+                foreach (var tile in temp)
+                {
+                    
+                        temptiles.Add(tile);
+                    
+                }
+            }
+
+            foreach (var tile in temptiles)
+            {
+                tile.Type = TileType.Water;
+                tile.traversable = false;
+            }
+        }
+
     }
 }

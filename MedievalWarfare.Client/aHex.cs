@@ -47,6 +47,8 @@ namespace MedievalWarfare.Client
             lines.Add(p);
             p = new Point(0 + myLeft, Math.Round(myHeight / 2.0) + myTop);
             lines.Add(p);
+
+            
         }
         private void displayHex()
         {

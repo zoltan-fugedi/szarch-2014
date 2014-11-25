@@ -27,8 +27,6 @@ namespace MedievalWarfare.Client
         private Proxy.ServerMethodsClient proxy;
         private bool igaz = false;
         private aHexMap myMap;
-        private int hexCols = 2;
-        private int hexRows = 2;
 
         public MainWindow()
         {
@@ -47,7 +45,6 @@ namespace MedievalWarfare.Client
                 //tbBox1.Text = igaz.ToString();
             }));
 
-            var a = 10;
         }
 
         public void StartTurn(Proxy.MapInfo mapInfo)
@@ -82,7 +79,7 @@ namespace MedievalWarfare.Client
         {
             var map = new Map();
             map.GenerateMap();
-            myMap = new aHexMap(mapScroller);
+            myMap = new aHexMap(mapScroller, map, mapCanvas);
             mapCanvas.Children.Add(myMap);
         }
     }
