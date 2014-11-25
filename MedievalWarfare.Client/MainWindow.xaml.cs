@@ -75,7 +75,7 @@ namespace MedievalWarfare.Client
         private async void menu_new_Click(object sender, RoutedEventArgs e)
         {
             await proxy.JoinAsync(new Player());
-            game.Map = await proxy.GetGameStateAsync();
+            //game.Map = await proxy.GetGameStateAsync();
 
 
         }

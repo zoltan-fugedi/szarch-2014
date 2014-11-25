@@ -24,7 +24,7 @@ namespace MedievalWarfare.Common.Utility
         Mountain
     }
 
-    [DataContract]
+    [DataContract(IsReference = true)]
     public class Tile
     {
         [DataMember]
