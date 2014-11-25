@@ -25,7 +25,9 @@
     <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="44b24ff9-6901-4b73-b6d7-ffac1914e797" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
     <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="57b92671-ed0d-4aa9-b0cc-092aef15a493" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="dddf257c-cac3-4dd1-af5f-3dcece3a749a" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
-    <MetadataFile FileName="MedievalWarfare.WcfLib.Entities.xsd" MetadataType="Schema" ID="8a98a323-a624-415a-a472-3eb147c1c6db" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
+    <MetadataFile FileName="MedievalWarfare.Common.xsd" MetadataType="Schema" ID="be215209-7d27-416b-9e18-26e6312fc450" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
+    <MetadataFile FileName="MedievalWarfare.Common.Utility.xsd" MetadataType="Schema" ID="c4de89e8-df86-4cdd-b473-28f09147a37b" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
+    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="ac1f3195-24ae-4bdb-b9f4-135b79c2e495" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

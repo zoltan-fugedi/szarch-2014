@@ -37,7 +37,9 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import namespace="http://tempuri.org/" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IServerMethods_Join_InputMessage">
@@ -70,12 +72,6 @@
   <wsdl:message name="IServerMethods_UpdateMap_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateMapResponse" />
   </wsdl:message>
-  <wsdl:message name="IServerMethods_GetData_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetData" />
-  </wsdl:message>
-  <wsdl:message name="IServerMethods_GetData_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetDataResponse" />
-  </wsdl:message>
   <wsdl:message name="IServerMethods_ActionResult_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:ActionResult" />
   </wsdl:message>
@@ -84,6 +80,9 @@
   </wsdl:message>
   <wsdl:message name="IServerMethods_Update_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:Update" />
+  </wsdl:message>
+  <wsdl:message name="IServerMethods_EndGame_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:EndGame" />
   </wsdl:message>
   <wsdl:portType name="IServerMethods">
     <wsdl:operation name="Join">
@@ -106,10 +105,6 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IServerMethods/UpdateMap" message="tns:IServerMethods_UpdateMap_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/UpdateMapResponse" message="tns:IServerMethods_UpdateMap_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetData">
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerMethods/GetData" message="tns:IServerMethods_GetData_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/GetDataResponse" message="tns:IServerMethods_GetData_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="ActionResult">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/ActionResult" message="tns:IServerMethods_ActionResult_OutputCallbackMessage" />
     </wsdl:operation>
@@ -118,6 +113,9 @@
     </wsdl:operation>
     <wsdl:operation name="Update">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/Update" message="tns:IServerMethods_Update_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EndGame">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/EndGame" message="tns:IServerMethods_EndGame_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_IServerMethods" type="tns:IServerMethods">
@@ -169,15 +167,6 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetData">
-      <soap12:operation soapAction="http://tempuri.org/IServerMethods/GetData" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="ActionResult">
       <soap12:operation soapAction="http://tempuri.org/IServerMethods/ActionResult" style="document" />
       <wsdl:output>
@@ -196,6 +185,12 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="EndGame">
+      <soap12:operation soapAction="http://tempuri.org/IServerMethods/EndGame" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="ServerMethods">
     <wsdl:port name="NetTcpBinding_IServerMethods" binding="tns:NetTcpBinding_IServerMethods">
@@ -203,7 +198,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>net.tcp://localhost:8732/ServerMethods</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>Zoltan_Laptop\Zoltan</Upn>
+          <Upn>HOKIBOT\Lunk Péter</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

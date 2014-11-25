@@ -33,6 +33,7 @@ namespace MedievalWarfare.Client
         {
             InitializeComponent();
             proxy = new ServerMethodsClient(new InstanceContext(this));
+            game = new Game();
             proxy.Open();
             
         }
@@ -71,9 +72,12 @@ namespace MedievalWarfare.Client
             proxy.Join(new Player());
         }
 
-        private void menu_new_Click(object sender, RoutedEventArgs e)
+        private async void menu_new_Click(object sender, RoutedEventArgs e)
         {
-            //setupMap();
+            await proxy.JoinAsync(new Player());
+            game.Map = await proxy.GetGameStateAsync();
+
+
         }
         private void drawHexes_Click(object sender, RoutedEventArgs e)
         {
@@ -88,6 +92,12 @@ namespace MedievalWarfare.Client
         private void menu_exit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+
+        public void EndGame(bool winner)
+        {
+            throw new NotImplementedException();
         }
     }
 }
