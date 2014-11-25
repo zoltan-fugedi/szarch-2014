@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" />
-  <xs:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" />
   <xs:element name="Join">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="info" nillable="true" type="q1:Player" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" minOccurs="0" name="info" nillable="true" type="q1:PlayerInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -17,7 +16,7 @@
   <xs:element name="Leave">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="info" nillable="true" type="q2:Player" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" minOccurs="0" name="info" nillable="true" type="q2:PlayerInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -34,7 +33,7 @@
   <xs:element name="GetGameStateResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="GetGameStateResult" nillable="true" type="q3:Map" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" minOccurs="0" name="GetGameStateResult" nillable="true" type="q3:MapInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -51,13 +50,28 @@
   <xs:element name="UpdateMap">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="command" nillable="true" type="q4:Command" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" minOccurs="0" name="mapInfo" nillable="true" type="q4:MapInfo" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" minOccurs="0" name="cmd" nillable="true" type="q5:Command" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateMapResponse">
     <xs:complexType>
       <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="value" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDataResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetDataResult" nillable="true" type="xs:string" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ActionResult">
@@ -70,14 +84,14 @@
   <xs:element name="StartTurn">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="mapInfo" nillable="true" type="q5:Game" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" minOccurs="0" name="mapInfo" nillable="true" type="q6:MapInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="Update">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="command" nillable="true" type="q6:Command" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MedievalWarfare.WcfLib.Entities" minOccurs="0" name="cmd" nillable="true" type="q7:Command" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

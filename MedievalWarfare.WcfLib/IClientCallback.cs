@@ -21,6 +21,9 @@ namespace MedievalWarfare.WcfLib
 
         [OperationContract(IsOneWay = true)]
         void Update(Command command);
+ 
+        [OperationContract(IsOneWay = true)]
+        void EndGame(bool winner);
 
 
     }

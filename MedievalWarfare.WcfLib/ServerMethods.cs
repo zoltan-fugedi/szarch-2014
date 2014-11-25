@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,15 +10,19 @@ using MedievalWarfare.Common.Utility;
 
 namespace MedievalWarfare.WcfLib
 {
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant, InstanceContextMode = InstanceContextMode.Single)]
     public class ServerMethods : IServerMethods
     {
         // Change to dict to easy access to each user
-        private static Dictionary<Guid, IClientCallback> callbackList = new Dictionary<Guid, IClientCallback>();
+        private ConcurrentDictionary<Guid, IClientCallback> callbackList;
+
+        private Map currentMap;
 
         public ServerMethods()
         {
-
+            callbackList = new ConcurrentDictionary<Guid, IClientCallback>();
+            currentMap = new Map();
+            currentMap.GenerateMap();
         }
 
         public void Join(Player info)
@@ -25,26 +30,37 @@ namespace MedievalWarfare.WcfLib
             // Subscribe the user to the conversation
             var registeredUser = OperationContext.Current.GetCallbackChannel<IClientCallback>();
 
-            if (!callbackList.ContainsKey(info.PlayerId))
+            if (callbackList.TryAdd(info.PlayerId, registeredUser))
             {
-                callbackList.Add(info.PlayerId, registeredUser);
+                registeredUser.ActionResult(true);
             }
             else
             {
                 registeredUser.ActionResult(false);
             }
-
-            registeredUser.ActionResult(true);
         }
 
         public void Leave(Player info)
         {
-            throw new NotImplementedException();
+            IClientCallback callBack;
+            if (callbackList.TryRemove(info.PlayerId, out callBack))
+            {
+                callBack.ActionResult(true);
+            }
+            else
+            {
+                callBack.ActionResult(false);
+            }
+
+            foreach (var clientCallback in callbackList)
+            {
+                clientCallback.Value.EndGame(true);
+            }
         }
 
         public Map GetGameState()
         {
-            throw new NotImplementedException();
+            return currentMap;
         }
 
         public void EndTurn()

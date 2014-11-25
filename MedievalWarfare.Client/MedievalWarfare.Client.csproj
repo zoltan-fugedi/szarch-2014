@@ -100,13 +100,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\Proxy\Arrays.xsd">
-      <SubType>Designer</SubType>
+    <None Include="Service References\Proxy\MedievalWarfare.Client.Proxy.MapInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Proxy\MedievalWarfare.Common.Utility.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Proxy\MedievalWarfare.Common.xsd">
+    <None Include="Service References\Proxy\MedievalWarfare.WcfLib.Entities.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Proxy\service.wsdl" />

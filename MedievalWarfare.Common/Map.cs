@@ -349,7 +349,7 @@ namespace MedievalWarfare.Common
         public void AddBuilding(int x, int y, Player owner)
         {
             var build = new Building();
-            build.Player = owner;
+            build.Owner = owner;
             this.ObjectList.Add(build);
             this[x, y].ContentList.Add(build);
 
@@ -357,7 +357,7 @@ namespace MedievalWarfare.Common
 
         public void RemoveBuilding(int x, int y, Player owner)
         {
-            var contents = this[x, y].ContentList.Where(c => (c is Building) && (c.Player.Equals(owner)));
+            var contents = this[x, y].ContentList.Where(c => (c is Building) && (c.Owner.Equals(owner)));
             foreach (var building in contents)
             {
                 this.ObjectList.Remove(building);
@@ -368,8 +368,8 @@ namespace MedievalWarfare.Common
         public void AddUnit(int x, int y, Player owner)
         {
             var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr);
-            unit.Player = owner;
-            var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Player.Equals(owner)));
+            unit.Owner = owner;
+            var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Owner.Equals(owner)));
             if (contents.Count() == 0)
             {
                 foreach (var cont in contents)
@@ -387,7 +387,7 @@ namespace MedievalWarfare.Common
 
         public void RemoveUnit(int x, int y, Player owner)
         {
-            var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Player.Equals(owner)));
+            var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Owner.Equals(owner)));
             foreach (var unit in contents)
             {
                 this.ObjectList.Remove(unit);
@@ -399,7 +399,7 @@ namespace MedievalWarfare.Common
         public void AddTreasure(int x, int y, Player owner)
         {
             var tres = new Treasure(ConstantValues.DefaultTreasure);
-            tres.Player = owner;
+            tres.Owner = owner;
             this.ObjectList.Add(tres);
             this[x, y].ContentList.Add(tres);
 

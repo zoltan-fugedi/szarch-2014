@@ -13,7 +13,11 @@ namespace MedievalWarfare.Common
     [KnownType(typeof(Treasure))]
     public class GameObject
     {
+<<<<<<< Updated upstream
         [DataMember]
         public Player Player { get; set; }
+=======
+        public Player Owner { get; set; }
+>>>>>>> Stashed changes
     }
 }
