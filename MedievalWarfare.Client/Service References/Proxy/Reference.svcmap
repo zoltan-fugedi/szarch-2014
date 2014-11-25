@@ -22,12 +22,12 @@
     <MetadataSource Address="net.tcp://localhost:8732/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="44b24ff9-6901-4b73-b6d7-ffac1914e797" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="57b92671-ed0d-4aa9-b0cc-092aef15a493" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="dddf257c-cac3-4dd1-af5f-3dcece3a749a" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
-    <MetadataFile FileName="MedievalWarfare.Common.xsd" MetadataType="Schema" ID="be215209-7d27-416b-9e18-26e6312fc450" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
-    <MetadataFile FileName="MedievalWarfare.Common.Utility.xsd" MetadataType="Schema" ID="c4de89e8-df86-4cdd-b473-28f09147a37b" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
-    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="ac1f3195-24ae-4bdb-b9f4-135b79c2e495" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
+    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="857ea07e-8bc9-47ab-bf8f-53ca715b20e0" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
+    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="7b8286ad-51fe-497b-897e-afe1b10d0342" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
+    <MetadataFile FileName="service21.xsd" MetadataType="Schema" ID="cda3d5d5-ffb4-4ff4-8ce3-ef28307ad2b0" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
+    <MetadataFile FileName="MedievalWarfare.Common1.xsd" MetadataType="Schema" ID="62f8b06f-57b4-40d8-ae35-a71e0f4890e7" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
+    <MetadataFile FileName="MedievalWarfare.Common.Utility1.xsd" MetadataType="Schema" ID="a529d511-86aa-4971-b433-5fc252ee7923" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
+    <MetadataFile FileName="Arrays1.xsd" MetadataType="Schema" ID="3e2c2798-83ba-4d50-be5d-54780acd6c38" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -42,6 +42,16 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Building" nillable="true" type="tns:Building" />
+  <xs:complexType name="Treasure">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GameObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Value" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Treasure" nillable="true" type="tns:Treasure" />
   <xs:complexType name="Unit">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:GameObject">
@@ -53,16 +63,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Unit" nillable="true" type="tns:Unit" />
-  <xs:complexType name="Treasure">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:GameObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Value" type="xs:int" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Treasure" nillable="true" type="tns:Treasure" />
   <xs:complexType name="Game">
     <xs:sequence>
       <xs:element minOccurs="0" name="Map" nillable="true" type="tns:Map" />
