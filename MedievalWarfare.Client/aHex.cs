@@ -19,17 +19,15 @@ namespace MedievalWarfare.Client
         private int myWidth;
         private int myHeight;
         private Brush myColor;
-        public string myName;
         List<Point> lines = new List<Point>();
 
-        public aHex(int left, int top, int width, int height, Brush color, string name)
+        public aHex(int left, int top, int width, int height, Brush color)
         {
             myLeft = left;
             myTop = top;
             myWidth = width;
             myHeight = height;
             myColor = color;
-            myName = name;
             buildHex();
             displayHex();
         }

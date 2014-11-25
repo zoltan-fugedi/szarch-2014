@@ -68,8 +68,13 @@ namespace MedievalWarfare.Client
         }
         private void drawHexes_Click(object sender, RoutedEventArgs e)
         {
-            if (myMap != null)
+            if (myMap != null) {
                 myMap.drawHexes();
+                myMap.drawGameObjects();
+                myMap.drawFOW();
+            }
+               
+
         }
         private void menu_exit_Click(object sender, RoutedEventArgs e)
         {

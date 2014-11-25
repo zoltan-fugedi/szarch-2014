@@ -70,7 +70,6 @@ namespace MedievalWarfare.Client
             drawBackground();
             foreach (var tile in map.TileList)
             {
-                string hexName = string.Format("hex [{0},{1}]", tile.X, tile.Y);
                 int x_off, y_off;
                 computeHexOffsets(tile.X, tile.Y, out x_off, out y_off);
                 aHex tmpHex = null;
@@ -78,26 +77,27 @@ namespace MedievalWarfare.Client
                 {
                     case TileType.Field:
                         tmpHex = new aHex(x_off, y_off,
-                    HEX_WIDTH, HEX_HEIGHT, Brushes.Green, hexName);
+                    HEX_WIDTH, HEX_HEIGHT, Brushes.Green);
                         break;
                     case TileType.Water:
                         tmpHex = new aHex(x_off, y_off,
-                   HEX_WIDTH, HEX_HEIGHT, Brushes.Blue, hexName);
+                   HEX_WIDTH, HEX_HEIGHT, Brushes.Blue);
                         break;
                     case TileType.Mountain:
                         tmpHex = new aHex(x_off, y_off,
-                   HEX_WIDTH, HEX_HEIGHT, Brushes.Gray, hexName);
+                   HEX_WIDTH, HEX_HEIGHT, Brushes.Gray);
                         break;
                     default:
                         tmpHex = new aHex(x_off, y_off,
-                   HEX_WIDTH, HEX_HEIGHT, Brushes.White, hexName);
+                   HEX_WIDTH, HEX_HEIGHT, Brushes.White);
                         break;
                 }
-
-                
-
                 _children.Add(tmpHex);
             }
+
+        }
+        public void drawGameObjects() 
+        {
             foreach (var tile in map.TileList)
             {
                 int x_off, y_off;
@@ -110,12 +110,16 @@ namespace MedievalWarfare.Client
                     DrawingVisual mapBitmap = new DrawingVisual();
                     using (DrawingContext dc = mapBitmap.RenderOpen())
                     {
-                        Rect aRec = new Rect(x_off+HEX_WIDTH/4, y_off+HEX_HEIGHT/4, width, height);
+                        Rect aRec = new Rect(x_off + HEX_WIDTH / 4, y_off + HEX_HEIGHT / 4, width, height);
                         dc.DrawImage(aBackground, aRec);
                     }
                     _children.Add(mapBitmap);
                 }
             }
+        }
+        public void drawFOW() 
+        { 
+            //TODO
         }
         private void computeHexOffsets(int col, int row, out int x_off, out int y_off)
         {
@@ -178,7 +182,6 @@ namespace MedievalWarfare.Client
         }
         private void updateMap(aHex hex)
         {
-            string hexData = string.Format("hex clicked = {0}", hex.myName);
             hex.Opacity = (hex.Opacity < 0.9f) ? 1.0f : 0.5f;
         }
 
