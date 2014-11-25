@@ -10,8 +10,8 @@ namespace MedievalWarfare.Common
 {
     public class Map
     {
-        private const int defaultX = 52;
-        private const int defaultY = 29;
+        private const int defaultX = 50;
+        private const int defaultY = 50;
 
         public List<Tile> TileList { get; set; }
         public List<GameObject> ObjectList { get; set; }
@@ -123,8 +123,8 @@ namespace MedievalWarfare.Common
                                     tile[Direction.NW] = this[i - 1, j];
                                     this[i - 1, j][Direction.SE] = tile;
                                 }
-                                
-                                
+
+
 
                             }
                             else
@@ -194,13 +194,13 @@ namespace MedievalWarfare.Common
 
                                     tile[Direction.NW] = this[i - 1, j];
                                     this[i - 1, j][Direction.SE] = tile;
-                                    tile[Direction.SW] = this[i - 1, j+1];
-                                    this[i - 1, j+1][Direction.NE] = tile;
-                                } 
+                                    tile[Direction.SW] = this[i - 1, j + 1];
+                                    this[i - 1, j + 1][Direction.NE] = tile;
+                                }
                             }
                             else
                             {
-                                if (i % 2 == 0) 
+                                if (i % 2 == 0)
                                 {
                                     // add 6 neighbour
                                     tile[Direction.N] = this[i, j - 1];
@@ -230,21 +230,21 @@ namespace MedievalWarfare.Common
                                     tile[Direction.S] = this[i, j + 1];
                                     this[i, j + 1][Direction.N] = tile;
 
-                                    tile[Direction.NE] = this[i + 1,j];
+                                    tile[Direction.NE] = this[i + 1, j];
                                     this[i + 1, j][Direction.SW] = tile;
 
-                                    tile[Direction.NW] = this[i - 1,j];
+                                    tile[Direction.NW] = this[i - 1, j];
                                     this[i - 1, j][Direction.SE] = tile;
 
-                                    tile[Direction.SE] = this[i + 1, j+1];
-                                    this[i + 1, j+1][Direction.NW] = tile;
+                                    tile[Direction.SE] = this[i + 1, j + 1];
+                                    this[i + 1, j + 1][Direction.NW] = tile;
 
-                                    tile[Direction.SW] = this[i - 1, j+1];
-                                    this[i - 1, j+1][Direction.NE] = tile;
+                                    tile[Direction.SW] = this[i - 1, j + 1];
+                                    this[i - 1, j + 1][Direction.NE] = tile;
                                 }
 
 
-                               
+
 
                             }
                         }
@@ -253,13 +253,13 @@ namespace MedievalWarfare.Common
                     }
                 }
             }
-            addWater(15, 15, 2);
+            AddWater(15, 15, 2);
             var build = new Building();
             this.ObjectList.Add(build);
             this[2, 2].ContentList.Add(build);
         }
 
-        private void addMountain(int x, int y, int radius)
+        public void AddMountain(int x, int y, int radius)
         {
             List<Tile> temptiles = new List<Tile>();
             temptiles.Add(this[x, y]);
@@ -293,7 +293,7 @@ namespace MedievalWarfare.Common
                 tile.traversable = false;
             }
         }
-        private void addWater(int x, int y, int radius)
+        public void AddWater(int x, int y, int radius)
         {
             List<Tile> temptiles = new List<Tile>();
             temptiles.Add(this[x, y]);
@@ -305,16 +305,16 @@ namespace MedievalWarfare.Common
                     var neighbours = tile.Neighbours;
                     foreach (var nb in neighbours)
                     {
-                      
-                            temp.Add(nb.Value);
-                       
+
+                        temp.Add(nb.Value);
+
                     }
                 }
                 foreach (var tile in temp)
                 {
-                    
-                        temptiles.Add(tile);
-                    
+
+                    temptiles.Add(tile);
+
                 }
             }
 
@@ -325,5 +325,78 @@ namespace MedievalWarfare.Common
             }
         }
 
+        public void AddNewPlayerObjects(int x, int y, Player owner)
+        {
+            if (y > (MaxY / 2) && x > (MaxX / 2))
+            {
+                AddBuilding(x, y, owner);
+                AddUnit(x - 1, y - 1, owner);
+            }
+            else
+            {
+                AddBuilding(x, y, owner);
+                AddUnit(x + 1, y + 1, owner);
+            }
+
+        }
+
+        public void AddBuilding(int x, int y, Player owner)
+        {
+            var build = new Building();
+            build.Player = owner;
+            this.ObjectList.Add(build);
+            this[x, y].ContentList.Add(build);
+
+        }
+
+        public void RemoveBuilding(int x, int y, Player owner)
+        {
+            var contents = this[x, y].ContentList.Where(c => (c is Building) && (c.Player.Equals(owner)));
+            foreach (var building in contents)
+            {
+                this.ObjectList.Remove(building);
+                this[x, y].ContentList.Remove(building);
+            }
+        }
+
+        public void AddUnit(int x, int y, Player owner)
+        {
+            var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr);
+            unit.Player = owner;
+            var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Player.Equals(owner)));
+            if (contents.Count() == 0)
+            {
+                foreach (var cont in contents)
+                {
+                    ((Unit)cont).Strength += ConstantValues.BaseUnitStr;
+                }
+
+            }
+            else
+            {
+                this.ObjectList.Add(unit);
+                this[x, y].ContentList.Add(unit);
+            }
+        }
+
+        public void RemoveUnit(int x, int y, Player owner)
+        {
+            var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Player.Equals(owner)));
+            foreach (var unit in contents)
+            {
+                this.ObjectList.Remove(unit);
+                this[x, y].ContentList.Remove(unit);
+            }
+
+        }
+
+        public void AddTreasure(int x, int y, Player owner)
+        {
+            var tres = new Treasure(ConstantValues.DefaultTreasure);
+            tres.Player = owner;
+            this.ObjectList.Add(tres);
+            this[x, y].ContentList.Add(tres);
+
+        }
     }
 }
