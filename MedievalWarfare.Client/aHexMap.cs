@@ -113,7 +113,7 @@ namespace MedievalWarfare.Client
                             aBackground = TryFindResource("coin_game") as BitmapImage;
                         if (go is Unit)
                         {
-                            if (player.Neutral) 
+                            if (player.Neutral)
                             {
                                 aBackground = TryFindResource("unit_yellow") as BitmapImage;
                             }
@@ -232,7 +232,7 @@ namespace MedievalWarfare.Client
                         _children.Remove(item);
                     }
                     tempHexes.Clear();
-                    
+
                 }
                 else
                 {
@@ -298,8 +298,8 @@ namespace MedievalWarfare.Client
                 Unit go = (Unit)selectedObject.GameObject;
                 selectedObject = null;
                 selectedHex = null;
-
-                window.MoveUnit(tile, go);
+                if (go.Owner.PlayerId == window.Player.PlayerId)
+                    window.MoveUnit(tile, go);
 
                 drawMap(go.Owner);
 

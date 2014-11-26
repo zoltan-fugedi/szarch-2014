@@ -231,7 +231,7 @@ namespace MedievalWarfare.Common
         {
             if (y > (MaxY / 2) && x > (MaxX / 2))
             {
-                AddBuilding(x, y, owner);
+                AddBuilding(x, y, owner,true);
                 AddUnit(x - 1, y - 1, owner);
             }
             else
