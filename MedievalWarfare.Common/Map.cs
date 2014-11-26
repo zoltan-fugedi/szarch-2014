@@ -50,7 +50,7 @@ namespace MedievalWarfare.Common
         public List<Tile> visibleTiles(Player player)
         {
             List<Tile> temptiles = new List<Tile>();
-
+            List<Tile> ret = new List<Tile>();
             foreach (Tile tile in TileList)
             {
                 if (tile.ContentList.Where(go => go.Owner.PlayerId.Equals(player.PlayerId)).Count() > 0)
@@ -58,27 +58,12 @@ namespace MedievalWarfare.Common
                     temptiles.Add(tile);
                 }
             }
-            for (int i = 0; i < ConstantValues.BaseVisibility; i++)
+
+            foreach (var tile in temptiles)
             {
-                List<Tile> temp = new List<Tile>();
-                foreach (var tile in temptiles)
-                {
-                    var neighbours = tile.Neighbours;
-                    foreach (var nb in neighbours)
-                    {
-
-                        temp.Add(nb.Value);
-
-                    }
-                }
-                foreach (var tile in temp)
-                {
-
-                    temptiles.Add(tile);
-
-                }
+                ret.AddRange(GetTilesInRange(tile, ConstantValues.BaseVisibility));
             }
-            return temptiles;
+            return ret;
         }
 
         /// <summary>
@@ -87,10 +72,49 @@ namespace MedievalWarfare.Common
         /// <param name="thisTile"></param>
         /// <param name="rage"></param>
         /// <returns></returns>
-        public List<Tile> GetTilesInRange(Tile thisTile, int rage)
+        public List<Tile> GetTilesInRange(Tile thisTile, int range)
         {
-            // TODO implement this
-            return  new List<Tile>();
+            List<Tile> temptiles = new List<Tile>();
+
+            temptiles.Add(thisTile);
+
+
+            for (int i = 0; i < range; i++)
+            {
+                List<Tile> temp = new List<Tile>();
+                foreach (var tile in temptiles)
+                {
+                    if (!tile.isVisited) 
+                    {
+                        var neighbours = tile.Neighbours;
+                        foreach (var nb in neighbours)
+                        {
+                            if (!temp.Contains(nb.Value))
+                            {
+                                temp.Add(nb.Value);
+                                
+                            }
+                        }
+                        tile.isVisited = true;
+                    }
+                    
+                }
+
+                foreach (var tile in temp)
+                {
+                    if (!temptiles.Contains(tile))
+                    {
+                        temptiles.Add(tile);
+                    }
+                }
+            }
+
+            foreach (var tile in temptiles)
+            {
+                tile.isVisited = false;
+            }
+
+            return temptiles;
         }
 
         #endregion
@@ -141,36 +165,13 @@ namespace MedievalWarfare.Common
             }
   
             AddWater(15, 15, 2);
-            
+            AddForest(25, 10, 4);
+            AddMountain(25, 10, 2);
         }
 
         public void AddMountain(int x, int y, int radius)
         {
-            List<Tile> temptiles = new List<Tile>();
-            temptiles.Add(this[x, y]);
-            var nbs = this[x, y].Neighbours;
-            for (int i = 0; i < radius; i++)
-            {
-                List<Tile> temp = new List<Tile>();
-                foreach (var tile in temptiles)
-                {
-                    var neighbours = tile.Neighbours;
-                    foreach (var nb in neighbours)
-                    {
-                        if (!temp.Contains(nb.Value))
-                        {
-                            temp.Add(nb.Value);
-                        }
-                    }
-                }
-                foreach (var tile in temp)
-                {
-                    if (!temptiles.Contains(tile))
-                    {
-                        temptiles.Add(tile);
-                    }
-                }
-            }
+            var temptiles = GetTilesInRange(this[x, y], radius);
 
             foreach (var tile in temptiles)
             {
@@ -178,30 +179,20 @@ namespace MedievalWarfare.Common
                 tile.traversable = false;
             }
         }
+
+        public void AddForest(int x, int y, int radius)
+        {
+            var temptiles = GetTilesInRange(this[x, y], radius);
+
+            foreach (var tile in temptiles)
+            {
+                tile.Type = TileType.Forest;
+                
+            }
+        }
         public void AddWater(int x, int y, int radius)
         {
-            List<Tile> temptiles = new List<Tile>();
-            temptiles.Add(this[x, y]);
-            for (int i = 0; i < radius; i++)
-            {
-                List<Tile> temp = new List<Tile>();
-                foreach (var tile in temptiles)
-                {
-                    var neighbours = tile.Neighbours;
-                    foreach (var nb in neighbours)
-                    {
-
-                        temp.Add(nb.Value);
-
-                    }
-                }
-                foreach (var tile in temp)
-                {
-
-                    temptiles.Add(tile);
-
-                }
-            }
+            var temptiles = GetTilesInRange(this[x, y], radius);
 
             foreach (var tile in temptiles)
             {
