@@ -295,9 +295,11 @@ namespace MedievalWarfare.Common
         {
             var dest = this[destX, destY];
             var start = unit.Tile;
-            
+            int movementcost = 0;
+
+
             var tilesInRange = GetTilesInRange(unit.Tile, unit.Movement);
-            if (!unit.Owner.Equals(owner)) 
+            if (!(unit.Owner.PlayerId==owner.PlayerId)) 
             {
                 return false; 
             }
@@ -309,16 +311,35 @@ namespace MedievalWarfare.Common
             {
                 return false;
             }
+            if (dest == unit.Tile)
+            {
+                return false;
+            }
+
+            for (int i = 1; i <= unit.Movement; i++)
+            {
+                var tiles = GetTilesInRange(unit.Tile, i);
+                if (tiles.Contains(dest))
+                {
+                    movementcost = i;
+                    break;
+                }
+                    
+            }
+            //if it is not in range
+            if (movementcost == 0)
+                return false;
+
             //friendly units at dest
-            var friendlyUnits = dest.ContentList.Where(og => og is Unit && og.Owner == owner);
+            var friendlyUnits = dest.ContentList.Where(og => og is Unit && og.Owner.PlayerId == owner.PlayerId);
             //enemy Player units at dest
-            var enemyUnits = dest.ContentList.Where(og => og is Unit && og.Owner != owner && !og.Owner.Neutral);
+            var enemyUnits = dest.ContentList.Where(og => og is Unit && og.Owner.PlayerId != owner.PlayerId && !og.Owner.Neutral);
             //neutral Player units at dest
-            var neutralUnits = dest.ContentList.Where(og =>og is Unit && og.Owner != owner && og.Owner.Neutral);
+            var neutralUnits = dest.ContentList.Where(og => og is Unit && og.Owner.PlayerId != owner.PlayerId && og.Owner.Neutral);
             //treasures at dest
-            var treasures = dest.ContentList.Where(og => og is Treasure && og.Owner != owner && og.Owner.Neutral);
+            var treasures = dest.ContentList.Where(og => og is Treasure && og.Owner.PlayerId != owner.PlayerId && og.Owner.Neutral);
             //enemy buildings at dest
-            var enemyBuildings = dest.ContentList.Where(og => og is Building && og.Owner != owner && !og.Owner.Neutral);
+            var enemyBuildings = dest.ContentList.Where(og => og is Building && og.Owner.PlayerId != owner.PlayerId && !og.Owner.Neutral);
   
 
             //Normal move
@@ -327,6 +348,7 @@ namespace MedievalWarfare.Common
                 start.ContentList.Remove(unit);
                 dest.ContentList.Add(unit);
                 unit.Tile = dest;
+                unit.Movement -= movementcost;
                 return true;
             }
 
@@ -350,6 +372,7 @@ namespace MedievalWarfare.Common
                 start.ContentList.Remove(unit);
                 dest.ContentList.Add(unit);
                 unit.Tile = dest;
+                unit.Movement -= movementcost;
                 dest.ContentList.Remove(enemyBuild);
                 this.ObjectList.Remove(enemyBuild);
 
@@ -362,23 +385,26 @@ namespace MedievalWarfare.Common
                 Unit enemyunit = (Unit)enemyUnits.ToList()[0];
 
                 start.ContentList.Remove(unit);
-
+                //attacker wins
                 if (unit.Strength > enemyunit.Strength) 
                 {
                     unit.Strength -= enemyunit.Strength;
                     dest.ContentList.Remove(enemyunit);
                     dest.ContentList.Add(unit);
+                    unit.Movement -= movementcost;
                     this.ObjectList.Remove(enemyunit);
                     return true;
                 }
                 else
                 {
+                    //defender wins
                     if (unit.Strength < enemyunit.Strength) 
                     {
                         enemyunit.Strength -= unit.Strength;
                         this.ObjectList.Remove(unit);
                         return true;
                     }
+                    //in case of draw defender wins
                     else
                     {
                         enemyunit.Strength = 1;
@@ -396,18 +422,21 @@ namespace MedievalWarfare.Common
 
                 start.ContentList.Remove(unit);
 
+                //attacker wins
                 if (unit.Strength > enemyunit.Strength*ConstantValues.CastleDefenseBoost)
                 {
                     unit.Strength -= Convert.ToInt32((enemyunit.Strength * ConstantValues.CastleDefenseBoost));
                     dest.ContentList.Remove(enemyunit);
                     dest.ContentList.Remove(enemyBuild);
                     dest.ContentList.Add(unit);
+                    unit.Movement -= movementcost;
                     this.ObjectList.Remove(enemyunit);
                     this.ObjectList.Remove(enemyBuild);
                     return true;
                 }
                 else
                 {
+                    //defender wins
                     if (unit.Strength < enemyunit.Strength * ConstantValues.CastleDefenseBoost)
                     {
                         enemyunit.Strength -= unit.Strength;
@@ -431,12 +460,14 @@ namespace MedievalWarfare.Common
 
                 start.ContentList.Remove(unit);
 
+                //player wins
                 if (unit.Strength > neutUnit.Strength)
                 {
                     unit.Strength -= neutUnit.Strength;
                     dest.ContentList.Remove(neutUnit);
                     dest.ContentList.Remove(treasure);
                     dest.ContentList.Add(unit);
+                    unit.Movement -= movementcost;
                     unit.Owner.Gold += treasure.Value;
                     this.ObjectList.Remove(neutUnit);
                     this.ObjectList.Remove(treasure);
@@ -444,6 +475,7 @@ namespace MedievalWarfare.Common
                 }
                 else
                 {
+                    //neut wins
                     if (unit.Strength < neutUnit.Strength )
                     {
                         neutUnit.Strength -= unit.Strength;
@@ -473,6 +505,6 @@ namespace MedievalWarfare.Common
 
 
         #endregion
-
+        
     }
 }

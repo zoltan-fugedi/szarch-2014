@@ -29,7 +29,7 @@ namespace MedievalWarfare.Client
         private BitmapImage aBackground;
 
 
-       /* public aHex(int X, int Y, int left, int top, int width, int height, Brush color, Tile tile)
+       public aHex(int X, int Y, int left, int top, int width, int height, Brush color, Tile tile)
         {
             x_off = left;
             y_off = top;
@@ -41,7 +41,7 @@ namespace MedievalWarfare.Client
             Tile = tile;
             buildHex();
             displayHex();
-        }*/
+        }
 
         public aHex(int X, int Y, int left, int top, int width, int height, BitmapImage image, Tile tile)
         {
@@ -54,7 +54,7 @@ namespace MedievalWarfare.Client
             this.Y = Y;
             Tile = tile;
             buildHex();
-            displayHex();
+            displayHexImage();
         }
         private void buildHex()
         {
@@ -73,7 +73,7 @@ namespace MedievalWarfare.Client
 
             
         }
-        private void displayHex()
+        private void displayHexImage()
         {
             using (DrawingContext dc = this.RenderOpen())
             {
@@ -81,7 +81,18 @@ namespace MedievalWarfare.Client
                 Rect aRec = new Rect(x_off, y_off, myWidth, myHeight);
                 dc.DrawImage(aBackground, aRec);
 
-                //dc.DrawGeometry(myColor, null, buildGeo());
+                
+            }
+        }
+
+        private void displayHex()
+        {
+            using (DrawingContext dc = this.RenderOpen())
+            {
+
+                
+
+                dc.DrawGeometry(myColor, null, buildGeo());
             }
         }
         private Geometry buildGeo()

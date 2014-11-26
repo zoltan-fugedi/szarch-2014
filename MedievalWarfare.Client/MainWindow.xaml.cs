@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using MedievalWarfare.Client.Proxy;
 using MedievalWarfare.Common;
 using System.ComponentModel;
+using MedievalWarfare.Common.Utility;
 
 
 namespace MedievalWarfare.Client
@@ -30,9 +31,8 @@ namespace MedievalWarfare.Client
         private Proxy.ServerMethodsClient proxy;
         private aHexMap myMap;
         private Game game;
-        private Player player;
         private String _message;
-
+        public Player Player { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public String Message
         {
@@ -50,22 +50,29 @@ namespace MedievalWarfare.Client
             }
         }
 
-
-
-
- 
-
+        /// <summary>
+        /// 
+        /// CTOR
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
             proxy = new ServerMethodsClient(new InstanceContext(this));
-            player = new Player();
+            Player = new Player();
             game = new Game();
             Message = "Connect to the Server via the Main Menu";
             proxy.Open();
 
         }
+
+
+        public bool MoveUnit(Tile dest, Unit unit) 
+        { 
+            return game.Map.MoveUnit(game.GetPlayer(Player.PlayerId),unit,dest.X,dest.Y);
+        }
+
+        #region Communication methods
 
         /// <summary>
         /// 
@@ -90,11 +97,11 @@ namespace MedievalWarfare.Client
         public void StartTurn(Common.Game mapInfo)
         {
             game = mapInfo;
-            myMap = new aHexMap(mapScroller, game.Map, mapCanvas);
+            myMap = new aHexMap(mapScroller, game.Map, mapCanvas, this);
             mapCanvas.Children.Add(myMap);
             if (myMap != null)
             {
-                myMap.drawMap(player);
+                myMap.drawMap(Player);
                
             }
         }
@@ -119,6 +126,11 @@ namespace MedievalWarfare.Client
             throw new NotImplementedException();
         }
 
+        #endregion
+
+
+        #region private methods
+
         /// <summary>
         /// 
         /// 
@@ -129,7 +141,7 @@ namespace MedievalWarfare.Client
         {
             this.Close();
         }
-             
+
         /// <summary>
         /// 
         /// 
@@ -138,14 +150,14 @@ namespace MedievalWarfare.Client
         /// <param name="e"></param>
         private async void menu_connect_Click(object sender, RoutedEventArgs e)
         {
-            await proxy.JoinAsync(player);
+            await proxy.JoinAsync(Player);
             game = await proxy.GetGameStateAsync();
 
-            myMap = new aHexMap(mapScroller, game.Map, mapCanvas);
+            myMap = new aHexMap(mapScroller, game.Map, mapCanvas, this);
             mapCanvas.Children.Add(myMap);
             if (myMap != null)
             {
-                myMap.drawMap(player);
+                myMap.drawMap(Player);
 
             }
             Message = "Connected To server";
@@ -159,5 +171,7 @@ namespace MedievalWarfare.Client
                 handler(this, new PropertyChangedEventArgs(p));
             }
         }
+
+        #endregion
     }
 }

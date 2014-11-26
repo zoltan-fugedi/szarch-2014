@@ -48,5 +48,13 @@ namespace MedievalWarfare.Common
                 Players.Add(player);
             }  
         }
+        #region queries
+        public Player GetPlayer(Guid id) 
+        {
+            return Players.FirstOrDefault(p => p.PlayerId == id); 
+        }
+
+
+        #endregion
     }
 }

@@ -20,7 +20,7 @@ namespace MedievalWarfare.Common.Utility
         public const int DefaultTreasure = 200;
         public const int PopGrowth = 10;
         public const int BaseUnitStr = 10;
-        public const int BaseMovement = 3;
+        public const int BaseMovement = 6;
         public const int MovementCost = 3;
         public const int BaseVisibility = 4;
         public const double CastleDefenseBoost = 1.2;
