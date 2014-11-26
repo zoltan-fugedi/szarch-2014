@@ -34,7 +34,8 @@ namespace MedievalWarfare.WcfLib
         {
             var registeredUser = OperationContext.Current.GetCallbackChannel<IClientCallback>();
 
-            if (gameStateController.CurreState == (GameState.GameState.State.WaitingForJoin | GameState.GameState.State.PlayerOneJoined))
+            if (gameStateController.CurreState == (GameState.GameState.State.WaitingForJoin) ||
+                (gameStateController.CurreState == GameState.GameState.State.PlayerOneJoined))
             {
                 // Subscribe the user to the conversation
 
@@ -80,7 +81,7 @@ namespace MedievalWarfare.WcfLib
         public void EndTurn(Player info)
         {
             if (gameStateController.CurrentPlayer.PlayerId == info.PlayerId &&
-                gameStateController.CurreState == (GameState.GameState.State.PlayerOneTurn | GameState.GameState.State.PlayerTwoTurn))
+                ((gameStateController.CurreState == GameState.GameState.State.PlayerOneTurn) || (gameStateController.CurreState == GameState.GameState.State.PlayerTwoTurn)))
             {
                 gameStateController.CurrentPlayerTurnEnded = true;
                 // TODO do shits
