@@ -17,11 +17,12 @@ namespace MedievalWarfare.Client
     class aHexMap : FrameworkElement
     {
         private VisualCollection _children;
-        //private BitmapImage aBackground;
-        //private TextBlock aText;
         private Map map;
         private ScrollViewer myScroller;
         private Canvas myCanvas;
+
+        private aHex selectedHex;
+        private aObject selectedObject;
 
         const int scroll_by = 1;
 
@@ -29,19 +30,14 @@ namespace MedievalWarfare.Client
         private Boolean isDragging = false;
 
 
-        const int HEX_WIDTH = 60;
-        const int HEX_HEIGHT = 60;
-        const int HEX_GAP = 1;
-
         public aHexMap(ScrollViewer scroller, Map map, Canvas canvas)
         {
-            //aText = tb;
             this.map = map;
             myScroller = scroller;
             myCanvas = canvas;
             _children = new VisualCollection(this);
 
-            //aBackground = TryFindResource("grass") as BitmapImage;
+            
             drawBackground();
 
             this.PreviewMouseUp += mouseClicked;
@@ -64,10 +60,11 @@ namespace MedievalWarfare.Client
             }
             _children.Add(mapBitmap);
         }
-        public void drawHexes()
+        public void drawMap(Player p)
         {
             _children.Clear();
             drawBackground();
+            var visible = map.visibleTiles(p);
             foreach (var tile in map.TileList)
             {
                 int x_off, y_off;
@@ -76,58 +73,92 @@ namespace MedievalWarfare.Client
                 switch (tile.Type)
                 {
                     case TileType.Field:
-                        tmpHex = new aHex(x_off, y_off,
-                    HEX_WIDTH, HEX_HEIGHT, Brushes.Green);
+                        tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
+                    ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.Green, tile);
                         break;
                     case TileType.Water:
-                        tmpHex = new aHex(x_off, y_off,
-                   HEX_WIDTH, HEX_HEIGHT, Brushes.Blue);
+                        tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
+                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.Blue, tile);
                         break;
                     case TileType.Mountain:
-                        tmpHex = new aHex(x_off, y_off,
-                   HEX_WIDTH, HEX_HEIGHT, Brushes.Gray);
+                        tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
+                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.Gray, tile);
                         break;
                     default:
-                        tmpHex = new aHex(x_off, y_off,
-                   HEX_WIDTH, HEX_HEIGHT, Brushes.White);
+                        tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
+                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.White, tile);
                         break;
                 }
                 _children.Add(tmpHex);
+
+                if (visible.Contains(tile))
+                {
+                    
+
+                    int contents = 0;
+                    foreach (GameObject go in tile.ContentList)
+                    {
+                        contents++;
+                        BitmapImage aBackground = TryFindResource("castle") as BitmapImage;
+                        var player = go.Owner;
+                        if (go is Treasure)
+                            aBackground = TryFindResource("coin_game") as BitmapImage;
+                        if (go is Unit)
+                        {
+                            if (player.Neutral)
+                                aBackground = TryFindResource("unit_yellow") as BitmapImage;
+                            if (player.PlayerId.Equals(p.PlayerId))
+                                aBackground = TryFindResource("unit_blue") as BitmapImage;
+                            else
+                                aBackground = TryFindResource("unit_red") as BitmapImage;
+                        }
+                        if (go is Building)
+                        {
+                            if (player.PlayerId.Equals(p.PlayerId))
+                                aBackground = TryFindResource("castle_blue") as BitmapImage;
+                            else
+                                aBackground = TryFindResource("castle_red") as BitmapImage;
+                        }
+                        int xoffset = 0;
+                        int yoffset = 0;
+
+                        if (contents == 1)
+                        {
+                            xoffset = x_off + (ConstantValues.HEX_WIDTH / 10);
+                            yoffset = y_off + (ConstantValues.HEX_WIDTH / 10);
+                        }
+                        if (contents == 2)
+                        {
+                            xoffset = x_off + (ConstantValues.HEX_WIDTH / 2);
+                            yoffset = y_off + (ConstantValues.HEX_WIDTH / 10);
+                        }
+                        if (contents == 3)
+                        {
+                            xoffset = x_off + (ConstantValues.HEX_WIDTH / 4);
+                            yoffset = y_off + (ConstantValues.HEX_WIDTH / 2);
+                        }
+
+                        aObject tempO = new aObject(xoffset, yoffset, ConstantValues.OBJECT_WIDTH, ConstantValues.OBJECT_HEIGHT, aBackground, tmpHex, go);
+
+
+                        _children.Add(tempO);
+                    }
+                }
+                else 
+                {
+                    tmpHex.Opacity = 0.5;
+                }
             }
 
         }
-        public void drawGameObjects() 
-        {
-            foreach (var tile in map.TileList)
-            {
-                int x_off, y_off;
-                computeHexOffsets(tile.X, tile.Y, out x_off, out y_off);
-                foreach (var obj in tile.ContentList)
-                {
-                    BitmapImage aBackground = TryFindResource("castle") as BitmapImage;
-                    double width = 30;
-                    double height = 30;
-                    DrawingVisual mapBitmap = new DrawingVisual();
-                    using (DrawingContext dc = mapBitmap.RenderOpen())
-                    {
-                        Rect aRec = new Rect(x_off + HEX_WIDTH / 4, y_off + HEX_HEIGHT / 4, width, height);
-                        dc.DrawImage(aBackground, aRec);
-                    }
-                    _children.Add(mapBitmap);
-                }
-            }
-        }
-        public void drawFOW() 
-        { 
-            //TODO
-        }
+  
         private void computeHexOffsets(int col, int row, out int x_off, out int y_off)
         {
             float fCol = (float)col;
             float fRow = (float)row;
-            float fWidth = (float)HEX_WIDTH;
-            float fHeight = (float)HEX_HEIGHT;
-            float fGap = (float)HEX_GAP;
+            float fWidth = (float)ConstantValues.HEX_WIDTH;
+            float fHeight = (float)ConstantValues.HEX_HEIGHT;
+            float fGap = (float)ConstantValues.HEX_GAP;
 
             x_off = (int)((fCol * (fWidth + fGap)) * 0.75f);
             float y_adjust = (fHeight * 0.5f) * (col % 2);
@@ -174,15 +205,54 @@ namespace MedievalWarfare.Client
             // ignore clicking on a hex if map is being dragged.
             if (isDragging)
                 return HitTestResultBehavior.Stop;
+
+            aObject obj = ht.VisualHit as aObject;
+            if (obj != null) 
+            {
+                if (selectedObject != null && obj.Equals(selectedObject))
+                {
+                    updateObject(selectedObject);
+                    selectedObject = null;
+                }
+                else
+                {
+                    if(selectedObject != null)
+                    {
+                        updateObject(selectedObject);
+                        selectedObject = obj;
+                        updateObject(selectedObject);
+                    }
+                    else
+                    {
+                        selectedObject = obj;
+                        updateObject(selectedObject);
+                    }
+                }
+                
+                return HitTestResultBehavior.Stop;
+            }
+
             // use casting to determine if click was on hex or map.
             aHex hex = ht.VisualHit as aHex;
-            if (hex != null)
-                updateMap(hex);
+            if (hex != null && selectedObject != null)
+            {
+                //updateHex(hex);
+                selectedObject.Hex.Tile.ContentList.Remove(selectedObject.GameObject);
+                hex.Tile.ContentList.Add(selectedObject.GameObject);
+                drawMap(selectedObject.GameObject.Owner);
+                selectedObject = null;
+                selectedHex = null;
+            } 
             return HitTestResultBehavior.Stop;
         }
-        private void updateMap(aHex hex)
+        private void updateHex(aHex hex)
         {
             hex.Opacity = (hex.Opacity < 0.9f) ? 1.0f : 0.5f;
+        }
+
+        private void updateObject(aObject obj)
+        {
+            obj.Opacity = (obj.Opacity < 0.9f) ? 1.0f : 0.5f;
         }
 
         // Required overrides for FrameworkElement class.

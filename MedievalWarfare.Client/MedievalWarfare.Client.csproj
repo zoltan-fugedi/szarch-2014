@@ -58,6 +58,7 @@
     </ApplicationDefinition>
     <Compile Include="aHex.cs" />
     <Compile Include="aHexMap.cs" />
+    <Compile Include="aObject.cs" />
     <Compile Include="Service References\Proxy\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -149,6 +150,27 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\castle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\castle_blue.png" />
+    <Resource Include="resources\castle_red.png" />
+    <Resource Include="resources\clayHex.gif" />
+    <Resource Include="resources\coin_game.png" />
+    <Resource Include="resources\coin_menu.png" />
+    <Resource Include="resources\desertHex.gif" />
+    <Resource Include="resources\menu_strength.png" />
+    <Resource Include="resources\oreHex.gif" />
+    <Resource Include="resources\piece_blue.png" />
+    <Resource Include="resources\piece_red.png" />
+    <Resource Include="resources\piece_yellow.png" />
+    <Resource Include="resources\pop_menu.png" />
+    <Resource Include="resources\sheepHex.gif" />
+    <Resource Include="resources\waterHex.gif" />
+    <Resource Include="resources\wheatHex.gif" />
+    <Resource Include="resources\woodHex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Hourglass.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,11 +9,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MedievalWarfare.Common;
+using MedievalWarfare.Common.Utility;
 
 namespace MedievalWarfare.Client
 {
     class aHex : DrawingVisual
     {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public Tile Tile { get; set; }
         private int myLeft;
         private int myTop;
         private int myWidth;
@@ -21,13 +26,16 @@ namespace MedievalWarfare.Client
         private Brush myColor;
         List<Point> lines = new List<Point>();
 
-        public aHex(int left, int top, int width, int height, Brush color)
+        public aHex(int X, int Y, int left, int top, int width, int height, Brush color, Tile tile)
         {
             myLeft = left;
             myTop = top;
             myWidth = width;
             myHeight = height;
             myColor = color;
+            this.X = X;
+            this.Y = Y;
+            Tile = tile;
             buildHex();
             displayHex();
         }

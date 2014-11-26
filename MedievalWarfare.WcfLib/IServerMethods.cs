@@ -20,7 +20,7 @@ namespace MedievalWarfare.WcfLib
         void Leave(Player info);
 
         [OperationContract]
-        Map GetGameState();
+        Game GetGameState();
 
         [OperationContract]
         void EndTurn();

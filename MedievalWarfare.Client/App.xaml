@@ -5,5 +5,11 @@
     <Application.Resources>
         <BitmapImage x:Key="grass" UriSource="resources/grass.png" />
         <BitmapImage x:Key="castle" UriSource="resources/castle.png" />
+        <BitmapImage x:Key="coin_game" UriSource="resources/coin_game.png" />
+        <BitmapImage x:Key="unit_blue" UriSource="resources/piece_blue.png" />
+        <BitmapImage x:Key="unit_yellow" UriSource="resources/piece_yellow.png" />
+        <BitmapImage x:Key="unit_red" UriSource="resources/piece_red.png" />
+        <BitmapImage x:Key="castle_blue" UriSource="resources/castle_blue.png" />
+        <BitmapImage x:Key="castle_red" UriSource="resources/castle_red.png" />
     </Application.Resources>
 </Application>

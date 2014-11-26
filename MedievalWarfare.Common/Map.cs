@@ -89,9 +89,7 @@ namespace MedievalWarfare.Common
             }
   
             AddWater(15, 15, 2);
-            var build = new Building();
-            this.ObjectList.Add(build);
-            this[2, 2].ContentList.Add(build);
+            
         }
 
         public void AddMountain(int x, int y, int radius)
@@ -177,7 +175,7 @@ namespace MedievalWarfare.Common
 
         public void AddBuilding(int x, int y, Player owner)
         {
-            var build = new Building();
+            var build = new Building(this[x, y]);
             build.Owner = owner;
             this.ObjectList.Add(build);
             this[x, y].ContentList.Add(build);
@@ -196,10 +194,10 @@ namespace MedievalWarfare.Common
 
         public void AddUnit(int x, int y, Player owner)
         {
-            var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr);
+            var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr, this[x, y]);
             unit.Owner = owner;
             var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Owner.Equals(owner)));
-            if (contents.Count() == 0)
+            if (contents.Count() != 0)
             {
                 foreach (var cont in contents)
                 {
@@ -227,11 +225,45 @@ namespace MedievalWarfare.Common
 
         public void AddTreasure(int x, int y, Player owner)
         {
-            var tres = new Treasure(ConstantValues.DefaultTreasure);
+            var tres = new Treasure(ConstantValues.DefaultTreasure, this[x, y]);
             tres.Owner = owner;
             this.ObjectList.Add(tres);
             this[x, y].ContentList.Add(tres);
 
+        }
+        public List<Tile> visibleTiles(Player player) 
+        {
+            List<Tile> temptiles = new List<Tile>();
+            
+            foreach (Tile tile in TileList)
+            {
+                if (tile.ContentList.Where(go => go.Owner.PlayerId.Equals(player.PlayerId)).Count() > 0) 
+                {
+                    temptiles.Add(tile);
+                }
+            }
+            for (int i = 0; i < ConstantValues.BaseVisibility; i++)
+            {
+                List<Tile> temp = new List<Tile>();
+                foreach (var tile in temptiles)
+                {
+                    var neighbours = tile.Neighbours;
+                    foreach (var nb in neighbours)
+                    {
+                        
+                        temp.Add(nb.Value);
+
+                    }
+                }
+                foreach (var tile in temp)
+                {
+
+                    temptiles.Add(tile);
+
+                }
+            }
+            return temptiles;
+        
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using MedievalWarfare.Common.Utility;
 
 namespace MedievalWarfare.Common
 {
@@ -15,9 +16,9 @@ namespace MedievalWarfare.Common
     {
 
         [DataMember]
-        public Player Player { get; set; }
-
         public Player Owner { get; set; }
+        [DataMember]
+        public Tile Tile { get; set; }
 
     }
 }

@@ -58,11 +58,12 @@ namespace MedievalWarfare.Common.Utility
                 {
                     try
                     {
-                        ret.Add(item, this[item]);
+                        var temp = this[item];
+                        ret.Add(item, temp);
                     }
                     catch (Exception)
                     {
-                       
+                        
                     }
                 }
                 return ret;

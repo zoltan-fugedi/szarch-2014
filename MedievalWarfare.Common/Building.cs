@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MedievalWarfare.Common.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -12,9 +13,10 @@ namespace MedievalWarfare.Common
     {
         [DataMember]
         public int Population { get; set; }
-        public Building()
+        public Building(Tile tile)
         {
             Population = 0;
+            Tile = tile;
         }
     }
 }

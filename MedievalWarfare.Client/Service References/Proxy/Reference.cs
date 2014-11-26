@@ -28,10 +28,10 @@ namespace MedievalWarfare.Client.Proxy {
         System.Threading.Tasks.Task LeaveAsync(MedievalWarfare.Common.Player info);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerMethods/GetGameState", ReplyAction="http://tempuri.org/IServerMethods/GetGameStateResponse")]
-        MedievalWarfare.Common.Map GetGameState();
+        MedievalWarfare.Common.Game GetGameState();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerMethods/GetGameState", ReplyAction="http://tempuri.org/IServerMethods/GetGameStateResponse")]
-        System.Threading.Tasks.Task<MedievalWarfare.Common.Map> GetGameStateAsync();
+        System.Threading.Tasks.Task<MedievalWarfare.Common.Game> GetGameStateAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerMethods/EndTurn", ReplyAction="http://tempuri.org/IServerMethods/EndTurnResponse")]
         void EndTurn();
@@ -110,11 +110,11 @@ namespace MedievalWarfare.Client.Proxy {
             return base.Channel.LeaveAsync(info);
         }
         
-        public MedievalWarfare.Common.Map GetGameState() {
+        public MedievalWarfare.Common.Game GetGameState() {
             return base.Channel.GetGameState();
         }
         
-        public System.Threading.Tasks.Task<MedievalWarfare.Common.Map> GetGameStateAsync() {
+        public System.Threading.Tasks.Task<MedievalWarfare.Common.Game> GetGameStateAsync() {
             return base.Channel.GetGameStateAsync();
         }
         

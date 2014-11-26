@@ -21,7 +21,7 @@ namespace MedievalWarfare.Common
         {
             Map = new Map();
             Players = new List<Player>();
-            Map.GenerateMap();
+           
         }
 
         public void addPlayer(Guid id) 
@@ -32,6 +32,12 @@ namespace MedievalWarfare.Common
                 Map.AddNewPlayerObjects(48, 48, player);
             }
             Players.Add(player); 
+        }
+
+        public void addPlayer(Player p)
+        {
+            
+            Players.Add(p);
         }
 
         public void addNeutralPlayer(Guid id)

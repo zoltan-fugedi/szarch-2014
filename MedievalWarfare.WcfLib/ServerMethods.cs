@@ -16,13 +16,14 @@ namespace MedievalWarfare.WcfLib
         // Change to dict to easy access to each user
         private ConcurrentDictionary<Guid, IClientCallback> callbackList;
 
-        private Map currentMap;
+        private Game currentGame;
 
         public ServerMethods()
         {
             callbackList = new ConcurrentDictionary<Guid, IClientCallback>();
-            currentMap = new Map();
-            currentMap.GenerateMap();
+            currentGame = new Game();
+            currentGame.Map.GenerateMap();
+            
         }
 
         public void Join(Player info)
@@ -32,6 +33,8 @@ namespace MedievalWarfare.WcfLib
 
             if (callbackList.TryAdd(info.PlayerId, registeredUser))
             {
+                currentGame.addPlayer(info);
+                currentGame.Map.AddNewPlayerObjects(2, 2, info);
                 registeredUser.ActionResult(true);
             }
             else
@@ -58,9 +61,9 @@ namespace MedievalWarfare.WcfLib
             }
         }
 
-        public Map GetGameState()
+        public Game GetGameState()
         {
-            return currentMap;
+            return currentGame;
         }
 
         public void EndTurn()
