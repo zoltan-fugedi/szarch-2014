@@ -12,6 +12,7 @@ namespace MedievalWarfare.Common.Utility
     [KnownType(typeof(ConstructBuilding))]
     public class Command
     {
-
+        [DataMember]
+        public Player Player { get; set; }
     }
 }

@@ -11,6 +11,13 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Player" nillable="true" type="tns:Player" />
+  <xs:complexType name="Game">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Map" nillable="true" type="tns:Map" />
+      <xs:element minOccurs="0" name="Players" nillable="true" type="tns:ArrayOfPlayer" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Game" nillable="true" type="tns:Game" />
   <xs:complexType name="Map">
     <xs:sequence>
       <xs:element minOccurs="0" name="MaxX" type="xs:int" />
@@ -18,6 +25,8 @@
       <xs:element minOccurs="0" name="ObjectList" nillable="true" type="tns:ArrayOfGameObject" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="TileList" nillable="true" type="q1:ArrayOfTile" />
     </xs:sequence>
+    <xs:attribute ref="ser:Id" />
+    <xs:attribute ref="ser:Ref" />
   </xs:complexType>
   <xs:element name="Map" nillable="true" type="tns:Map" />
   <xs:complexType name="ArrayOfGameObject">
@@ -28,7 +37,9 @@
   <xs:element name="ArrayOfGameObject" nillable="true" type="tns:ArrayOfGameObject" />
   <xs:complexType name="GameObject">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Player" nillable="true" type="tns:Player" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="Owner" nillable="true" type="tns:Player" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="Tile" nillable="true" type="q2:Tile" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GameObject" nillable="true" type="tns:GameObject" />
@@ -42,16 +53,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Building" nillable="true" type="tns:Building" />
-  <xs:complexType name="Treasure">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:GameObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Value" type="xs:int" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Treasure" nillable="true" type="tns:Treasure" />
   <xs:complexType name="Unit">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:GameObject">
@@ -63,13 +64,16 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Unit" nillable="true" type="tns:Unit" />
-  <xs:complexType name="Game">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Map" nillable="true" type="tns:Map" />
-      <xs:element minOccurs="0" name="Players" nillable="true" type="tns:ArrayOfPlayer" />
-    </xs:sequence>
+  <xs:complexType name="Treasure">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GameObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Value" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
-  <xs:element name="Game" nillable="true" type="tns:Game" />
+  <xs:element name="Treasure" nillable="true" type="tns:Treasure" />
   <xs:complexType name="ArrayOfPlayer">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Player" nillable="true" type="tns:Player" />

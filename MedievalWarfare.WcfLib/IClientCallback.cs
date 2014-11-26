@@ -14,14 +14,14 @@ namespace MedievalWarfare.WcfLib
     public interface IClientCallback
     {
         [OperationContract(IsOneWay = true)]
-        void ActionResult(bool result);
+        void ActionResult(Command command, bool result, string msg = null);
 
         [OperationContract(IsOneWay = true)]
-        void StartTurn(Game mapInfo);
+        void StartTurn();
 
         [OperationContract(IsOneWay = true)]
         void Update(Command command);
- 
+
         [OperationContract(IsOneWay = true)]
         void EndGame(bool winner);
 
