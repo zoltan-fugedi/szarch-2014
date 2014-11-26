@@ -163,7 +163,7 @@ namespace MedievalWarfare.Common
                     TileList.Add(newTile);
                 }
             }
-  
+
             AddWater(15, 15, 2);
             AddForest(25, 10, 4);
             AddMountain(25, 10, 2);
@@ -210,7 +210,7 @@ namespace MedievalWarfare.Common
             }
             else
             {
-                AddBuilding(x, y, owner);
+                AddBuilding(x, y, owner, true);
                 AddUnit(x + 1, y + 1, owner);
             }
 
@@ -220,25 +220,29 @@ namespace MedievalWarfare.Common
 
         #region Add/RemoveObjects
 
-        public void AddBuilding(int x, int y, Player owner)
+        public bool AddBuilding(int x, int y, Player owner, bool initial = false)
         {
-            // TODO check there can be build
+            if (!initial)
+            {
+                // Checking prerequirement
+                if (!this[x, y].ContentList.Any(unit => (unit is Unit) && ((Unit)unit).Owner == owner && ((Unit)unit).Movement >= ConstantValues.MovementCost))
+                {
+                    return false;
+                }
+            }
 
             var build = new Building(this[x, y]);
             build.Owner = owner;
             this.ObjectList.Add(build);
             this[x, y].ContentList.Add(build);
+            return true;
 
         }
 
-        public void RemoveBuilding(int x, int y, Player owner)
+        public void RemoveBuilding(int x, int y, Building building)
         {
-            var contents = this[x, y].ContentList.Where(c => (c is Building) && (c.Owner.Equals(owner)));
-            foreach (var building in contents)
-            {
                 this.ObjectList.Remove(building);
                 this[x, y].ContentList.Remove(building);
-            }
         }
 
         public void AddUnit(int x, int y, Player owner)
