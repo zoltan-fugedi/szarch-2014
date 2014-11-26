@@ -24,7 +24,7 @@ namespace MedievalWarfare.Common
            
         }
 
-        public void addPlayer(Guid id) 
+        public void AddPlayer(Guid id) 
         {
             var player = new Player(id, ConstantValues.InitialGold);
             if(Players.Where(c => c.Neutral == false).Count()!=0)
@@ -34,13 +34,13 @@ namespace MedievalWarfare.Common
             Players.Add(player); 
         }
 
-        public void addPlayer(Player p)
+        public void AddPlayer(Player p)
         {
             
             Players.Add(p);
         }
 
-        public void addNeutralPlayer(Guid id)
+        public void AddNeutralPlayer(Guid id)
         {
             if (Players.Where(c => c.Neutral == true).Count() == 0)
             {

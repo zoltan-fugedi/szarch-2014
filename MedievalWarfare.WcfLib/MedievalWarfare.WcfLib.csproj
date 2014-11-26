@@ -57,6 +57,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameState\GameState.cs" />
+    <Compile Include="GameState\GameStateController.cs" />
     <Compile Include="IClientCallback.cs" />
     <Compile Include="IServerMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
