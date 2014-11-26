@@ -27,8 +27,9 @@ namespace MedievalWarfare.Common.Utility
     [DataContract(IsReference = true)]
     public class Tile
     {
+
         [DataMember]
-        public Dictionary<Direction, Tile> Neighbours { get; set; }
+        public Map Map { get; set; }
         [DataMember]
         public List<GameObject> ContentList { get; set; }
         [DataMember]
@@ -39,68 +40,77 @@ namespace MedievalWarfare.Common.Utility
         public bool traversable = true;
         [DataMember]
         public TileType Type { get; set; }
-        public Tile(int x, int y)
+        public Tile(int x, int y, Map map)
         {
+            Map = map;
             Y = y;
             X = x;
-            Neighbours = new Dictionary<Direction, Tile>();
             ContentList = new List<GameObject>();
-            //Type = TileType.Field;
 
         }
 
-        
+        public Dictionary<Direction, Tile> Neighbours
+        {
+            get
+            {
+                Dictionary<Direction, Tile> ret = new Dictionary<Direction, Tile>();
+                foreach (Direction item in Enum.GetValues(typeof(Direction)))
+                {
+                    try
+                    {
+                        ret.Add(item, this[item]);
+                    }
+                    catch (Exception)
+                    {
+                       
+                    }
+                }
+                return ret;
+            }
+        }
+
         public Tile this[Direction d]
         {
             get
             {
-                if (!Neighbours.ContainsKey(d)) { throw new KeyNotFoundException(string.Format("The required neighbour not existing: {0}", d.ToString())); }
-                switch (d)
+                try
                 {
-                    case Direction.N:
-                        return Neighbours[Direction.N];
-                    case Direction.NE:
-                        return Neighbours[Direction.NE];
-                    case Direction.SE:
-                        return Neighbours[Direction.SE];
-                    case Direction.S:
-                        return Neighbours[Direction.S];
-                    case Direction.SW:
-                        return Neighbours[Direction.SW];
-                    case Direction.NW:
-                        return Neighbours[Direction.NW];
-                    default:
-                        throw new ArgumentOutOfRangeException("d");
+                    switch (d)
+                    {
+                        case Direction.N:
+                            return Map[X, Y - 1];
+                        case Direction.NE:
+                            if (X % 2 == 0)
+                                return Map[X + 1, Y - 1];
+                            else
+                                return Map[X + 1, Y];
+                        case Direction.SE:
+                            if (X % 2 == 0)
+                                return Map[X + 1, Y ];
+                            else
+                                return Map[X + 1, Y + 1];
+                        case Direction.S:
+                            return Map[X, Y + 1];
+                        case Direction.SW:
+                            if (X % 2 == 0)
+                                return Map[X - 1, Y];
+                            else
+                                return Map[X - 1, Y + 1];
+                        case Direction.NW:
+                            if (X % 2 == 0)
+                                return Map[X - 1, Y - 1];
+                            else
+                                return Map[X - 1, Y];
+                        default:
+                            throw new ArgumentOutOfRangeException("d");
+                    }
                 }
-            }
-
-            set
-            {
-                // (Neighbours.ContainsKey(d)) { throw new Exception(string.Format("The required neighbour is already set: {0}", d.ToString())); }
-                switch (d)
+                catch (Exception)
                 {
-                    case Direction.N:
-                        Neighbours[Direction.N] = value;
-                        break;
-                    case Direction.NE:
-                        Neighbours[Direction.NE] = value;
-                        break;
-                    case Direction.SE:
-                        Neighbours[Direction.SE] = value;
-                        break;
-                    case Direction.S:
-                        Neighbours[Direction.S] = value;
-                        break;
-                    case Direction.SW:
-                        Neighbours[Direction.SW] = value;
-                        break;
-                    case Direction.NW:
-                        Neighbours[Direction.NW] = value;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("d");
+                    throw new KeyNotFoundException(string.Format("The required neighbour not existing: {0}", d.ToString()));
                 }
             }
         }
     }
 }
+
