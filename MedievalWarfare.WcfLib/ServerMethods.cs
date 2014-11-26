@@ -86,6 +86,7 @@ namespace MedievalWarfare.WcfLib
                 gameStateController.CurrentPlayerTurnEnded = true;
                 // TODO do shits
                 gameStateController.NextState();
+                callbackList[gameStateController.CurrentPlayer.PlayerId].StartTurn();
             }
 
         }

@@ -293,8 +293,16 @@ namespace MedievalWarfare.Common
         public void AddUnit(int x, int y, Player owner)
         {
             // TODO check there can be train
-
-            var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr, this[x, y]);
+            Unit unit = null;
+            if (owner.Neutral) 
+            {
+                unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseNeutStr, this[x, y]);
+            }
+            else
+            {
+                unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr, this[x, y]);
+            }
+            
             unit.Owner = owner;
             var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Owner.Equals(owner)));
             if (contents.Count() != 0)

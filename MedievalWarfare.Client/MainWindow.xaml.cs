@@ -84,25 +84,9 @@ namespace MedievalWarfare.Client
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// 
-        /// </summary>
-        /// <param name="mapInfo"></param>
-        public void StartTurn(Common.Game mapInfo)
-        {
-            game = mapInfo;
-            myMap = new aHexMap(mapScroller, game.Map, mapCanvas, this);
-            mapCanvas.Children.Add(myMap);
-            if (myMap != null)
-            {
-                myMap.drawMap(Player);
-
-            }
-        }
-
         public void StartTurn()
         {
+            //TODO reset movements
             throw new NotImplementedException();
         }
 
