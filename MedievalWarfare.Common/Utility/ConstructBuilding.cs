@@ -10,5 +10,10 @@ namespace MedievalWarfare.Common.Utility
     [DataContract]
     public class ConstructBuilding : Command
     {
+        [DataMember]
+        public Player Player { get; set; }
+
+        [DataMember]
+        public Tile Position { get; set; }
     }
 }

@@ -22,6 +22,8 @@ namespace MedievalWarfare.Common
         [DataMember]
         public int MaxY { get; set; }
 
+        #region Accessors
+
         /// <summary>
         /// Gets the Tile by the given coordinates
         /// </summary>
@@ -45,6 +47,54 @@ namespace MedievalWarfare.Common
             }
         }
 
+        public List<Tile> visibleTiles(Player player)
+        {
+            List<Tile> temptiles = new List<Tile>();
+
+            foreach (Tile tile in TileList)
+            {
+                if (tile.ContentList.Where(go => go.Owner.PlayerId.Equals(player.PlayerId)).Count() > 0)
+                {
+                    temptiles.Add(tile);
+                }
+            }
+            for (int i = 0; i < ConstantValues.BaseVisibility; i++)
+            {
+                List<Tile> temp = new List<Tile>();
+                foreach (var tile in temptiles)
+                {
+                    var neighbours = tile.Neighbours;
+                    foreach (var nb in neighbours)
+                    {
+
+                        temp.Add(nb.Value);
+
+                    }
+                }
+                foreach (var tile in temp)
+                {
+
+                    temptiles.Add(tile);
+
+                }
+            }
+            return temptiles;
+        }
+
+        /// <summary>
+        /// From the given tile get in rage tiles
+        /// </summary>
+        /// <param name="thisTile"></param>
+        /// <param name="rage"></param>
+        /// <returns></returns>
+        public List<Tile> GetTilesInRange(Tile thisTile, int rage)
+        {
+            // TODO implement this
+            return  new List<Tile>();
+        }
+
+        #endregion
+
         /// <summary>
         /// Initialize a new instance of Map object
         /// </summary>
@@ -55,7 +105,9 @@ namespace MedievalWarfare.Common
             MaxX = defaultX;
             MaxY = defaultY;
         }
-       
+
+        #region MapGeneration
+
         /// <summary>
         /// Generate a map from the given parameter
         /// </summary>
@@ -89,8 +141,7 @@ namespace MedievalWarfare.Common
             }
   
             AddWater(15, 15, 2);
-            AddForest(20, 10, 4);
-            AddMountain(20, 10, 2);
+            
         }
 
         public void AddMountain(int x, int y, int radius)
@@ -159,38 +210,6 @@ namespace MedievalWarfare.Common
             }
         }
 
-        public void AddForest(int x, int y, int radius)
-        {
-            List<Tile> temptiles = new List<Tile>();
-            temptiles.Add(this[x, y]);
-            for (int i = 0; i < radius; i++)
-            {
-                List<Tile> temp = new List<Tile>();
-                foreach (var tile in temptiles)
-                {
-                    var neighbours = tile.Neighbours;
-                    foreach (var nb in neighbours)
-                    {
-
-                        temp.Add(nb.Value);
-
-                    }
-                }
-                foreach (var tile in temp)
-                {
-
-                    temptiles.Add(tile);
-
-                }
-            }
-
-            foreach (var tile in temptiles)
-            {
-                tile.Type = TileType.Forest;
-                tile.traversable = false;
-            }
-        }
-
         public void AddNewPlayerObjects(int x, int y, Player owner)
         {
             if (y > (MaxY / 2) && x > (MaxX / 2))
@@ -206,8 +225,14 @@ namespace MedievalWarfare.Common
 
         }
 
+        #endregion
+
+        #region Add/RemoveObjects
+
         public void AddBuilding(int x, int y, Player owner)
         {
+            // TODO check there can be build
+
             var build = new Building(this[x, y]);
             build.Owner = owner;
             this.ObjectList.Add(build);
@@ -227,6 +252,8 @@ namespace MedievalWarfare.Common
 
         public void AddUnit(int x, int y, Player owner)
         {
+            // TODO check there can be train
+
             var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr, this[x, y]);
             unit.Owner = owner;
             var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Owner.Equals(owner)));
@@ -264,39 +291,29 @@ namespace MedievalWarfare.Common
             this[x, y].ContentList.Add(tres);
 
         }
-        public List<Tile> visibleTiles(Player player) 
+
+        #endregion
+
+        #region Movement
+
+        public void MoveUnit(Player owner, Unit unit, int destX, int destY)
         {
-            List<Tile> temptiles = new List<Tile>();
-            
-            foreach (Tile tile in TileList)
-            {
-                if (tile.ContentList.Where(go => go.Owner.PlayerId.Equals(player.PlayerId)).Count() > 0) 
-                {
-                    temptiles.Add(tile);
-                }
-            }
-            for (int i = 0; i < ConstantValues.BaseVisibility; i++)
-            {
-                List<Tile> temp = new List<Tile>();
-                foreach (var tile in temptiles)
-                {
-                    var neighbours = tile.Neighbours;
-                    foreach (var nb in neighbours)
-                    {
-                        
-                        temp.Add(nb.Value);
-
-                    }
-                }
-                foreach (var tile in temp)
-                {
-
-                    temptiles.Add(tile);
-
-                }
-            }
-            return temptiles;
-        
+            // TODO check this valid
+            // TODO make the movement
         }
+
+        #endregion
+
+        #region Updates
+
+        public void UpdateMap(Command command)
+        {
+            // TODO implement this
+        }
+
+
+
+        #endregion
+
     }
 }
