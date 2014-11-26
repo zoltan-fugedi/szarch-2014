@@ -15,6 +15,7 @@ namespace MedievalWarfare.Common
         public int Value { get; set; }
         public Treasure(int value, Tile tile)
         {
+            Id = Guid.NewGuid();
             Value = value;
             Tile = tile;
         }

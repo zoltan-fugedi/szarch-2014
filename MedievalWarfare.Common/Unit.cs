@@ -18,6 +18,7 @@ namespace MedievalWarfare.Common
 
         public Unit(int movement, int strength, Tile tile)
         {
+            Id = Guid.NewGuid();
             Movement = movement;
             Strength = strength;
             Tile = tile;

@@ -14,7 +14,8 @@ namespace MedievalWarfare.Common
     [KnownType(typeof(Treasure))]
     public class GameObject
     {
-
+        [DataMember]
+        public Guid Id { get; set; }
         [DataMember]
         public Player Owner { get; set; }
         [DataMember]

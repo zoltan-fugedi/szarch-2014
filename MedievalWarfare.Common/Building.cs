@@ -15,6 +15,7 @@ namespace MedievalWarfare.Common
         public int Population { get; set; }
         public Building(Tile tile)
         {
+            Id = Guid.NewGuid();
             Population = 0;
             Tile = tile;
         }
