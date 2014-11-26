@@ -167,7 +167,7 @@ namespace MedievalWarfare.Common
                 }
             }
             var neut = new Player(0, true);
-            Game.addPlayer(neut);
+            Game.AddPlayer(neut);
 
 
 

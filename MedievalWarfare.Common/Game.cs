@@ -23,7 +23,7 @@ namespace MedievalWarfare.Common
             Players = new List<Player>();
            
         }
-        public void addPlayer(Player p)
+        public void AddPlayer(Player p)
         {
             
             Players.Add(p);
