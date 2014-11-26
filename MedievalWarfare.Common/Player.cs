@@ -45,9 +45,9 @@ namespace MedievalWarfare.Common
             Neutral = false;
         }
 
-        public Player(Guid id, int gold, bool neut)
+        public Player(int gold, bool neut)
         {
-            PlayerId = id;
+            PlayerId = Guid.NewGuid();
             Gold = gold;
             Neutral = neut;
         }

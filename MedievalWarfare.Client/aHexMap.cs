@@ -113,12 +113,17 @@ namespace MedievalWarfare.Client
                             aBackground = TryFindResource("coin_game") as BitmapImage;
                         if (go is Unit)
                         {
-                            if (player.Neutral)
+                            if (player.Neutral) 
+                            {
                                 aBackground = TryFindResource("unit_yellow") as BitmapImage;
-                            if (player.PlayerId.Equals(p.PlayerId))
-                                aBackground = TryFindResource("unit_blue") as BitmapImage;
+                            }
                             else
-                                aBackground = TryFindResource("unit_red") as BitmapImage;
+                            {
+                                if (player.PlayerId.Equals(p.PlayerId))
+                                    aBackground = TryFindResource("unit_blue") as BitmapImage;
+                                else
+                                    aBackground = TryFindResource("unit_red") as BitmapImage;
+                            }
                         }
                         if (go is Building)
                         {

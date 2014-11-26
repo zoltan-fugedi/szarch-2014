@@ -13,11 +13,12 @@ namespace MedievalWarfare.Common
     {
         [DataMember]
         public int Value { get; set; }
-        public Treasure(int value, Tile tile)
+        public Treasure(int value, Tile tile, Player owner)
         {
             Id = Guid.NewGuid();
             Value = value;
             Tile = tile;
+            Owner = owner;
         }
     }
 }

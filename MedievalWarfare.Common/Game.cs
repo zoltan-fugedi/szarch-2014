@@ -19,35 +19,17 @@ namespace MedievalWarfare.Common
 
         public Game()
         {
-            Map = new Map();
+            Map = new Map(this);
             Players = new List<Player>();
            
         }
-
-        public void addPlayer(Guid id) 
-        {
-            var player = new Player(id, ConstantValues.InitialGold);
-            if(Players.Where(c => c.Neutral == false).Count()!=0)
-            {
-                Map.AddNewPlayerObjects(48, 48, player);
-            }
-            Players.Add(player); 
-        }
-
         public void addPlayer(Player p)
         {
             
             Players.Add(p);
         }
 
-        public void addNeutralPlayer(Guid id)
-        {
-            if (Players.Where(c => c.Neutral == true).Count() == 0)
-            {
-                var player = new Player(id, 0, true);
-                Players.Add(player);
-            }  
-        }
+
         #region queries
         public Player GetPlayer(Guid id) 
         {

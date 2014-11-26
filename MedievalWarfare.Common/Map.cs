@@ -14,6 +14,8 @@ namespace MedievalWarfare.Common
         private const int defaultX = 50;
         private const int defaultY = 50;
         [DataMember]
+        public Game Game { get; set; }
+        [DataMember]
         public List<Tile> TileList { get; set; }
         [DataMember]
         public List<GameObject> ObjectList { get; set; }
@@ -122,12 +124,13 @@ namespace MedievalWarfare.Common
         /// <summary>
         /// Initialize a new instance of Map object
         /// </summary>
-        public Map()
+        public Map(Game game)
         {
             TileList = new List<Tile>();
             ObjectList = new List<GameObject>();
             MaxX = defaultX;
             MaxY = defaultY;
+            Game = game;
         }
 
         #region MapGeneration
@@ -163,10 +166,33 @@ namespace MedievalWarfare.Common
                     TileList.Add(newTile);
                 }
             }
+            var neut = new Player(0, true);
+            Game.addPlayer(neut);
+
+
 
             AddWater(15, 15, 2);
             AddForest(25, 10, 4);
+            AddForest(40, 15, 8);
+            AddForest(10, 30, 10);
+            AddForest(15, 10, 10);
+            for (int i = 0; i < 25; i++)
+            {
+                for (int j = 25; j < 27; j++)
+                {
+                    AddWater(i, j, 2);
+                }
+            }
+            AddWater(15, 15, 2);
+
             AddMountain(25, 10, 2);
+            AddNeutCamp(5, 5, neut);
+        }
+
+        public void AddNeutCamp(int x, int y, Player neut)
+        {
+            AddUnit(x,y,neut);
+            AddTreasure(x,y,neut);
         }
 
         public void AddMountain(int x, int y, int radius)
@@ -225,7 +251,7 @@ namespace MedievalWarfare.Common
             if (!initial)
             {
                 // Checking prerequirement
-                if (!this[x, y].ContentList.Any(unit => (unit is Unit) && ((Unit)unit).Owner == owner && ((Unit)unit).Movement >= ConstantValues.MovementCost))
+                if (!this[x, y].ContentList.Any(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId && ((Unit)unit).Movement >= ConstantValues.MovementCost))
                 {
                     return false;
                 }
@@ -243,6 +269,25 @@ namespace MedievalWarfare.Common
         {
                 this.ObjectList.Remove(building);
                 this[x, y].ContentList.Remove(building);
+        }
+
+
+        public bool AddTreasure(int x, int y, Player owner, bool initial = false)
+        {
+            if (!initial)
+            {
+                // Checking prerequirement
+                if (!this[x, y].ContentList.Any(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId && ((Unit)unit).Movement >= ConstantValues.MovementCost))
+                {
+                    return false;
+                }
+            }
+
+            var tres = new Treasure(ConstantValues.DefaultTreasure, this[x, y], owner);
+            tres.Owner = owner;
+            this.ObjectList.Add(tres);
+            this[x, y].ContentList.Add(tres);
+            return true;
         }
 
         public void AddUnit(int x, int y, Player owner)
@@ -275,15 +320,6 @@ namespace MedievalWarfare.Common
                 this.ObjectList.Remove(unit);
                 this[x, y].ContentList.Remove(unit);
             }
-
-        }
-
-        public void AddTreasure(int x, int y, Player owner)
-        {
-            var tres = new Treasure(ConstantValues.DefaultTreasure, this[x, y]);
-            tres.Owner = owner;
-            this.ObjectList.Add(tres);
-            this[x, y].ContentList.Add(tres);
 
         }
 
