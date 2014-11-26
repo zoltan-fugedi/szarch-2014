@@ -14,7 +14,7 @@ namespace MedievalWarfare.WcfLib
     public interface IClientCallback
     {
         [OperationContract(IsOneWay = true)]
-        void ActionResult(bool result, string msg = null);
+        void ActionResult(Command command, bool result, string msg = null);
 
         [OperationContract(IsOneWay = true)]
         void StartTurn();

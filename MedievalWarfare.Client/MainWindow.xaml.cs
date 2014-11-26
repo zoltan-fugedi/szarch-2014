@@ -27,7 +27,7 @@ namespace MedievalWarfare.Client
     [CallbackBehavior(UseSynchronizationContext = false)]
     public partial class MainWindow : Window, Proxy.IServerMethodsCallback, INotifyPropertyChanged
     {
-        
+
         private Proxy.ServerMethodsClient proxy;
         private aHexMap myMap;
         private Game game;
@@ -42,7 +42,7 @@ namespace MedievalWarfare.Client
             }
             set
             {
-                if (value != _message) 
+                if (value != _message)
                 {
                     _message = value;
                     OnPropertyChanged("Message");
@@ -67,9 +67,9 @@ namespace MedievalWarfare.Client
         }
 
 
-        public bool MoveUnit(Tile dest, Unit unit) 
-        { 
-            return game.Map.MoveUnit(game.GetPlayer(Player.PlayerId),unit,dest.X,dest.Y);
+        public bool MoveUnit(Tile dest, Unit unit)
+        {
+            return game.Map.MoveUnit(game.GetPlayer(Player.PlayerId), unit, dest.X, dest.Y);
         }
 
         #region Communication methods
@@ -79,14 +79,9 @@ namespace MedievalWarfare.Client
         /// 
         /// </summary>
         /// <param name="result"></param>
-        public void ActionResult(bool result)
+        public void ActionResult(Command command, bool result, string msg)
         {
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //tbBox1.Text = igaz.ToString();
-            }));
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -102,8 +97,13 @@ namespace MedievalWarfare.Client
             if (myMap != null)
             {
                 myMap.drawMap(Player);
-               
+
             }
+        }
+
+        public void StartTurn()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -173,5 +173,8 @@ namespace MedievalWarfare.Client
         }
 
         #endregion
+
+
+
     }
 }

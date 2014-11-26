@@ -42,7 +42,6 @@ namespace MedievalWarfare.WcfLib
                 {
                     currentGame.AddPlayer(info);
                     currentGame.Map.AddNewPlayerObjects(2, 2, info);
-                    registeredUser.ActionResult(true);
                     gameStateController.CurrentPlayer = info;
                     gameStateController.NextState();
                 }
@@ -55,7 +54,6 @@ namespace MedievalWarfare.WcfLib
                 }
 
             }
-            registeredUser.ActionResult(false);
         }
 
         public void Leave(Player info)
@@ -63,11 +61,9 @@ namespace MedievalWarfare.WcfLib
             IClientCallback callBack;
             if (callbackList.TryRemove(info.PlayerId, out callBack))
             {
-                callBack.ActionResult(true);
             }
             else
             {
-                callBack.ActionResult(false);
             }
 
             foreach (var clientCallback in callbackList)
@@ -83,7 +79,7 @@ namespace MedievalWarfare.WcfLib
 
         public void EndTurn(Player info)
         {
-            if (gameStateController.CurrentPlayer.PlayerId == info.PlayerId && 
+            if (gameStateController.CurrentPlayer.PlayerId == info.PlayerId &&
                 gameStateController.CurreState == (GameState.GameState.State.PlayerOneTurn | GameState.GameState.State.PlayerTwoTurn))
             {
                 gameStateController.CurrentPlayerTurnEnded = true;
@@ -95,12 +91,35 @@ namespace MedievalWarfare.WcfLib
 
         public void UpdateMap(Command command)
         {
+            bool success = false;
+            var curretPlayerId = command.Player.PlayerId;
+
             if (command is MoveUnit)
             {
-               var cmd= command as MoveUnit;
-               currentGame.Map.MoveUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.X);
+                var cmd = command as MoveUnit;
+                success = currentGame.Map.MoveUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.X);
+                if (!success)
+                {
+                    callbackList[curretPlayerId].ActionResult(command, false);
+                    return;
+                }
+
+
             }
 
+            callbackList[curretPlayerId].ActionResult(command, true);
+
+
+            // Notify other player
+            switch (gameStateController.CurreState)
+            {
+                case GameState.GameState.State.PlayerOneTurn:
+                    callbackList[gameStateController.PlayerTwo.PlayerId].Update(command);
+                    break;
+                case GameState.GameState.State.PlayerTwoTurn:
+                    callbackList[gameStateController.PlayerOne.PlayerId].Update(command);
+                    break;
+            }
         }
 
     }

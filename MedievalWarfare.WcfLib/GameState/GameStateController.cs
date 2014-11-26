@@ -21,13 +21,13 @@ namespace MedievalWarfare.WcfLib.GameState
                 switch (CurreState)
                 {
                     case GameState.State.WaitingForJoin:
-                        return playerOne;
+                        return PlayerOne;
                     case GameState.State.PlayerOneJoined:
-                        return playerTwo;
+                        return PlayerTwo;
                     case GameState.State.PlayerOneTurn:
-                        return playerOne;
+                        return PlayerOne;
                     case GameState.State.PlayerTwoTurn:
-                        return playerTwo;
+                        return PlayerTwo;
                     default:
                         return null;
                 }
@@ -38,18 +38,18 @@ namespace MedievalWarfare.WcfLib.GameState
                 switch (CurreState)
                 {
                     case GameState.State.WaitingForJoin:
-                        playerOne = value;
+                        PlayerOne = value;
                         break;
                     case GameState.State.PlayerOneJoined:
-                        playerTwo = value;
+                        PlayerTwo = value;
                         break;
                 }
             }
 
         }
 
-        private Player playerOne { get; set; }
-        private Player playerTwo { get; set; }
+        public Player PlayerOne { get; private set; }
+        public Player PlayerTwo { get; private set; }
 
         public GameStateController()
         {
@@ -61,13 +61,13 @@ namespace MedievalWarfare.WcfLib.GameState
             switch (CurreState)
             {
                 case GameState.State.WaitingForJoin:
-                    if (playerOne != null)
+                    if (PlayerOne != null)
                     {
                         CurreState = GameState.State.PlayerOneJoined;
                     }
                     break;
                 case GameState.State.PlayerOneJoined:
-                    if (playerTwo != null)
+                    if (PlayerTwo != null)
                     {
                         CurreState = GameState.State.PlayerTwoJoined;
                     }

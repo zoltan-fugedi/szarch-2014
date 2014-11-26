@@ -11,9 +11,6 @@ namespace MedievalWarfare.Common.Utility
     public class MoveUnit : Command
     {
         [DataMember]
-        public Player Player { get; set; }
-
-        [DataMember]
         public Tile Position { get; set; }
 
         [DataMember]
