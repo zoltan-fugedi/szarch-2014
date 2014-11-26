@@ -11,5 +11,9 @@
         <BitmapImage x:Key="unit_red" UriSource="resources/piece_red.png" />
         <BitmapImage x:Key="castle_blue" UriSource="resources/castle_blue.png" />
         <BitmapImage x:Key="castle_red" UriSource="resources/castle_red.png" />
+        <BitmapImage x:Key="field" UriSource="resources/sheepHex.gif" />
+        <BitmapImage x:Key="water" UriSource="resources/waterHex.gif" />
+        <BitmapImage x:Key="mountain" UriSource="resources/oreHex.gif" />
+        <BitmapImage x:Key="forest" UriSource="resources/woodHex.gif" />
     </Application.Resources>
 </Application>

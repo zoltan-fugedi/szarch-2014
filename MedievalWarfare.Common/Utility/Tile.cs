@@ -21,7 +21,8 @@ namespace MedievalWarfare.Common.Utility
     {
         Field,
         Water,
-        Mountain
+        Mountain,
+        Forest
     }
 
     [DataContract(IsReference = true)]

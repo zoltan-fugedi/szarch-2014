@@ -26,14 +26,14 @@ namespace MedievalWarfare.Common
 
         public Player()
         {
-            PlayerId = new Guid();
+            PlayerId = Guid.NewGuid();
             Gold = ConstantValues.InitialGold;
             Neutral = false;
         }
         
         public Player(int gold)
         {
-            PlayerId = new Guid();
+            PlayerId = Guid.NewGuid();
             Gold = gold;
             Neutral = false;
         }

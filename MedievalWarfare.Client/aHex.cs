@@ -19,17 +19,20 @@ namespace MedievalWarfare.Client
         public int X { get; set; }
         public int Y { get; set; }
         public Tile Tile { get; set; }
-        private int myLeft;
-        private int myTop;
+        private int x_off;
+        private int y_off;
         private int myWidth;
         private int myHeight;
         private Brush myColor;
         List<Point> lines = new List<Point>();
 
-        public aHex(int X, int Y, int left, int top, int width, int height, Brush color, Tile tile)
+        private BitmapImage aBackground;
+
+
+       /* public aHex(int X, int Y, int left, int top, int width, int height, Brush color, Tile tile)
         {
-            myLeft = left;
-            myTop = top;
+            x_off = left;
+            y_off = top;
             myWidth = width;
             myHeight = height;
             myColor = color;
@@ -38,20 +41,34 @@ namespace MedievalWarfare.Client
             Tile = tile;
             buildHex();
             displayHex();
+        }*/
+
+        public aHex(int X, int Y, int left, int top, int width, int height, BitmapImage image, Tile tile)
+        {
+            x_off = left;
+            y_off = top;
+            myWidth = width;
+            myHeight = height;
+            aBackground = image;
+            this.X = X;
+            this.Y = Y;
+            Tile = tile;
+            buildHex();
+            displayHex();
         }
         private void buildHex()
         {
-            Point p = new Point(Math.Round(myWidth / 4.0) + myLeft, 0 + myTop);
+            Point p = new Point(Math.Round(myWidth / 4.0) + x_off, 0 + y_off);
             lines.Add(p);
-            p = new Point(Math.Round((myWidth * 3.0) / 4.0) - 1 + myLeft, 0 + myTop);
+            p = new Point(Math.Round((myWidth * 3.0) / 4.0) - 1 + x_off, 0 + y_off);
             lines.Add(p);
-            p = new Point(myWidth + myLeft - 1, Math.Round(myHeight / 2.0) + myTop - 1);
+            p = new Point(myWidth + x_off - 1, Math.Round(myHeight / 2.0) + y_off - 1);
             lines.Add(p);
-            p = new Point(Math.Round((myWidth * 3.0) / 4.0) + myLeft - 1, myHeight + myTop - 1);
+            p = new Point(Math.Round((myWidth * 3.0) / 4.0) + x_off - 1, myHeight + y_off - 1);
             lines.Add(p);
-            p = new Point(Math.Round(myWidth / 4.0) + myLeft, myHeight + myTop - 1);
+            p = new Point(Math.Round(myWidth / 4.0) + x_off, myHeight + y_off - 1);
             lines.Add(p);
-            p = new Point(0 + myLeft, Math.Round(myHeight / 2.0) + myTop);
+            p = new Point(0 + x_off, Math.Round(myHeight / 2.0) + y_off);
             lines.Add(p);
 
             
@@ -60,7 +77,11 @@ namespace MedievalWarfare.Client
         {
             using (DrawingContext dc = this.RenderOpen())
             {
-                dc.DrawGeometry(myColor, null, buildGeo());
+
+                Rect aRec = new Rect(x_off, y_off, myWidth, myHeight);
+                dc.DrawImage(aBackground, aRec);
+
+                //dc.DrawGeometry(myColor, null, buildGeo());
             }
         }
         private Geometry buildGeo()

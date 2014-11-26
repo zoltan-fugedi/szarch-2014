@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MedievalWarfare.Common;
-using MedievalWarfare.Common.Utility;
+
 
 namespace MedievalWarfare.Client
 {
@@ -23,7 +23,6 @@ namespace MedievalWarfare.Client
         private int y_off;
         private int myWidth;
         private int myHeight;
-        private int offset;
         BitmapImage aBackground;
         
 

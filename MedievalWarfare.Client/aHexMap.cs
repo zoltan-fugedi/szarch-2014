@@ -74,19 +74,23 @@ namespace MedievalWarfare.Client
                 {
                     case TileType.Field:
                         tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
-                    ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.Green, tile);
+                    ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, TryFindResource("field") as BitmapImage, tile);
                         break;
                     case TileType.Water:
                         tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
-                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.Blue, tile);
+                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, TryFindResource("water") as BitmapImage, tile);
                         break;
                     case TileType.Mountain:
                         tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
-                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.Gray, tile);
+                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, TryFindResource("mountain") as BitmapImage, tile);
+                        break;
+                    case TileType.Forest:
+                        tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
+                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, TryFindResource("forest") as BitmapImage, tile);
                         break;
                     default:
                         tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
-                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.White, tile);
+                   ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, TryFindResource("field") as BitmapImage, tile);
                         break;
                 }
                 _children.Add(tmpHex);

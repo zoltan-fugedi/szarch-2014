@@ -89,7 +89,8 @@ namespace MedievalWarfare.Common
             }
   
             AddWater(15, 15, 2);
-            
+            AddForest(20, 10, 4);
+            AddMountain(20, 10, 2);
         }
 
         public void AddMountain(int x, int y, int radius)
@@ -154,6 +155,38 @@ namespace MedievalWarfare.Common
             foreach (var tile in temptiles)
             {
                 tile.Type = TileType.Water;
+                tile.traversable = false;
+            }
+        }
+
+        public void AddForest(int x, int y, int radius)
+        {
+            List<Tile> temptiles = new List<Tile>();
+            temptiles.Add(this[x, y]);
+            for (int i = 0; i < radius; i++)
+            {
+                List<Tile> temp = new List<Tile>();
+                foreach (var tile in temptiles)
+                {
+                    var neighbours = tile.Neighbours;
+                    foreach (var nb in neighbours)
+                    {
+
+                        temp.Add(nb.Value);
+
+                    }
+                }
+                foreach (var tile in temp)
+                {
+
+                    temptiles.Add(tile);
+
+                }
+            }
+
+            foreach (var tile in temptiles)
+            {
+                tile.Type = TileType.Forest;
                 tile.traversable = false;
             }
         }
