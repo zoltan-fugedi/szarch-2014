@@ -22,5 +22,6 @@ namespace MedievalWarfare.Common.Utility
         public const int BaseUnitStr = 10;
         public const int BaseMovement = 3;
         public const int BaseVisibility = 4;
+        public const double CastleDefenseBoost = 1.2;
     }
 }

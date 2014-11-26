@@ -287,10 +287,174 @@ namespace MedievalWarfare.Common
 
         #region Movement
 
-        public void MoveUnit(Player owner, Unit unit, int destX, int destY)
+        public bool MoveUnit(Player owner, Unit unit, int destX, int destY)
         {
-            // TODO check this valid
-            // TODO make the movement
+            var dest = this[destX, destY];
+            var start = unit.Tile;
+            
+            var tilesInRange = GetTilesInRange(unit.Tile, unit.Movement);
+            if (!unit.Owner.Equals(owner)) 
+            {
+                return false; 
+            }
+            if(!tilesInRange.Contains(dest))
+            {
+                return false;
+            }
+            if (!dest.traversable) 
+            {
+                return false;
+            }
+            //friendly units at dest
+            var friendlyUnits = dest.ContentList.Where(og => og is Unit && og.Owner == owner);
+            //enemy Player units at dest
+            var enemyUnits = dest.ContentList.Where(og => og is Unit && og.Owner != owner && !og.Owner.Neutral);
+            //neutral Player units at dest
+            var neutralUnits = dest.ContentList.Where(og =>og is Unit && og.Owner != owner && og.Owner.Neutral);
+            //treasures at dest
+            var treasures = dest.ContentList.Where(og => og is Treasure && og.Owner != owner && og.Owner.Neutral);
+            //enemy buildings at dest
+            var enemyBuildings = dest.ContentList.Where(og => og is Building && og.Owner != owner && !og.Owner.Neutral);
+  
+
+            //Normal move
+            if (treasures.Count() == 0 && enemyUnits.Count() == 0 && neutralUnits.Count() == 0 && friendlyUnits.Count() == 0 && enemyBuildings.Count() == 0)
+            {
+                start.ContentList.Remove(unit);
+                dest.ContentList.Add(unit);
+                unit.Tile = dest;
+                return true;
+            }
+
+            //Unit merge
+            if (treasures.Count() == 0 && enemyUnits.Count() == 0 && neutralUnits.Count() == 0 && friendlyUnits.Count() > 0 && enemyBuildings.Count() == 0)
+            {
+                start.ContentList.Remove(unit);
+                
+                var destUnit = friendlyUnits.ToList()[0];
+                ((Unit)destUnit).Strength += unit.Strength;
+                ((Unit)destUnit).Movement = 0;
+                this.ObjectList.Remove(unit);
+                return true;
+            }
+
+            //destroy enemy building
+            if (treasures.Count() == 0 && enemyUnits.Count() == 0 && neutralUnits.Count() == 0 && friendlyUnits.Count() == 0 && enemyBuildings.Count() > 0)
+            {
+                var enemyBuild = enemyBuildings.ToList()[0];
+
+                start.ContentList.Remove(unit);
+                dest.ContentList.Add(unit);
+                unit.Tile = dest;
+                dest.ContentList.Remove(enemyBuild);
+                this.ObjectList.Remove(enemyBuild);
+
+                return true;
+            }
+
+            //Simple PVP fight
+            if (treasures.Count() == 0 && enemyUnits.Count() > 0 && neutralUnits.Count() == 0 && friendlyUnits.Count() == 0 && enemyBuildings.Count() == 0)
+            {
+                Unit enemyunit = (Unit)enemyUnits.ToList()[0];
+
+                start.ContentList.Remove(unit);
+
+                if (unit.Strength > enemyunit.Strength) 
+                {
+                    unit.Strength -= enemyunit.Strength;
+                    dest.ContentList.Remove(enemyunit);
+                    dest.ContentList.Add(unit);
+                    this.ObjectList.Remove(enemyunit);
+                    return true;
+                }
+                else
+                {
+                    if (unit.Strength < enemyunit.Strength) 
+                    {
+                        enemyunit.Strength -= unit.Strength;
+                        this.ObjectList.Remove(unit);
+                        return true;
+                    }
+                    else
+                    {
+                        enemyunit.Strength = 1;
+                        this.ObjectList.Remove(unit);
+                        return true;
+                    }
+                }
+            }
+
+            //PVP with castle on defending side
+            if (treasures.Count() == 0 && enemyUnits.Count() > 0 && neutralUnits.Count() == 0 && friendlyUnits.Count() == 0 && enemyBuildings.Count() > 0)
+            {
+                Unit enemyunit = (Unit)enemyUnits.ToList()[0];
+                var enemyBuild = enemyBuildings.ToList()[0];
+
+                start.ContentList.Remove(unit);
+
+                if (unit.Strength > enemyunit.Strength*ConstantValues.CastleDefenseBoost)
+                {
+                    unit.Strength -= Convert.ToInt32((enemyunit.Strength * ConstantValues.CastleDefenseBoost));
+                    dest.ContentList.Remove(enemyunit);
+                    dest.ContentList.Remove(enemyBuild);
+                    dest.ContentList.Add(unit);
+                    this.ObjectList.Remove(enemyunit);
+                    this.ObjectList.Remove(enemyBuild);
+                    return true;
+                }
+                else
+                {
+                    if (unit.Strength < enemyunit.Strength * ConstantValues.CastleDefenseBoost)
+                    {
+                        enemyunit.Strength -= unit.Strength;
+                        this.ObjectList.Remove(unit);
+                        return true;
+                    }
+                    else
+                    {
+                        enemyunit.Strength = 1;
+                        this.ObjectList.Remove(unit);
+                        return true;
+                    }
+                }
+            }
+
+            //PVE 
+            if (treasures.Count() > 0 && enemyUnits.Count() == 0 && neutralUnits.Count() > 0 && friendlyUnits.Count() == 0 && enemyBuildings.Count() == 0)
+            {
+                Unit neutUnit = (Unit)neutralUnits.ToList()[0];
+                Treasure treasure = (Treasure)treasures.ToList()[0];
+
+                start.ContentList.Remove(unit);
+
+                if (unit.Strength > neutUnit.Strength)
+                {
+                    unit.Strength -= neutUnit.Strength;
+                    dest.ContentList.Remove(neutUnit);
+                    dest.ContentList.Remove(treasure);
+                    dest.ContentList.Add(unit);
+                    unit.Owner.Gold += treasure.Value;
+                    this.ObjectList.Remove(neutUnit);
+                    this.ObjectList.Remove(treasure);
+                    return true;
+                }
+                else
+                {
+                    if (unit.Strength < neutUnit.Strength )
+                    {
+                        neutUnit.Strength -= unit.Strength;
+                        this.ObjectList.Remove(unit);
+                        return true;
+                    }
+                    else
+                    {
+                        neutUnit.Strength = 1;
+                        this.ObjectList.Remove(unit);
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         #endregion
