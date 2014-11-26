@@ -22,6 +22,6 @@ namespace MedievalWarfare.Common.Utility
         public const int BaseUnitStr = 10;
         public const int BaseMovement = 3;
         public const int MovementCost = 3;
-        public const int BaseVisibility = 3;
+        public const int BaseVisibility = 4;
     }
 }

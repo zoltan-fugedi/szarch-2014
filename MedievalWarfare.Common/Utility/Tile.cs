@@ -28,7 +28,7 @@ namespace MedievalWarfare.Common.Utility
     [DataContract(IsReference = true)]
     public class Tile
     {
-
+        public bool isVisited = false;
         [DataMember]
         public Map Map { get; set; }
         [DataMember]
@@ -46,6 +46,7 @@ namespace MedievalWarfare.Common.Utility
             Map = map;
             Y = y;
             X = x;
+            
             ContentList = new List<GameObject>();
 
         }
