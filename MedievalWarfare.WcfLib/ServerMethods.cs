@@ -19,7 +19,7 @@ namespace MedievalWarfare.WcfLib
         private ConcurrentDictionary<Guid, IClientCallback> callbackList;
         private Game currentGame;
         private GameStateController gameStateController;
-        private DebugHelper debugHelper;
+        private OutputHelper _outputHelper;
 
         public ServerMethods()
         {
@@ -27,7 +27,7 @@ namespace MedievalWarfare.WcfLib
             currentGame = new Game();
             currentGame.Map.GenerateMap();
             gameStateController = new GameStateController();
-            debugHelper = new DebugHelper(gameStateController);
+            _outputHelper = new OutputHelper(gameStateController);
         }
 
         public void Join(Player info)
@@ -97,11 +97,11 @@ namespace MedievalWarfare.WcfLib
             if (gameStateController.CurrentPlayer.PlayerId == info.PlayerId &&
                 ((gameStateController.CurreState == GameState.GameState.State.PlayerOneTurn) || (gameStateController.CurreState == GameState.GameState.State.PlayerTwoTurn)))
             {
-                Console.WriteLine(string.Format("{0} is ended the turn!", debugHelper.GetPlayerName(info)));
+                Console.WriteLine(string.Format("{0} is ended the turn!", _outputHelper.GetPlayerName(info)));
                 currentGame.EndPlayerTurn(info);
                 gameStateController.NextState();
                 callbackList[gameStateController.CurrentPlayer.PlayerId].StartTurn();
-                Console.WriteLine(string.Format("{0} is started the turn!", debugHelper.GetPlayerName(gameStateController.CurrentPlayer)));
+                Console.WriteLine(string.Format("{0} is started the turn!", _outputHelper.GetPlayerName(gameStateController.CurrentPlayer)));
 
             }
 
@@ -115,7 +115,7 @@ namespace MedievalWarfare.WcfLib
             {
                 var cmd = command as MoveUnit;
                 var moveingUnit = currentGame.Map.ObjectList.Single(unit => unit.Id == cmd.Unit.Id) as Unit;
-                Console.WriteLine(string.Format("{0} is moving unit to X:{1} Y:{2}. Unit movement: {3}", debugHelper.GetPlayerName(command.Player), cmd.Position.X, cmd.Position.Y, moveingUnit.Movement));
+                Console.WriteLine(string.Format("{0} is moving unit to X:{1} Y:{2}. Unit movement: {3}", _outputHelper.GetPlayerName(command.Player), cmd.Position.X, cmd.Position.Y, moveingUnit.Movement));
 
                 success = currentGame.Map.MoveUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.Y);
                 if (!success)
@@ -123,8 +123,8 @@ namespace MedievalWarfare.WcfLib
                     callbackList[curretPlayerId].ActionResult(command, false);
                     return;
                 }
-                Console.WriteLine(string.Format("{0} is movement is: {1}", debugHelper.GetPlayerName(command.Player), success.ToString()));
-                Console.WriteLine(string.Format("{0} is moving unit remaining movement: {1}", debugHelper.GetPlayerName(command.Player), moveingUnit.Movement));
+                Console.WriteLine(string.Format("{0} is movement is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
+                Console.WriteLine(string.Format("{0} is moving unit remaining movement: {1}", _outputHelper.GetPlayerName(command.Player), moveingUnit.Movement));
             }
 
             callbackList[curretPlayerId].ActionResult(command, true);
@@ -135,11 +135,11 @@ namespace MedievalWarfare.WcfLib
             {
                 case GameState.GameState.State.PlayerOneTurn:
                     callbackList[gameStateController.PlayerTwo.PlayerId].Update(command);
-                    Console.WriteLine(string.Format("{0} is Updated!", debugHelper.GetPlayerName(gameStateController.PlayerTwo)));
+                    Console.WriteLine(string.Format("{0} is Updated!", _outputHelper.GetPlayerName(gameStateController.PlayerTwo)));
                     break;
                 case GameState.GameState.State.PlayerTwoTurn:
                     callbackList[gameStateController.PlayerOne.PlayerId].Update(command);
-                    Console.WriteLine(string.Format("{0} is Updated!", debugHelper.GetPlayerName(gameStateController.PlayerOne)));
+                    Console.WriteLine(string.Format("{0} is Updated!", _outputHelper.GetPlayerName(gameStateController.PlayerOne)));
                     break;
             }
         }

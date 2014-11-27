@@ -57,7 +57,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Debug\DebugHelper.cs" />
+    <Compile Include="Helper\OutputHelper.cs" />
     <Compile Include="GameState\GameState.cs" />
     <Compile Include="GameState\GameStateController.cs" />
     <Compile Include="IClientCallback.cs" />
