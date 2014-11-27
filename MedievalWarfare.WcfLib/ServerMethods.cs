@@ -97,6 +97,7 @@ namespace MedievalWarfare.WcfLib
             if (gameStateController.CurrentPlayer.PlayerId == info.PlayerId &&
                 ((gameStateController.CurreState == GameState.GameState.State.PlayerOneTurn) || (gameStateController.CurreState == GameState.GameState.State.PlayerTwoTurn)))
             {
+                gameStateController.CurrentPlayerTurnEnded = true;
                 Console.WriteLine(string.Format("{0} is ended the turn!", _outputHelper.GetPlayerName(info)));
                 currentGame.EndPlayerTurn(info);
                 gameStateController.NextState();
