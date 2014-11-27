@@ -57,7 +57,7 @@ namespace MedievalWarfare.Client.Proxy {
         void ActionResult(MedievalWarfare.Common.Utility.Command command, bool result, string msg);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/StartGame")]
-        void StartGame(bool isYourTurn);
+        void StartGame(MedievalWarfare.Common.Game game, bool isYourTurn);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/StartTurn")]
         void StartTurn();

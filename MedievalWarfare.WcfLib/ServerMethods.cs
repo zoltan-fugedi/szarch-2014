@@ -43,7 +43,7 @@ namespace MedievalWarfare.WcfLib
                 if (callbackList.TryAdd(info.PlayerId, registeredUser))
                 {
                     currentGame.AddPlayer(info);
-                    if (gameStateController.CurreState == GameState.GameState.State.PlayerOneJoined) 
+                    if (gameStateController.CurreState == GameState.GameState.State.PlayerOneJoined)
                         currentGame.Map.AddNewPlayerObjects(6, 6, info);
                     else
                         currentGame.Map.AddNewPlayerObjects(2, 2, info);
@@ -53,8 +53,8 @@ namespace MedievalWarfare.WcfLib
 
                 if (gameStateController.CurreState == GameState.GameState.State.GameStart)
                 {
-                    callbackList[gameStateController.PlayerOne.PlayerId].StartGame(true);
-                    callbackList[gameStateController.PlayerOne.PlayerId].StartGame(false);
+                    callbackList[gameStateController.PlayerOne.PlayerId].StartGame(currentGame, true);
+                    callbackList[gameStateController.PlayerOne.PlayerId].StartGame(currentGame, false);
                     gameStateController.NextState();
                     callbackList[gameStateController.CurrentPlayer.PlayerId].StartTurn();
                 }

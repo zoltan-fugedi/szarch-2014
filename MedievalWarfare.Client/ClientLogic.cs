@@ -215,7 +215,7 @@ namespace MedievalWarfare.Client
             
         }
 
-        public void StartGame(bool isYourTurn)
+        public void StartGame(Game game, bool isYourTurn)
         {
             throw new NotImplementedException();
         }
