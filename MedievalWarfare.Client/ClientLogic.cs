@@ -135,14 +135,13 @@ namespace MedievalWarfare.Client
 
         public void ConnectToServer() 
         {
-            if (ClientState == GameStates.Init) 
-            {
+
                 proxy.Open();
                 proxy.JoinAsync(Player);
 
                 ClientState = GameStates.Connected;
                 Message = "Connected To server, waiting for other player";
-            } 
+            
         }
 
         public void CreateBuilding() 
@@ -237,7 +236,7 @@ namespace MedievalWarfare.Client
         
         public void StartTurn()
         {
-            
+            Game.EndPlayerTurn(Game.Players.Single(go => go.PlayerId != Player.PlayerId && !go.Neutral));
             MyMap.drawMap(Player);
             Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
             ClientState = GameStates.TurnStarted;
@@ -245,18 +244,21 @@ namespace MedievalWarfare.Client
         }
         public void Update(Common.Utility.Command command)
         {
-            if (ClientState == GameStates.Connected || ClientState == GameStates.TurnEnded)
-            {
+           
                 if (command is MoveUnit)
                 {
-                    Game.Map.MoveUnit(command.Player, ((MoveUnit)command).Unit, ((MoveUnit)command).Position.X, ((MoveUnit)command).Position.Y);
+                    var result =Game.Map.MoveUnit(command.Player, ((MoveUnit)command).Unit, ((MoveUnit)command).Position.X, ((MoveUnit)command).Position.Y);
+                    if (!result) 
+                    {
+                        Game = proxy.GetGameState();
+                    }
                     MyMap.drawMap(Player);
                 }
                 Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
                 ClientState = GameStates.TurnEnded;
                 Message = "The Other player is moving";
 
-            }
+            
             
 
         }
