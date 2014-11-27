@@ -123,6 +123,7 @@ namespace MedievalWarfare.WcfLib
                     callbackList[curretPlayerId].ActionResult(command, false);
                     return;
                 }
+                Console.WriteLine(string.Format("{0} is movement is: {1}", debugHelper.GetPlayerName(command.Player), success.ToString()));
                 Console.WriteLine(string.Format("{0} is moving unit remaining movement: {1}", debugHelper.GetPlayerName(command.Player), moveingUnit.Movement));
             }
 
