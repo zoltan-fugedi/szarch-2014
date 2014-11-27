@@ -15,7 +15,7 @@ using MedievalWarfare.Common;
 
 namespace MedievalWarfare.Client
 {
-    class aObject : DrawingVisual
+    public class aObject : DrawingVisual
     {
         public aHex Hex { get; set; }
         public GameObject GameObject { get; set; }

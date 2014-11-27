@@ -59,6 +59,7 @@
     <Compile Include="aHex.cs" />
     <Compile Include="aHexMap.cs" />
     <Compile Include="aObject.cs" />
+    <Compile Include="ClientLogic.cs" />
     <Compile Include="Service References\Proxy\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -169,6 +170,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\Hourglass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\movement.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\construct.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\train.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

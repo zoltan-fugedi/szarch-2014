@@ -36,6 +36,25 @@ namespace MedievalWarfare.Common
             return Players.FirstOrDefault(p => p.PlayerId == id); 
         }
 
+        public void EndPlayerTurn(Player p) 
+        {
+            var playerobjects = Map.ObjectList.Where(go => go.Owner.PlayerId == p.PlayerId);
+            var playerbuildings = playerobjects.Where(go => go is Building);
+            var playerunits = playerobjects.Where(go => go is Unit);
+
+            GetPlayer(p.PlayerId).Gold += playerbuildings.Count() * ConstantValues.GoldGainPerBuilding;
+            
+            foreach (Building build in playerbuildings)
+            {
+                build.Population += ConstantValues.PopGrowth;
+            }
+
+            foreach (Unit unit in playerunits)
+            {
+                unit.Movement = ConstantValues.BaseMovement;
+            }
+
+        }
 
         #endregion
     }

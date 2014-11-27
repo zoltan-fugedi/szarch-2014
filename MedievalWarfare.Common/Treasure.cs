@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     public class Treasure : GameObject
     {
         [DataMember]

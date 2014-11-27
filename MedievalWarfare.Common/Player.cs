@@ -1,6 +1,7 @@
 ﻿using MedievalWarfare.Common.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -8,15 +9,28 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common
 {
-    
-    [DataContract]
-    public class Player
+
+    [DataContract(IsReference = true)]
+    public class Player : INotifyPropertyChanged
     {
         [DataMember]
         public Guid PlayerId { get; set; }
 
+        int gold;
+        
+        
         [DataMember]
-        public int Gold { get; set; }
+        public int Gold
+        {
+            get { return gold; }
+
+            set
+            {
+                gold = value;
+                OnPropertyChanged("Gold");
+            }
+        }
+
 
         [DataMember]
         public bool Neutral { get; set; }
@@ -30,7 +44,7 @@ namespace MedievalWarfare.Common
             Gold = ConstantValues.InitialGold;
             Neutral = false;
         }
-        
+
         public Player(int gold)
         {
             PlayerId = Guid.NewGuid();
@@ -58,6 +72,17 @@ namespace MedievalWarfare.Common
             Gold = gold;
             Neutral = neut;
             Name = name;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string p)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(p));
+            }
         }
     }
 }

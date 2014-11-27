@@ -17,6 +17,7 @@ using MedievalWarfare.Client.Proxy;
 using MedievalWarfare.Common;
 using System.ComponentModel;
 using MedievalWarfare.Common.Utility;
+using System.Globalization;
 
 
 namespace MedievalWarfare.Client
@@ -25,30 +26,10 @@ namespace MedievalWarfare.Client
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [CallbackBehavior(UseSynchronizationContext = false)]
-    public partial class MainWindow : Window, Proxy.IServerMethodsCallback, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
 
-        private Proxy.ServerMethodsClient proxy;
-        private aHexMap myMap;
-        private Game game;
-        private String _message;
-        public Player Player { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-        public String Message
-        {
-            get
-            {
-                return _message;
-            }
-            set
-            {
-                if (value != _message)
-                {
-                    _message = value;
-                    OnPropertyChanged("Message");
-                }
-            }
-        }
+        public ClientLogic Logic { get; set; }
 
         /// <summary>
         /// 
@@ -56,64 +37,16 @@ namespace MedievalWarfare.Client
         /// </summary>
         public MainWindow()
         {
+            
             InitializeComponent();
             DataContext = this;
-            proxy = new ServerMethodsClient(new InstanceContext(this));
-            Player = new Player();
-            game = new Game();
-            Message = "Connect to the Server via the Main Menu";
-            proxy.Open();
+            Logic = new ClientLogic(this);
 
         }
 
+  
 
-        public bool MoveUnit(Tile dest, Unit unit)
-        {
-            return game.Map.MoveUnit(game.GetPlayer(Player.PlayerId), unit, dest.X, dest.Y);
-        }
-
-        #region Communication methods
-
-        /// <summary>
-        /// 
-        /// 
-        /// </summary>
-        /// <param name="result"></param>
-        public void ActionResult(Command command, bool result, string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void StartTurn()
-        {
-            //TODO reset movements
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// 
-        /// </summary>
-        /// <param name="cmd"></param>
-        public void Update(Common.Utility.Command cmd)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// 
-        /// </summary>
-        /// <param name="winner"></param>
-        public void EndGame(bool winner)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-
-        #region private methods
+        #region Event Handlers
 
         /// <summary>
         /// 
@@ -123,6 +56,7 @@ namespace MedievalWarfare.Client
         /// <param name="e"></param>
         private void menu_exit_Click(object sender, RoutedEventArgs e)
         {
+            Logic.Exit();
             this.Close();
         }
 
@@ -132,33 +66,199 @@ namespace MedievalWarfare.Client
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void menu_connect_Click(object sender, RoutedEventArgs e)
+        private void menu_connect_Click(object sender, RoutedEventArgs e)
         {
-            await proxy.JoinAsync(Player);
-            game = await proxy.GetGameStateAsync();
-
-            myMap = new aHexMap(mapScroller, game.Map, mapCanvas, this);
-            mapCanvas.Children.Add(myMap);
-            if (myMap != null)
-            {
-                myMap.drawMap(Player);
-
-            }
-            Message = "Connected To server";
+            Logic.ConnectToServer();
         }
 
-        private void OnPropertyChanged(string p)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(p));
-            }
-        }
+        
 
         #endregion
 
+        private void AddBuilding_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
 
+        private void AddUnit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EndTurn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
+    public class UnitDataVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            Selection enumVal = (Selection)Enum.Parse(typeof(Selection), value.ToString());
+            switch (enumVal)
+            {
+                case Selection.None:
+                    return Visibility.Hidden;
+                   
+                case Selection.FUnit:
+                    return Visibility.Visible;
+                    
+                case Selection.FBuilding:
+                    return Visibility.Hidden;
+                    
+                case Selection.EUnit:
+                    return Visibility.Visible;
+                  
+                case Selection.EBuilding:
+                    return Visibility.Hidden;
+                 
+                default:
+                    return Visibility.Hidden;
+            }      
+
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
+
+    public class AddBuildingVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            Selection enumVal = (Selection)Enum.Parse(typeof(Selection), value.ToString());
+            switch (enumVal)
+            {
+                case Selection.None:
+                    return Visibility.Hidden;
+
+                case Selection.FUnit:
+                    return Visibility.Visible;
+
+                case Selection.FBuilding:
+                    return Visibility.Hidden;
+
+                case Selection.EUnit:
+                    return Visibility.Hidden;
+
+                case Selection.EBuilding:
+                    return Visibility.Hidden;
+
+                default:
+                    return Visibility.Hidden;
+            } 
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
+    public class BuildingDataVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            Selection enumVal = (Selection)Enum.Parse(typeof(Selection), value.ToString());
+            switch (enumVal)
+            {
+                case Selection.None:
+                    return Visibility.Hidden;
+
+                case Selection.FUnit:
+                    return Visibility.Hidden;
+
+                case Selection.FBuilding:
+                    return Visibility.Visible;
+
+                case Selection.EUnit:
+                    return Visibility.Hidden;
+
+                case Selection.EBuilding:
+                    return Visibility.Visible;
+
+                default:
+                    return Visibility.Hidden;
+            } 
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
+
+    public class AddUnitDataVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            Selection enumVal = (Selection)Enum.Parse(typeof(Selection), value.ToString());
+            switch (enumVal)
+            {
+                case Selection.None:
+                    return Visibility.Hidden;
+
+                case Selection.FUnit:
+                    return Visibility.Hidden;
+
+                case Selection.FBuilding:
+                    return Visibility.Visible;
+
+                case Selection.EUnit:
+                    return Visibility.Hidden;
+
+                case Selection.EBuilding:
+                    return Visibility.Hidden;
+
+                default:
+                    return Visibility.Hidden;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
+
+    public class SidePanelVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            GameStates enumVal = (GameStates)Enum.Parse(typeof(GameStates), value.ToString());
+            switch (enumVal)
+            {
+                case GameStates.Init:
+                    return Visibility.Hidden;
+                case GameStates.Connected:
+                    return Visibility.Hidden;
+                case GameStates.TurnStarted:
+                    return Visibility.Visible;
+                case GameStates.TurnEnded:
+                    return Visibility.Hidden;
+                case GameStates.Victory:
+                    return Visibility.Hidden;
+                case GameStates.Defeat:
+                    return Visibility.Hidden;
+                default:
+                    return Visibility.Hidden;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return null;
+        }
     }
 }

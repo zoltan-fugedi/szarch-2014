@@ -5,14 +5,15 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using MedievalWarfare.Common.Utility;
+using System.ComponentModel;
 
 namespace MedievalWarfare.Common
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     [KnownType(typeof(Building))]
     [KnownType(typeof(Unit))]
     [KnownType(typeof(Treasure))]
-    public class GameObject
+    public class GameObject : INotifyPropertyChanged
     {
         [DataMember]
         public Guid Id { get; set; }
@@ -20,6 +21,17 @@ namespace MedievalWarfare.Common
         public Player Owner { get; set; }
         [DataMember]
         public Tile Tile { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string p)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(p));
+            }
+        }
 
     }
 }

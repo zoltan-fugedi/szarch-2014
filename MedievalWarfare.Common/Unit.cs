@@ -8,13 +8,37 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     public class Unit : GameObject
     {
+
+        int movement;
+        
+        
         [DataMember]
-        public int Movement { get; set; }
+        public int Movement {
+            get { return movement; }
+
+            set
+            {
+                movement = value;
+                OnPropertyChanged("Movement");
+            }
+        }
+
+
+        int strength;
+        
         [DataMember]
-        public int Strength { get; set; }
+        public int Strength {
+            get { return strength; }
+
+            set
+            {
+                strength = value;
+                OnPropertyChanged("Strength");
+            } 
+        }
 
         public Unit(int movement, int strength, Tile tile)
         {

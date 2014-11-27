@@ -8,11 +8,22 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Common
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     public class Building : GameObject
     {
+        int population;
+        
         [DataMember]
-        public int Population { get; set; }
+        public int Population
+        {
+            get { return population; }
+
+            set
+            {
+                population = value;
+                OnPropertyChanged("Population");
+            }
+        }
         public Building(Tile tile)
         {
             Id = Guid.NewGuid();

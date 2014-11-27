@@ -42,7 +42,10 @@ namespace MedievalWarfare.WcfLib
                 if (callbackList.TryAdd(info.PlayerId, registeredUser))
                 {
                     currentGame.AddPlayer(info);
-                    currentGame.Map.AddNewPlayerObjects(2, 2, info);
+                    if (gameStateController.CurreState == GameState.GameState.State.PlayerOneJoined) 
+                        currentGame.Map.AddNewPlayerObjects(6, 6, info);
+                    else
+                        currentGame.Map.AddNewPlayerObjects(2, 2, info);
                     gameStateController.CurrentPlayer = info;
                     gameStateController.NextState();
                 }
@@ -84,7 +87,7 @@ namespace MedievalWarfare.WcfLib
                 ((gameStateController.CurreState == GameState.GameState.State.PlayerOneTurn) || (gameStateController.CurreState == GameState.GameState.State.PlayerTwoTurn)))
             {
                 gameStateController.CurrentPlayerTurnEnded = true;
-                // TODO do shits
+                currentGame.EndPlayerTurn(currentGame.GetPlayer(info.PlayerId));
                 gameStateController.NextState();
                 callbackList[gameStateController.CurrentPlayer.PlayerId].StartTurn();
             }
@@ -99,7 +102,7 @@ namespace MedievalWarfare.WcfLib
             if (command is MoveUnit)
             {
                 var cmd = command as MoveUnit;
-                success = currentGame.Map.MoveUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.X);
+                success = currentGame.Map.MoveUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.Y);
                 if (!success)
                 {
                     callbackList[curretPlayerId].ActionResult(command, false);

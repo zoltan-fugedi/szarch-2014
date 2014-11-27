@@ -14,17 +14,15 @@ using System.Windows.Shapes;
 
 namespace MedievalWarfare.Client
 {
-    class aHexMap : FrameworkElement
+    public class aHexMap : FrameworkElement
     {
         private VisualCollection _children;
-        private Map map;
-        private ScrollViewer myScroller;
-        private Canvas myCanvas;
+
+        private ClientLogic logic;
+        
         private MainWindow window;
 
-        private aHex selectedHex;
-        private aObject selectedObject;
-        private List<aHex> tempHexes;
+        private List<aHex> rangeIndicator;
 
         const int scroll_by = 1;
 
@@ -32,29 +30,27 @@ namespace MedievalWarfare.Client
         private Boolean isDragging = false;
 
 
-        public aHexMap(ScrollViewer scroller, Map map, Canvas canvas, MainWindow window)
+        public aHexMap(ClientLogic logic, MainWindow window)
         {
-            this.map = map;
-            myScroller = scroller;
-            myCanvas = canvas;
+            this.logic = logic;
             this.window = window;
+
             _children = new VisualCollection(this);
-            tempHexes = new List<aHex>();
-
-
+            rangeIndicator = new List<aHex>();
             drawBackground();
-
             this.PreviewMouseUp += mouseClicked;
             this.PreviewMouseDown += mouseDown;
             this.PreviewMouseUp += mouseUp;
             this.PreviewMouseMove += mouseMoved;
         }
 
+        #region Visualization
+
         private void drawBackground()
         {
             // Make Sure that height/width is set to external image dimensions.
-            double width = myCanvas.ActualWidth;
-            double height = myCanvas.ActualHeight;
+            double width = window.mapCanvas.ActualWidth;
+            double height = window.mapCanvas.ActualHeight;
 
             DrawingVisual mapBitmap = new DrawingVisual();
             using (DrawingContext dc = mapBitmap.RenderOpen())
@@ -68,6 +64,7 @@ namespace MedievalWarfare.Client
         {
             _children.Clear();
             drawBackground();
+            var map = logic.Game.Map;
             var visible = map.visibleTiles(p);
             foreach (var tile in map.TileList)
             {
@@ -177,6 +174,36 @@ namespace MedievalWarfare.Client
             float y_adjust = (fHeight * 0.5f) * (col % 2);
             y_off = (int)(fRow * (fHeight + fGap) + y_adjust);
         }
+
+        public void drawRangeIndicator(GameObject obj) 
+        {
+            var map = logic.Game.Map;
+            var tiles = map.GetTilesInRange(obj.Tile, ((Unit)obj).Movement);
+            foreach (var tile in tiles)
+            {
+                int x_off, y_off;
+                computeHexOffsets(tile.X, tile.Y, out x_off, out y_off);
+                var tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
+                    ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.LightGreen, tile);
+                tmpHex.Opacity = 0.5;
+                _children.Add(tmpHex);
+                rangeIndicator.Add(tmpHex);
+            }
+        }
+
+        public void removeRangeIndicator()
+        {
+            foreach (var item in rangeIndicator)
+            {
+                _children.Remove(item);
+            }
+            rangeIndicator.Clear();
+        }
+        
+        #endregion
+        
+        
+        #region Selection and Scroll
         private void mouseClicked(object sender, MouseButtonEventArgs e)
         {
             Point pt = e.GetPosition((UIElement)sender);
@@ -187,7 +214,7 @@ namespace MedievalWarfare.Client
         }
         void mouseDown(object sender, MouseEventArgs e)
         {
-            mouse_start = e.GetPosition(myScroller);
+            mouse_start = e.GetPosition(window.mapScroller);
             e.Handled = true;
         }
         void mouseMoved(object sender, MouseEventArgs e)
@@ -196,7 +223,7 @@ namespace MedievalWarfare.Client
             {
                 isDragging = true;
                 scroll_map(e);
-                mouse_start = e.GetPosition(myScroller);
+                mouse_start = e.GetPosition(window.mapScroller);
             }
             e.Handled = true;
         }
@@ -207,12 +234,14 @@ namespace MedievalWarfare.Client
         }
         void scroll_map(MouseEventArgs e)
         {
-            Point mouse_cur = e.GetPosition(myScroller);
+            Point mouse_cur = e.GetPosition(window.mapScroller);
             double x_diff = mouse_start.X - mouse_cur.X;
             double y_diff = mouse_start.Y - mouse_cur.Y;
-            myScroller.ScrollToHorizontalOffset(myScroller.HorizontalOffset + x_diff);
-            myScroller.ScrollToVerticalOffset(myScroller.VerticalOffset + y_diff);
+            window.mapScroller.ScrollToHorizontalOffset(window.mapScroller.HorizontalOffset + x_diff);
+            window.mapScroller.ScrollToVerticalOffset(window.mapScroller.VerticalOffset + y_diff);
         }
+        
+        
         public HitTestResultBehavior someHexClicked(HitTestResult ht)
         {
             // ignore clicking on a hex if map is being dragged.
@@ -220,101 +249,28 @@ namespace MedievalWarfare.Client
                 return HitTestResultBehavior.Stop;
 
             aObject obj = ht.VisualHit as aObject;
-            if (obj != null && obj.GameObject is Unit)
+            if (obj != null)
             {
-                //deselect
-                if (selectedObject != null && obj.Equals(selectedObject))
-                {
-                    updateObject(selectedObject);
-                    selectedObject = null;
-                    foreach (var item in tempHexes)
-                    {
-                        _children.Remove(item);
-                    }
-                    tempHexes.Clear();
-
-                }
-                else
-                {
-                    //reselect
-                    if (selectedObject != null)
-                    {
-                        updateObject(selectedObject);
-                        foreach (var item in tempHexes)
-                        {
-                            _children.Remove(item);
-                        }
-                        tempHexes.Clear();
-                        selectedObject = obj;
-                        updateObject(selectedObject);
-                        if (obj.GameObject.Owner.PlayerId == window.Player.PlayerId)
-                        {
-                            var tiles = map.GetTilesInRange(obj.GameObject.Tile, ((Unit)obj.GameObject).Movement);
-                            foreach (var tile in tiles)
-                            {
-                                int x_off, y_off;
-                                computeHexOffsets(tile.X, tile.Y, out x_off, out y_off);
-                                var tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
-                                    ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.LightGreen, tile);
-                                tmpHex.Opacity = 0.5;
-                                _children.Add(tmpHex);
-                                tempHexes.Add(tmpHex);
-                            }
-                        }
-
-                    }
-                    //select
-                    else
-                    {
-                        selectedObject = obj;
-                        updateObject(selectedObject);
-                        if (obj.GameObject.Owner.PlayerId == window.Player.PlayerId)
-                        {
-                            var tiles = map.GetTilesInRange(obj.GameObject.Tile, ((Unit)obj.GameObject).Movement);
-                            foreach (var tile in tiles)
-                            {
-                                int x_off, y_off;
-                                computeHexOffsets(tile.X, tile.Y, out x_off, out y_off);
-                                var tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
-                                    ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.LightGreen, tile);
-                                tmpHex.Opacity = 0.5;
-                                _children.Add(tmpHex);
-                                tempHexes.Add(tmpHex);
-                            }
-                        }
-
-
-                    }
-                }
-
+                logic.ManageObjectSelection(obj);
                 return HitTestResultBehavior.Stop;
             }
 
             // use casting to determine if click was on hex or map.
             aHex hex = ht.VisualHit as aHex;
-            if (hex != null && selectedObject != null)
+            if (hex != null)
             {
-                var tile = hex.Tile;
-                Unit go = (Unit)selectedObject.GameObject;
-                selectedObject = null;
-                selectedHex = null;
-                if (go.Owner.PlayerId == window.Player.PlayerId)
-                    window.MoveUnit(tile, go);
-
-                drawMap(go.Owner);
-
-
-
-
+                logic.ManageTileSelection(hex);
             }
             return HitTestResultBehavior.Stop;
         }
-        private void updateHex(aHex hex)
+        #endregion
+
+        public void updateHex(aHex hex)
         {
             hex.Opacity = (hex.Opacity < 0.9f) ? 1.0f : 0.5f;
         }
 
-        private void updateObject(aObject obj)
+        public void updateObject(aObject obj)
         {
             obj.Opacity = (obj.Opacity < 0.9f) ? 1.0f : 0.5f;
 
