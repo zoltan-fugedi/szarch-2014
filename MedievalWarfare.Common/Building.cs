@@ -30,5 +30,11 @@ namespace MedievalWarfare.Common
             Population = 0;
             Tile = tile;
         }
+
+        public Building()
+        {
+            Id = Guid.NewGuid();
+            Population = 0;
+        }
     }
 }

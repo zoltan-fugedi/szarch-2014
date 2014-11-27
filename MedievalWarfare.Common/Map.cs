@@ -252,17 +252,19 @@ namespace MedievalWarfare.Common
             if (!initial)
             {
                 // Checking prerequirement
-                if (!this[x, y].ContentList.Any(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId && ((Unit)unit).Movement >= ConstantValues.MovementCost))
+                if (!this[x, y].ContentList.Any(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId
+                                                                        && ((Unit)unit).Movement >= ConstantValues.MovementCost
+                                                                        && ((Unit)unit).Owner.Gold >= ConstantValues.BuildingCost)) 
                 {
                     return false;
                 }
                 ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId)).Movement -= ConstantValues.MovementCost;
                 ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId)).Owner.Gold -= ConstantValues.BuildingCost;
-                buildingId = Guid.NewGuid();
+                buildingId = building.Id;
             }
             else
             {
-                buildingId = building.Id;
+                buildingId = Guid.NewGuid();
             }
 
             var build = new Building(this[x, y]) { Id = buildingId };

@@ -153,6 +153,7 @@ namespace MedievalWarfare.Client
                 var com = new ConstructBuilding();
                 com.Player = Player;
                 com.Position = selectedUnit.Tile;
+                com.Building = new Building();
                 proxy.UpdateMapAsync(com);
                 SelectedObject = null;
                 Selection = Selection.None;
@@ -296,7 +297,7 @@ namespace MedievalWarfare.Client
             if (command is ConstructBuilding)
             {
                 var cmd = command as ConstructBuilding;
-                var clientresult = Game.Map.AddBuilding(Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
+                var clientresult = Game.Map.AddBuilding(cmd.Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
                 if (!clientresult)
                 {
                     Game = proxy.GetGameState();
