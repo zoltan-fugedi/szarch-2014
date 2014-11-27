@@ -51,12 +51,13 @@ namespace MedievalWarfare.WcfLib
                     gameStateController.NextState();
                 }
 
-                if (gameStateController.CurreState == GameState.GameState.State.GameStart)
+                if (gameStateController.CurreState == GameState.GameState.State.PlayerTwoJoined)
                 {
                     callbackList[gameStateController.PlayerOne.PlayerId].StartGame(currentGame, true);
-                    callbackList[gameStateController.PlayerOne.PlayerId].StartGame(currentGame, false);
+                    callbackList[gameStateController.PlayerTwo.PlayerId].StartGame(currentGame, false);
                     gameStateController.NextState();
-                    callbackList[gameStateController.CurrentPlayer.PlayerId].StartTurn();
+                    callbackList[gameStateController.PlayerOne.PlayerId].StartTurn();
+                    gameStateController.NextState();
                 }
 
             }
