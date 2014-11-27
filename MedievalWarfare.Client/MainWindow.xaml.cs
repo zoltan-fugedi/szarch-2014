@@ -60,6 +60,13 @@ namespace MedievalWarfare.Client
             this.Close();
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            Logic.Exit();
+            base.OnClosed(e);
+
+        }
+
         /// <summary>
         /// 
         /// 
@@ -70,10 +77,6 @@ namespace MedievalWarfare.Client
         {
             Logic.ConnectToServer();
         }
-
-        
-
-        #endregion
 
         private void AddBuilding_Click(object sender, RoutedEventArgs e)
         {
@@ -89,6 +92,10 @@ namespace MedievalWarfare.Client
         {
             Logic.EndTurn();
         }
+
+        #endregion
+
+        
     }
     public class UnitDataVisibilityConverter : IValueConverter
     {

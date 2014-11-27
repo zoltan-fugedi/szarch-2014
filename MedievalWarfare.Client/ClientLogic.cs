@@ -145,8 +145,19 @@ namespace MedievalWarfare.Client
         }
 
         public void CreateBuilding() 
-        { 
-            
+        {
+            if (Selection == Selection.FUnit) 
+            {
+                
+                var com = new ConstructBuilding();
+                com.Player = Player;
+                com.Position = selectedUnit.Tile;
+                proxy.UpdateMapAsync(com);
+                SelectedObject = null;
+                Selection = Selection.None;
+                MyMap.removeRangeIndicator();
+                WaitingForReply = true;
+            }
         }
      
         public void CreateUnit()
@@ -160,6 +171,9 @@ namespace MedievalWarfare.Client
             com.Position = dest;
             com.Unit = unit;
             proxy.UpdateMapAsync(com);
+            SelectedObject = null;
+            Selection = Selection.None;
+            MyMap.removeRangeIndicator();
             WaitingForReply = true;
 
         }
@@ -198,7 +212,26 @@ namespace MedievalWarfare.Client
                 {
                     if (command is MoveUnit)
                     {
-                        Game.Map.MoveUnit(command.Player, ((MoveUnit)command).Unit, ((MoveUnit)command).Position.X, ((MoveUnit)command).Position.Y);
+                        var clientresult = Game.Map.MoveUnit(command.Player, ((MoveUnit)command).Unit, ((MoveUnit)command).Position.X, ((MoveUnit)command).Position.Y);
+                        if (!clientresult)
+                        {
+                            Game = proxy.GetGameState();
+                            MyMap = new aHexMap(this, window);
+                            window.mapCanvas.Children.Add(MyMap);
+                        }
+                        MyMap.drawMap(Player);
+                        WaitingForReply = false;
+                        Message = "Successful move";
+                    }
+                    if (command is ConstructBuilding) 
+                    {
+                        var clientresult = Game.Map.AddBuilding(((ConstructBuilding)command).Position.X, ((ConstructBuilding)command).Position.Y, Player, false);
+                        if (!clientresult)
+                        {
+                            Game = proxy.GetGameState();
+                            MyMap = new aHexMap(this, window);
+                            window.mapCanvas.Children.Add(MyMap);
+                        }
                         MyMap.drawMap(Player);
                         WaitingForReply = false;
                         Message = "Successful move";
@@ -251,8 +284,22 @@ namespace MedievalWarfare.Client
                     if (!result) 
                     {
                         Game = proxy.GetGameState();
+                        MyMap = new aHexMap(this, window);
+                        window.mapCanvas.Children.Add(MyMap);
                     }
                     MyMap.drawMap(Player);
+                }
+                if (command is ConstructBuilding)
+                {
+                    var clientresult = Game.Map.AddBuilding(((ConstructBuilding)command).Position.X, ((ConstructBuilding)command).Position.Y, command.Player, false);
+                    if (!clientresult)
+                    {
+                        Game = proxy.GetGameState();
+                        MyMap = new aHexMap(this, window);
+                        window.mapCanvas.Children.Add(MyMap);
+                    }
+                    MyMap.drawMap(Player);
+              
                 }
                 Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
                 ClientState = GameStates.TurnEnded;
@@ -268,9 +315,11 @@ namespace MedievalWarfare.Client
             {
                 case true :
                     ClientState = GameStates.Victory;
+                    Message = "You're Winner";
                     break;
                 case false :
                     ClientState = GameStates.Defeat;
+                    Message = "Defeat";
                     break;
                 default:
                     break;
