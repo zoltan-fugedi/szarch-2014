@@ -77,17 +77,17 @@ namespace MedievalWarfare.Client
 
         private void AddBuilding_Click(object sender, RoutedEventArgs e)
         {
-
+            Logic.CreateBuilding();
         }
 
         private void AddUnit_Click(object sender, RoutedEventArgs e)
         {
-
+            Logic.CreateUnit();
         }
 
         private void EndTurn_Click(object sender, RoutedEventArgs e)
         {
-
+            Logic.EndTurn();
         }
     }
     public class UnitDataVisibilityConverter : IValueConverter

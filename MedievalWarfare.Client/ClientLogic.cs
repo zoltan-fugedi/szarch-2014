@@ -133,19 +133,13 @@ namespace MedievalWarfare.Client
         #region Communication: Client --> Server
 
 
-        public async void ConnectToServer() 
+        public void ConnectToServer() 
         {
             if (ClientState == GameStates.Init) 
             {
                 proxy.Open();
-                await proxy.JoinAsync(Player);
-                Game =  await proxy.GetGameStateAsync();
-                Player = Game.GetPlayer(Player.PlayerId);
-                MyMap = new aHexMap(this, window);
-                window.mapCanvas.Children.Add(MyMap);
-                
-                
-                
+                proxy.JoinAsync(Player);
+
                 ClientState = GameStates.Connected;
                 Message = "Connected To server, waiting for other player";
             } 
@@ -217,7 +211,20 @@ namespace MedievalWarfare.Client
 
         public void StartGame(Game game, bool isYourTurn)
         {
-            throw new NotImplementedException();
+            Game = game;
+            Player = Game.GetPlayer(Player.PlayerId);
+            MyMap = new aHexMap(this, window);
+            window.mapCanvas.Children.Add(MyMap);
+            MyMap.drawMap(Player);
+            if (isYourTurn)
+            {
+                ClientState = GameStates.TurnStarted;
+                Message = "It is your turn to move";
+            }else
+	        {
+                ClientState = GameStates.TurnEnded;
+                Message = "The Other player is moving";
+	        }
         }
         
         public void StartTurn()
