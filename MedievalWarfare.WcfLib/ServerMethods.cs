@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using MedievalWarfare.Common;
 using MedievalWarfare.Common.Utility;
+using MedievalWarfare.WcfLib.Debug;
 using MedievalWarfare.WcfLib.GameState;
 
 namespace MedievalWarfare.WcfLib
@@ -16,10 +17,9 @@ namespace MedievalWarfare.WcfLib
     {
         // Change to dict to easy access to each user
         private ConcurrentDictionary<Guid, IClientCallback> callbackList;
-
         private Game currentGame;
-
         private GameStateController gameStateController;
+        private DebugHelper debugHelper;
 
         public ServerMethods()
         {
@@ -27,7 +27,7 @@ namespace MedievalWarfare.WcfLib
             currentGame = new Game();
             currentGame.Map.GenerateMap();
             gameStateController = new GameStateController();
-
+            debugHelper = new DebugHelper(gameStateController);
         }
 
         public void Join(Player info)
@@ -44,9 +44,15 @@ namespace MedievalWarfare.WcfLib
                 {
                     currentGame.AddPlayer(info);
                     if (gameStateController.CurreState == GameState.GameState.State.PlayerOneJoined)
+                    {
                         currentGame.Map.AddNewPlayerObjects(6, 6, info);
+                        Console.WriteLine(string.Format("Player Two joined!"));
+                    }
                     else
+                    {
                         currentGame.Map.AddNewPlayerObjects(2, 2, info);
+                        Console.WriteLine(string.Format("Player One joined!"));
+                    }
                     gameStateController.CurrentPlayer = info;
                     gameStateController.NextState();
                 }
@@ -58,6 +64,8 @@ namespace MedievalWarfare.WcfLib
                     gameStateController.NextState();
                     callbackList[gameStateController.PlayerOne.PlayerId].StartTurn();
                     gameStateController.NextState();
+                    Console.WriteLine(string.Format("Player One Turn!"));
+
                 }
 
             }
@@ -89,10 +97,12 @@ namespace MedievalWarfare.WcfLib
             if (gameStateController.CurrentPlayer.PlayerId == info.PlayerId &&
                 ((gameStateController.CurreState == GameState.GameState.State.PlayerOneTurn) || (gameStateController.CurreState == GameState.GameState.State.PlayerTwoTurn)))
             {
-                gameStateController.CurrentPlayerTurnEnded = true;
+                Console.WriteLine(string.Format("{0} is ended the turn!", debugHelper.GetPlayerName(info)));
                 currentGame.EndPlayerTurn(info);
                 gameStateController.NextState();
                 callbackList[gameStateController.CurrentPlayer.PlayerId].StartTurn();
+                Console.WriteLine(string.Format("{0} is started the turn!", debugHelper.GetPlayerName(gameStateController.CurrentPlayer)));
+
             }
 
         }
@@ -101,18 +111,19 @@ namespace MedievalWarfare.WcfLib
         {
             bool success = false;
             var curretPlayerId = command.Player.PlayerId;
-
             if (command is MoveUnit)
             {
                 var cmd = command as MoveUnit;
+                var moveingUnit = currentGame.Map.ObjectList.Single(unit => unit.Id == cmd.Unit.Id) as Unit;
+                Console.WriteLine(string.Format("{0} is moving unit to X:{1} Y:{2}. Unit movement: {3}", debugHelper.GetPlayerName(command.Player), cmd.Position.X, cmd.Position.Y, moveingUnit.Movement));
+
                 success = currentGame.Map.MoveUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.Y);
                 if (!success)
                 {
                     callbackList[curretPlayerId].ActionResult(command, false);
                     return;
                 }
-
-
+                Console.WriteLine(string.Format("{0} is moving unit remaining movement: {1}", debugHelper.GetPlayerName(command.Player), moveingUnit.Movement));
             }
 
             callbackList[curretPlayerId].ActionResult(command, true);
@@ -123,9 +134,11 @@ namespace MedievalWarfare.WcfLib
             {
                 case GameState.GameState.State.PlayerOneTurn:
                     callbackList[gameStateController.PlayerTwo.PlayerId].Update(command);
+                    Console.WriteLine(string.Format("{0} is Updated!", debugHelper.GetPlayerName(gameStateController.PlayerTwo)));
                     break;
                 case GameState.GameState.State.PlayerTwoTurn:
                     callbackList[gameStateController.PlayerOne.PlayerId].Update(command);
+                    Console.WriteLine(string.Format("{0} is Updated!", debugHelper.GetPlayerName(gameStateController.PlayerOne)));
                     break;
             }
         }
