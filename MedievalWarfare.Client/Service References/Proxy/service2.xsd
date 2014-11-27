@@ -74,6 +74,7 @@
   <xs:element name="StartGame">
     <xs:complexType>
       <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="game" nillable="true" type="q7:Game" />
         <xs:element minOccurs="0" name="isYourTurn" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
@@ -86,7 +87,7 @@
   <xs:element name="Update">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="command" nillable="true" type="q7:Command" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="command" nillable="true" type="q8:Command" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

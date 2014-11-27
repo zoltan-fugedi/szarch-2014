@@ -17,7 +17,7 @@ namespace MedievalWarfare.WcfLib
         void ActionResult(Command command, bool result, string msg = null);
 
         [OperationContract(IsOneWay = true)]
-        void StartGame(bool isYourTurn);
+        void StartGame(Game game,bool isYourTurn);
         
         [OperationContract(IsOneWay = true)]
         void StartTurn();
