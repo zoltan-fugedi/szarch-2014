@@ -86,7 +86,7 @@ namespace MedievalWarfare.Common
                 List<Tile> temp = new List<Tile>();
                 foreach (var tile in temptiles)
                 {
-                    if (!tile.isVisited) 
+                    if (!tile.isVisited)
                     {
                         var neighbours = tile.Neighbours;
                         foreach (var nb in neighbours)
@@ -94,12 +94,12 @@ namespace MedievalWarfare.Common
                             if (!temp.Contains(nb.Value))
                             {
                                 temp.Add(nb.Value);
-                                
+
                             }
                         }
                         tile.isVisited = true;
                     }
-                    
+
                 }
 
                 foreach (var tile in temp)
@@ -191,8 +191,8 @@ namespace MedievalWarfare.Common
 
         public void AddNeutCamp(int x, int y, Player neut)
         {
-            AddUnit(x,y,neut);
-            AddTreasure(x,y,neut);
+            AddUnit(x, y, neut);
+            AddTreasure(x, y, neut);
         }
 
         public void AddMountain(int x, int y, int radius)
@@ -213,7 +213,7 @@ namespace MedievalWarfare.Common
             foreach (var tile in temptiles)
             {
                 tile.Type = TileType.Forest;
-                
+
             }
         }
         public void AddWater(int x, int y, int radius)
@@ -231,7 +231,7 @@ namespace MedievalWarfare.Common
         {
             if (y > (MaxY / 2) && x > (MaxX / 2))
             {
-                AddBuilding(x, y, owner,true);
+                AddBuilding(x, y, owner, true);
                 AddUnit(x - 1, y - 1, owner);
             }
             else
@@ -261,14 +261,17 @@ namespace MedievalWarfare.Common
             build.Owner = owner;
             this.ObjectList.Add(build);
             this[x, y].ContentList.Add(build);
+
+            ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId)).Movement -= ConstantValues.MovementCost;
+            ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit) unit).Owner.PlayerId == owner.PlayerId)).Owner.Gold -= ConstantValues.BuildingCost;
             return true;
 
         }
 
         public void RemoveBuilding(int x, int y, Building building)
         {
-                this.ObjectList.Remove(building);
-                this[x, y].ContentList.Remove(building);
+            this.ObjectList.Remove(building);
+            this[x, y].ContentList.Remove(building);
         }
 
 
@@ -294,7 +297,7 @@ namespace MedievalWarfare.Common
         {
             // TODO check there can be train
             Unit unit = null;
-            if (owner.Neutral) 
+            if (owner.Neutral)
             {
                 unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseNeutStr, this[x, y]);
             }
@@ -302,7 +305,7 @@ namespace MedievalWarfare.Common
             {
                 unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr, this[x, y]);
             }
-            
+
             unit.Owner = owner;
             var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Owner.Equals(owner)));
             if (contents.Count() != 0)
@@ -337,7 +340,7 @@ namespace MedievalWarfare.Common
 
         public bool MoveUnit(Player owner, Unit unit, int destX, int destY)
         {
-            
+
             var dest = this[destX, destY];
             var start = this[unit.Tile.X, unit.Tile.Y];
             var unitowner = this.Game.GetPlayer(owner.PlayerId);
@@ -346,15 +349,15 @@ namespace MedievalWarfare.Common
 
 
             var tilesInRange = GetTilesInRange(start, unittomove.Movement);
-            if (!(unittomove.Owner.PlayerId == owner.PlayerId)) 
-            {
-                return false; 
-            }
-            if(!tilesInRange.Contains(dest))
+            if (!(unittomove.Owner.PlayerId == owner.PlayerId))
             {
                 return false;
             }
-            if (!dest.traversable) 
+            if (!tilesInRange.Contains(dest))
+            {
+                return false;
+            }
+            if (!dest.traversable)
             {
                 return false;
             }
@@ -371,7 +374,7 @@ namespace MedievalWarfare.Common
                     movementcost = i;
                     break;
                 }
-                    
+
             }
             //if it is not in range
             if (movementcost == 0)
@@ -387,7 +390,7 @@ namespace MedievalWarfare.Common
             var treasures = dest.ContentList.Where(og => og is Treasure && og.Owner.PlayerId != owner.PlayerId && og.Owner.Neutral);
             //enemy buildings at dest
             var enemyBuildings = dest.ContentList.Where(og => og is Building && og.Owner.PlayerId != owner.PlayerId && !og.Owner.Neutral);
-  
+
 
             //Normal move
             if (treasures.Count() == 0 && enemyUnits.Count() == 0 && neutralUnits.Count() == 0 && friendlyUnits.Count() == 0 && enemyBuildings.Count() == 0)
@@ -405,7 +408,7 @@ namespace MedievalWarfare.Common
             if (treasures.Count() == 0 && enemyUnits.Count() == 0 && neutralUnits.Count() == 0 && friendlyUnits.Count() > 0 && enemyBuildings.Count() == 0)
             {
                 start.ContentList.Remove(unittomove);
-                
+
                 var destUnit = friendlyUnits.ToList()[0];
                 ((Unit)destUnit).Strength += unittomove.Strength;
                 ((Unit)destUnit).Movement = 0;
@@ -435,7 +438,7 @@ namespace MedievalWarfare.Common
 
                 start.ContentList.Remove(unittomove);
                 //attacker wins
-                if (unittomove.Strength > enemyunit.Strength) 
+                if (unittomove.Strength > enemyunit.Strength)
                 {
                     unittomove.Strength -= enemyunit.Strength;
                     dest.ContentList.Remove(enemyunit);
@@ -448,7 +451,7 @@ namespace MedievalWarfare.Common
                 else
                 {
                     //defender wins
-                    if (unittomove.Strength < enemyunit.Strength) 
+                    if (unittomove.Strength < enemyunit.Strength)
                     {
                         enemyunit.Strength -= unittomove.Strength;
                         this.ObjectList.Remove(unittomove);
@@ -557,6 +560,6 @@ namespace MedievalWarfare.Common
 
 
         #endregion
-        
+
     }
 }

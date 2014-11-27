@@ -90,7 +90,7 @@ namespace MedievalWarfare.WcfLib
                 ((gameStateController.CurreState == GameState.GameState.State.PlayerOneTurn) || (gameStateController.CurreState == GameState.GameState.State.PlayerTwoTurn)))
             {
                 gameStateController.CurrentPlayerTurnEnded = true;
-                currentGame.EndPlayerTurn(currentGame.GetPlayer(info.PlayerId));
+                currentGame.EndPlayerTurn(info);
                 gameStateController.NextState();
                 callbackList[gameStateController.CurrentPlayer.PlayerId].StartTurn();
             }
