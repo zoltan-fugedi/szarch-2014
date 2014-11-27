@@ -181,13 +181,17 @@ namespace MedievalWarfare.Client
             var tiles = map.GetTilesInRange(obj.Tile, ((Unit)obj).Movement);
             foreach (var tile in tiles)
             {
-                int x_off, y_off;
-                computeHexOffsets(tile.X, tile.Y, out x_off, out y_off);
-                var tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
-                    ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.LightGreen, tile);
-                tmpHex.Opacity = 0.5;
-                _children.Add(tmpHex);
-                rangeIndicator.Add(tmpHex);
+                if (tile.traversable) 
+                {
+                    int x_off, y_off;
+                    computeHexOffsets(tile.X, tile.Y, out x_off, out y_off);
+                    var tmpHex = new aHex(tile.X, tile.Y, x_off, y_off,
+                        ConstantValues.HEX_WIDTH, ConstantValues.HEX_HEIGHT, Brushes.LightGreen, tile);
+                    tmpHex.Opacity = 0.5;
+                    _children.Add(tmpHex);
+                    rangeIndicator.Add(tmpHex);
+                }
+               
             }
         }
 
