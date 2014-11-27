@@ -255,6 +255,8 @@ namespace MedievalWarfare.Common
                 {
                     return false;
                 }
+                ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId)).Movement -= ConstantValues.MovementCost;
+                ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId)).Owner.Gold -= ConstantValues.BuildingCost;
             }
 
             var build = new Building(this[x, y]);
@@ -262,8 +264,7 @@ namespace MedievalWarfare.Common
             this.ObjectList.Add(build);
             this[x, y].ContentList.Add(build);
 
-            ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId)).Movement -= ConstantValues.MovementCost;
-            ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit) unit).Owner.PlayerId == owner.PlayerId)).Owner.Gold -= ConstantValues.BuildingCost;
+            
             return true;
 
         }
