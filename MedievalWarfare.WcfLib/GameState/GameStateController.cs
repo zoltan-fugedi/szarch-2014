@@ -7,7 +7,7 @@ using MedievalWarfare.Common;
 
 namespace MedievalWarfare.WcfLib.GameState
 {
-    class GameStateController
+   public class GameStateController
     {
         public GameState.State CurreState { get; private set; }
 
