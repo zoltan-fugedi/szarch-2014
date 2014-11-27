@@ -157,7 +157,6 @@
     <Resource Include="resources\coin_game.png" />
     <Resource Include="resources\coin_menu.png" />
     <Resource Include="resources\desertHex.gif" />
-    <Resource Include="resources\menu_strength.png" />
     <Resource Include="resources\oreHex.gif" />
     <Resource Include="resources\piece_blue.png" />
     <Resource Include="resources\piece_red.png" />
@@ -179,6 +178,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\train.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\menu_strength.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

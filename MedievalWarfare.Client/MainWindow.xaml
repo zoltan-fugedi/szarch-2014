@@ -68,7 +68,7 @@
             </Grid.ColumnDefinitions>
             <Label  Grid.Column="1" Grid.Row="2" ToolTip="Player gold">
                 <StackPanel>
-                    <Image Source="resources/coin_menu.png" Height="55" />
+                    <Image Source="resources/coin_menu.png" Height="50" />
                 </StackPanel>
             </Label>
             <TextBox Text="{Binding Path=Logic.Player.Gold}" Name="GoldTextBox" Grid.Column="2" Grid.Row="2" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14"></TextBox>
