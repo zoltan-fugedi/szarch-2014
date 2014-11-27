@@ -166,10 +166,12 @@ namespace MedievalWarfare.Client
         }
         public async void EndTurn() 
         {
-            MyMap.updateObject(SelectedObject);
-            SelectedObject = null;
-            Selection = Selection.None;
-            MyMap.removeRangeIndicator();
+            if (Selection != Selection.None) {
+                MyMap.updateObject(SelectedObject);
+                SelectedObject = null;
+                Selection = Selection.None;
+                MyMap.removeRangeIndicator();
+            } 
             await proxy.EndTurnAsync(Player);
             Game.EndPlayerTurn(Game.GetPlayer(Player.PlayerId));
             Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
