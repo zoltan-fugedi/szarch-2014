@@ -135,7 +135,7 @@ namespace MedievalWarfare.WcfLib
 
                 Console.WriteLine(string.Format("{0} is plaving building to X:{1} Y:{2}. Gold before: {3}", _outputHelper.GetPlayerName(command.Player), cmd.Position.X, cmd.Position.Y, command.Player.Gold));
 
-                success = currentGame.Map.AddBuilding(cmd.Position.X, cmd.Position.Y,cmd.Player);
+                success = currentGame.Map.AddBuilding(cmd.Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
                 if (!success)
                 {
                     callbackList[curretPlayerId].ActionResult(command, false);

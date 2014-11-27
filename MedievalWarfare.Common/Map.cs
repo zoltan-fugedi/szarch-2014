@@ -231,12 +231,12 @@ namespace MedievalWarfare.Common
         {
             if (y > (MaxY / 2) && x > (MaxX / 2))
             {
-                AddBuilding(x, y, owner, true);
+                AddBuilding(owner, null,  x, y,  true);
                 AddUnit(x - 1, y - 1, owner);
             }
             else
             {
-                AddBuilding(x, y, owner, true);
+                AddBuilding(owner, null, x, y, true);
                 AddUnit(x + 1, y + 1, owner);
             }
 
@@ -246,8 +246,9 @@ namespace MedievalWarfare.Common
 
         #region Add/RemoveObjects
 
-        public bool AddBuilding(int x, int y, Player owner, bool initial = false)
+        public bool AddBuilding(Player owner, Building building, int x, int y, bool initial = false)
         {
+            Guid buildingId;
             if (!initial)
             {
                 // Checking prerequirement
@@ -257,14 +258,19 @@ namespace MedievalWarfare.Common
                 }
                 ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId)).Movement -= ConstantValues.MovementCost;
                 ((Unit)this[x, y].ContentList.Single(unit => (unit is Unit) && ((Unit)unit).Owner.PlayerId == owner.PlayerId)).Owner.Gold -= ConstantValues.BuildingCost;
+                buildingId = Guid.NewGuid();
+            }
+            else
+            {
+                buildingId = building.Id;
             }
 
-            var build = new Building(this[x, y]);
+            var build = new Building(this[x, y]) { Id = buildingId };
             build.Owner = owner;
             this.ObjectList.Add(build);
             this[x, y].ContentList.Add(build);
 
-            
+
             return true;
 
         }

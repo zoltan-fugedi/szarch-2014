@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace MedievalWarfare.Client
 {
-    public enum GameStates 
-    { 
+    public enum GameStates
+    {
         Init,
         Connected,
         TurnStarted,
@@ -21,8 +21,8 @@ namespace MedievalWarfare.Client
         Defeat
     }
 
-    public enum Selection 
-    { 
+    public enum Selection
+    {
         None,
         FUnit,
         FBuilding,
@@ -105,8 +105,9 @@ namespace MedievalWarfare.Client
 
         public String Message
         {
-            get{ return _message;}
-            set{
+            get { return _message; }
+            set
+            {
                 if (value != _message)
                 {
                     _message = value;
@@ -126,29 +127,29 @@ namespace MedievalWarfare.Client
             ClientState = GameStates.Init;
             this.Selection = Selection.None;
             WaitingForReply = false;
-            
+
         }
 
 
         #region Communication: Client --> Server
 
 
-        public void ConnectToServer() 
+        public void ConnectToServer()
         {
 
-                proxy.Open();
-                proxy.JoinAsync(Player);
+            proxy.Open();
+            proxy.JoinAsync(Player);
 
-                ClientState = GameStates.Connected;
-                Message = "Connected To server, waiting for other player";
-            
+            ClientState = GameStates.Connected;
+            Message = "Connected To server, waiting for other player";
+
         }
 
-        public void CreateBuilding() 
+        public void CreateBuilding()
         {
-            if (Selection == Selection.FUnit) 
+            if (Selection == Selection.FUnit)
             {
-                
+
                 var com = new ConstructBuilding();
                 com.Player = Player;
                 com.Position = selectedUnit.Tile;
@@ -159,7 +160,7 @@ namespace MedievalWarfare.Client
                 WaitingForReply = true;
             }
         }
-     
+
         public void CreateUnit()
         {
 
@@ -177,14 +178,15 @@ namespace MedievalWarfare.Client
             WaitingForReply = true;
 
         }
-        public async void EndTurn() 
+        public async void EndTurn()
         {
-            if (Selection != Selection.None) {
+            if (Selection != Selection.None)
+            {
                 MyMap.updateObject(SelectedObject);
                 SelectedObject = null;
                 Selection = Selection.None;
                 MyMap.removeRangeIndicator();
-            } 
+            }
             await proxy.EndTurnAsync(Player);
             Game.EndPlayerTurn(Game.GetPlayer(Player.PlayerId));
             Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
@@ -198,7 +200,7 @@ namespace MedievalWarfare.Client
             await proxy.LeaveAsync(Player);
         }
 
-        
+
 
         #endregion
 
@@ -206,9 +208,9 @@ namespace MedievalWarfare.Client
 
         public void ActionResult(Common.Utility.Command command, bool result, string msg)
         {
-            if (WaitingForReply) 
+            if (WaitingForReply)
             {
-                if (result) 
+                if (result)
                 {
                     if (command is MoveUnit)
                     {
@@ -223,9 +225,10 @@ namespace MedievalWarfare.Client
                         WaitingForReply = false;
                         Message = "Successful move";
                     }
-                    if (command is ConstructBuilding) 
+                    if (command is ConstructBuilding)
                     {
-                        var clientresult = Game.Map.AddBuilding(((ConstructBuilding)command).Position.X, ((ConstructBuilding)command).Position.Y, Player, false);
+                        var cmd = command as ConstructBuilding;
+                        var clientresult = Game.Map.AddBuilding(Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
                         if (!clientresult)
                         {
                             Game = proxy.GetGameState();
@@ -246,7 +249,7 @@ namespace MedievalWarfare.Client
 
                 Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
             }
-            
+
         }
 
         public void StartGame(Game game, bool isYourTurn)
@@ -260,13 +263,14 @@ namespace MedievalWarfare.Client
             {
                 ClientState = GameStates.TurnStarted;
                 Message = "It is your turn to move";
-            }else
-	        {
+            }
+            else
+            {
                 ClientState = GameStates.TurnEnded;
                 Message = "The Other player is moving";
-	        }
+            }
         }
-        
+
         public void StartTurn()
         {
             Game.EndPlayerTurn(Game.Players.Single(go => go.PlayerId != Player.PlayerId && !go.Neutral));
@@ -277,47 +281,48 @@ namespace MedievalWarfare.Client
         }
         public void Update(Common.Utility.Command command)
         {
-           
-                if (command is MoveUnit)
-                {
-                    var result =Game.Map.MoveUnit(command.Player, ((MoveUnit)command).Unit, ((MoveUnit)command).Position.X, ((MoveUnit)command).Position.Y);
-                    if (!result) 
-                    {
-                        Game = proxy.GetGameState();
-                        MyMap = new aHexMap(this, window);
-                        window.mapCanvas.Children.Add(MyMap);
-                    }
-                    MyMap.drawMap(Player);
-                }
-                if (command is ConstructBuilding)
-                {
-                    var clientresult = Game.Map.AddBuilding(((ConstructBuilding)command).Position.X, ((ConstructBuilding)command).Position.Y, command.Player, false);
-                    if (!clientresult)
-                    {
-                        Game = proxy.GetGameState();
-                        MyMap = new aHexMap(this, window);
-                        window.mapCanvas.Children.Add(MyMap);
-                    }
-                    MyMap.drawMap(Player);
-              
-                }
-                Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
-                ClientState = GameStates.TurnEnded;
-                Message = "The Other player is moving";
 
-            
-            
+            if (command is MoveUnit)
+            {
+                var result = Game.Map.MoveUnit(command.Player, ((MoveUnit)command).Unit, ((MoveUnit)command).Position.X, ((MoveUnit)command).Position.Y);
+                if (!result)
+                {
+                    Game = proxy.GetGameState();
+                    MyMap = new aHexMap(this, window);
+                    window.mapCanvas.Children.Add(MyMap);
+                }
+                MyMap.drawMap(Player);
+            }
+            if (command is ConstructBuilding)
+            {
+                var cmd = command as ConstructBuilding;
+                var clientresult = Game.Map.AddBuilding(Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
+                if (!clientresult)
+                {
+                    Game = proxy.GetGameState();
+                    MyMap = new aHexMap(this, window);
+                    window.mapCanvas.Children.Add(MyMap);
+                }
+                MyMap.drawMap(Player);
+
+            }
+            Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
+            ClientState = GameStates.TurnEnded;
+            Message = "The Other player is moving";
+
+
+
 
         }
         public void EndGame(bool winner)
         {
             switch (winner)
             {
-                case true :
+                case true:
                     ClientState = GameStates.Victory;
                     Message = "You're Winner";
                     break;
-                case false :
+                case false:
                     ClientState = GameStates.Defeat;
                     Message = "Defeat";
                     break;
@@ -330,11 +335,11 @@ namespace MedievalWarfare.Client
 
         #region Selection Mgmt
 
-        public void ManageObjectSelection(aObject sel) 
+        public void ManageObjectSelection(aObject sel)
         {
             SelectedUnit = null;
             SelectedBuilding = null;
-            if (ClientState == GameStates.TurnStarted &&!WaitingForReply) 
+            if (ClientState == GameStates.TurnStarted && !WaitingForReply)
             {
                 if (Selection == Selection.None)
                 {
@@ -441,7 +446,7 @@ namespace MedievalWarfare.Client
                         }
                     }
                 }
-            } 
+            }
         }
         public void ManageTileSelection(aHex sel)
         {
@@ -461,7 +466,7 @@ namespace MedievalWarfare.Client
                     case Selection.FBuilding:
                         break;
                     case Selection.EUnit:
-                        
+
                         break;
                     case Selection.EBuilding:
                         break;

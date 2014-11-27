@@ -12,5 +12,8 @@ namespace MedievalWarfare.Common.Utility
     {
         [DataMember]
         public Tile Position { get; set; }
+
+        [DataMember]
+        public Building Building { get; set; }
     }
 }
