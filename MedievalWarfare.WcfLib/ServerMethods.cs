@@ -122,14 +122,32 @@ namespace MedievalWarfare.WcfLib
                 if (!success)
                 {
                     callbackList[curretPlayerId].ActionResult(command, false);
+                    Console.WriteLine(string.Format("{0} is movement is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
                     return;
                 }
                 Console.WriteLine(string.Format("{0} is movement is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
                 Console.WriteLine(string.Format("{0} is moving unit remaining movement: {1}", _outputHelper.GetPlayerName(command.Player), moveingUnit.Movement));
             }
 
-            callbackList[curretPlayerId].ActionResult(command, true);
+            if (command is ConstructBuilding)
+            {
+                var cmd = command as ConstructBuilding;
 
+                Console.WriteLine(string.Format("{0} is plaving building to X:{1} Y:{2}. Gold before: {3}", _outputHelper.GetPlayerName(command.Player), cmd.Position.X, cmd.Position.Y, command.Player.Gold));
+
+                success = currentGame.Map.AddBuilding(cmd.Position.X, cmd.Position.Y,cmd.Player);
+                if (!success)
+                {
+                    callbackList[curretPlayerId].ActionResult(command, false);
+                    Console.WriteLine(string.Format("{0} is placement is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
+                    return;
+                }
+                Console.WriteLine(string.Format("{0} is placement is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
+                Console.WriteLine(string.Format("{0} is placed a buiklding remaining gold: {1}", _outputHelper.GetPlayerName(command.Player), command.Player.Gold));
+            }
+
+
+            callbackList[curretPlayerId].ActionResult(command, true);
 
             // Notify other player
             switch (gameStateController.CurreState)
