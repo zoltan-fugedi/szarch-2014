@@ -40,8 +40,8 @@ namespace MedievalWarfare.Client.Proxy {
         System.Threading.Tasks.Task EndTurnAsync(MedievalWarfare.Common.Player info);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerMethods/UpdateMap", ReplyAction="http://tempuri.org/IServerMethods/UpdateMapResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.MoveUnit))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.ConstructBuilding))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.MoveUnit))]
         void UpdateMap(MedievalWarfare.Common.Utility.Command command);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerMethods/UpdateMap", ReplyAction="http://tempuri.org/IServerMethods/UpdateMapResponse")]
@@ -52,16 +52,19 @@ namespace MedievalWarfare.Client.Proxy {
     public interface IServerMethodsCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/ActionResult")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.MoveUnit))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.ConstructBuilding))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.MoveUnit))]
         void ActionResult(MedievalWarfare.Common.Utility.Command command, bool result, string msg);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/StartGame")]
+        void StartGame(bool isYourTurn);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/StartTurn")]
         void StartTurn();
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/Update")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.MoveUnit))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.ConstructBuilding))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MedievalWarfare.Common.Utility.MoveUnit))]
         void Update(MedievalWarfare.Common.Utility.Command command);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerMethods/EndGame")]

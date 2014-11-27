@@ -51,6 +51,9 @@
   <wsdl:message name="IServerMethods_ActionResult_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:ActionResult" />
   </wsdl:message>
+  <wsdl:message name="IServerMethods_StartGame_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:StartGame" />
+  </wsdl:message>
   <wsdl:message name="IServerMethods_StartTurn_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:StartTurn" />
   </wsdl:message>
@@ -83,6 +86,9 @@
     </wsdl:operation>
     <wsdl:operation name="ActionResult">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/ActionResult" message="tns:IServerMethods_ActionResult_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StartGame">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/StartGame" message="tns:IServerMethods_StartGame_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="StartTurn">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerMethods/StartTurn" message="tns:IServerMethods_StartTurn_OutputCallbackMessage" />
@@ -145,6 +151,12 @@
     </wsdl:operation>
     <wsdl:operation name="ActionResult">
       <soap12:operation soapAction="http://tempuri.org/IServerMethods/ActionResult" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartGame">
+      <soap12:operation soapAction="http://tempuri.org/IServerMethods/StartGame" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

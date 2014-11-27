@@ -36,6 +36,16 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Command" nillable="true" type="tns:Command" />
+  <xs:complexType name="ConstructBuilding">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Command">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Position" nillable="true" type="tns:Tile" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ConstructBuilding" nillable="true" type="tns:ConstructBuilding" />
   <xs:complexType name="MoveUnit">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:Command">
@@ -47,14 +57,4 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="MoveUnit" nillable="true" type="tns:MoveUnit" />
-  <xs:complexType name="ConstructBuilding">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:Command">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Position" nillable="true" type="tns:Tile" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="ConstructBuilding" nillable="true" type="tns:ConstructBuilding" />
 </xs:schema>

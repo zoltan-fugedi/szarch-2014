@@ -9,6 +9,8 @@
       <xs:element minOccurs="0" name="Neutral" type="xs:boolean" />
       <xs:element minOccurs="0" name="PlayerId" type="ser:guid" />
     </xs:sequence>
+    <xs:attribute ref="ser:Id" />
+    <xs:attribute ref="ser:Ref" />
   </xs:complexType>
   <xs:element name="Player" nillable="true" type="tns:Player" />
   <xs:complexType name="Game">
@@ -20,6 +22,7 @@
   <xs:element name="Game" nillable="true" type="tns:Game" />
   <xs:complexType name="Map">
     <xs:sequence>
+      <xs:element minOccurs="0" name="Game" nillable="true" type="tns:Game" />
       <xs:element minOccurs="0" name="MaxX" type="xs:int" />
       <xs:element minOccurs="0" name="MaxY" type="xs:int" />
       <xs:element minOccurs="0" name="ObjectList" nillable="true" type="tns:ArrayOfGameObject" />
@@ -41,6 +44,8 @@
       <xs:element minOccurs="0" name="Owner" nillable="true" type="tns:Player" />
       <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="Tile" nillable="true" type="q2:Tile" />
     </xs:sequence>
+    <xs:attribute ref="ser:Id" />
+    <xs:attribute ref="ser:Ref" />
   </xs:complexType>
   <xs:element name="GameObject" nillable="true" type="tns:GameObject" />
   <xs:complexType name="Building">

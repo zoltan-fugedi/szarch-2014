@@ -214,6 +214,12 @@ namespace MedievalWarfare.Client
             }
             
         }
+
+        public void StartGame(bool isYourTurn)
+        {
+            throw new NotImplementedException();
+        }
+        
         public void StartTurn()
         {
             
@@ -407,6 +413,8 @@ namespace MedievalWarfare.Client
                 handler(this, new PropertyChangedEventArgs(p));
             }
         }
+
+
 
 
     }
