@@ -73,6 +73,9 @@ namespace MedievalWarfare.WcfLib.GameState
                     }
                     break;
                 case GameState.State.PlayerTwoJoined:
+                    CurreState = GameState.State.GameStart;
+                    break;
+                case GameState.State.GameStart:
                     CurreState = GameState.State.PlayerOneTurn;
                     CurrentPlayerTurnEnded = false;
                     break;

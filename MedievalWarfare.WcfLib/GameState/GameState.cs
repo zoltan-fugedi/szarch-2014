@@ -15,6 +15,7 @@ namespace MedievalWarfare.WcfLib.GameState
             WaitingForJoin,
             PlayerOneJoined,
             PlayerTwoJoined,
+            GameStart,
             PlayerOneTurn,
             PlayerTwoTurn,
             PlayerOneWin,

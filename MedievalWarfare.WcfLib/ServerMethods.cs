@@ -35,7 +35,8 @@ namespace MedievalWarfare.WcfLib
             var registeredUser = OperationContext.Current.GetCallbackChannel<IClientCallback>();
 
             if (gameStateController.CurreState == (GameState.GameState.State.WaitingForJoin) ||
-                (gameStateController.CurreState == GameState.GameState.State.PlayerOneJoined))
+                (gameStateController.CurreState == GameState.GameState.State.PlayerOneJoined) ||
+                (gameStateController.CurreState == GameState.GameState.State.PlayerTwoJoined))
             {
                 // Subscribe the user to the conversation
 
@@ -50,11 +51,12 @@ namespace MedievalWarfare.WcfLib
                     gameStateController.NextState();
                 }
 
-                if (gameStateController.CurreState == GameState.GameState.State.PlayerTwoJoined)
+                if (gameStateController.CurreState == GameState.GameState.State.GameStart)
                 {
+                    callbackList[gameStateController.PlayerOne.PlayerId].StartGame(true);
+                    callbackList[gameStateController.PlayerOne.PlayerId].StartGame(false);
                     gameStateController.NextState();
-                    var currentPlayerId = gameStateController.CurrentPlayer.PlayerId;
-                    callbackList[currentPlayerId].StartTurn();
+                    callbackList[gameStateController.CurrentPlayer.PlayerId].StartTurn();
                 }
 
             }
