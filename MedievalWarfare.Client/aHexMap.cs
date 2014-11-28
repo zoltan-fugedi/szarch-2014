@@ -279,6 +279,10 @@ namespace MedievalWarfare.Client
             obj.Opacity = (obj.Opacity < 0.9f) ? 1.0f : 0.5f;
 
         }
+        public void Clear() 
+        {
+            _children.Clear();
+        }
 
         // Required overrides for FrameworkElement class.
         protected override int VisualChildrenCount

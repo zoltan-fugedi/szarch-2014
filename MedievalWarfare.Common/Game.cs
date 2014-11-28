@@ -57,5 +57,26 @@ namespace MedievalWarfare.Common
         }
 
         #endregion
+    
+        #region endgame
+        public bool IsEndGame() 
+        {
+            if (Players.Where(p => (Map.ObjectList.Where(go => go.Owner.PlayerId == p.PlayerId && go is Building).Count() == 0) && !p.Neutral).Count() > 0) 
+            {
+                foreach (var p in Players)
+                {
+                    p.IsWinner = IsWinner(p);
+                }
+                return true;
+            }
+            return false;
+            
+        }
+
+        public bool IsWinner(Player p) 
+        {
+             return Map.ObjectList.Where(go => go.Owner.PlayerId == p.PlayerId && go is Building).Count() > 0 && !p.Neutral;
+        }
+        #endregion
     }
 }

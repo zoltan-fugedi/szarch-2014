@@ -47,5 +47,13 @@ namespace MedievalWarfare.Common
             Strength = strength;
             Tile = tile;
         }
+
+        public Unit()
+        {
+            Id = Guid.NewGuid();
+            Movement = ConstantValues.BaseMovement;
+            Strength = ConstantValues.BaseUnitStr;
+            
+        }
     }
 }

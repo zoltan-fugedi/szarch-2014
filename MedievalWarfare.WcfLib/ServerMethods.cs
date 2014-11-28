@@ -106,12 +106,15 @@ namespace MedievalWarfare.WcfLib
 
             }
 
+
+
         }
 
         public void UpdateMap(Command command)
         {
             bool success = false;
             var curretPlayerId = command.Player.PlayerId;
+
             if (command is MoveUnit)
             {
                 var cmd = command as MoveUnit;
@@ -133,17 +136,34 @@ namespace MedievalWarfare.WcfLib
             {
                 var cmd = command as ConstructBuilding;
 
-                Console.WriteLine(string.Format("{0} is plaving building to X:{1} Y:{2}. Gold before: {3}", _outputHelper.GetPlayerName(command.Player), cmd.Position.X, cmd.Position.Y, command.Player.Gold));
+                Console.WriteLine(string.Format("{0} is placing building to X:{1} Y:{2}. Gold before: {3}", _outputHelper.GetPlayerName(command.Player), cmd.Position.X, cmd.Position.Y, command.Player.Gold));
 
                 success = currentGame.Map.AddBuilding(cmd.Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
                 if (!success)
                 {
                     callbackList[curretPlayerId].ActionResult(command, false);
-                    Console.WriteLine(string.Format("{0} is placement is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
+                    Console.WriteLine(string.Format("{0}'s placement is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
                     return;
                 }
                 Console.WriteLine(string.Format("{0} is placement is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
-                Console.WriteLine(string.Format("{0} is placed a buiklding remaining gold: {1}", _outputHelper.GetPlayerName(command.Player), command.Player.Gold));
+                Console.WriteLine(string.Format("{0} has placed a building remaining gold: {1}", _outputHelper.GetPlayerName(command.Player), command.Player.Gold));
+            }
+
+            if (command is CreateUnit)
+            {
+                var cmd = command as CreateUnit;
+
+                Console.WriteLine(string.Format("{0} is creating unit at X:{1} Y:{2}. Gold before: {3}", _outputHelper.GetPlayerName(command.Player), cmd.Position.X, cmd.Position.Y, command.Player.Gold));
+
+                success = currentGame.Map.AddUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.Y);
+                if (!success)
+                {
+                    callbackList[curretPlayerId].ActionResult(command, false);
+                    Console.WriteLine(string.Format("{0}'s creation is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
+                    return;
+                }
+                Console.WriteLine(string.Format("{0}'s creation is: {1}", _outputHelper.GetPlayerName(command.Player), success.ToString()));
+                Console.WriteLine(string.Format("{0} has created a unit remaining gold: {1}", _outputHelper.GetPlayerName(command.Player), command.Player.Gold));
             }
 
 

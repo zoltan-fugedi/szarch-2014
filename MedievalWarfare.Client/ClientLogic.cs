@@ -164,7 +164,20 @@ namespace MedievalWarfare.Client
 
         public void CreateUnit()
         {
+            if (Selection == Selection.FBuilding)
+            {
 
+                var com = new CreateUnit();
+                com.Player = Player;
+                com.Position = SelectedBuilding.Tile;
+                com.Unit = new Unit();
+
+
+                proxy.UpdateMapAsync(com);
+                SelectedBuilding = null;
+                Selection = Selection.None;
+                WaitingForReply = true;
+            }
         }
         public void MoveUnit(Tile dest, Unit unit)
         {
@@ -229,7 +242,21 @@ namespace MedievalWarfare.Client
                     if (command is ConstructBuilding)
                     {
                         var cmd = command as ConstructBuilding;
-                        var clientresult = Game.Map.AddBuilding(Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
+                        var clientresult = Game.Map.AddBuilding(cmd.Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
+                        if (!clientresult)
+                        {
+                            Game = proxy.GetGameState();
+                            MyMap = new aHexMap(this, window);
+                            window.mapCanvas.Children.Add(MyMap);
+                        }
+                        MyMap.drawMap(Player);
+                        WaitingForReply = false;
+                        Message = "Successful move";
+                    }
+                    if (command is CreateUnit)
+                    {
+                        var cmd = command as CreateUnit;
+                        var clientresult = Game.Map.AddUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.Y);
                         if (!clientresult)
                         {
                             Game = proxy.GetGameState();
@@ -307,6 +334,18 @@ namespace MedievalWarfare.Client
                 MyMap.drawMap(Player);
 
             }
+            if (command is CreateUnit)
+            {
+                var cmd = command as CreateUnit;
+                var clientresult = Game.Map.AddUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.Y);
+                if (!clientresult)
+                {
+                    Game = proxy.GetGameState();
+                    MyMap = new aHexMap(this, window);
+                    window.mapCanvas.Children.Add(MyMap);
+                }
+                MyMap.drawMap(Player);
+            }
             Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
             ClientState = GameStates.TurnEnded;
             Message = "The Other player is moving";
@@ -317,19 +356,25 @@ namespace MedievalWarfare.Client
         }
         public void EndGame(bool winner)
         {
-            switch (winner)
+            if (ClientState == GameStates.TurnEnded || ClientState == GameStates.TurnStarted)
             {
-                case true:
-                    ClientState = GameStates.Victory;
-                    Message = "You're Winner";
-                    break;
-                case false:
-                    ClientState = GameStates.Defeat;
-                    Message = "Defeat";
-                    break;
-                default:
-                    break;
+                switch (winner)
+                {
+                    case true:
+                        MyMap.Clear();
+                        ClientState = GameStates.Victory;
+                        Message = "You're Winner";
+                        break;
+                    case false:
+                        MyMap.Clear();
+                        ClientState = GameStates.Defeat;
+                        Message = "Defeat";
+                        break;
+                    default:
+                        break;
+                }
             }
+           
         }
 
         #endregion
@@ -462,6 +507,7 @@ namespace MedievalWarfare.Client
                         Unit go = (Unit)SelectedObject.GameObject;
                         SelectedObject = null;
                         Selection = Selection.None;
+                        MyMap.removeRangeIndicator();
                         MoveUnit(tile, go);
                         break;
                     case Selection.FBuilding:

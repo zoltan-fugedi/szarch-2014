@@ -87,7 +87,7 @@ namespace MedievalWarfare.WcfLib.GameState
                     }
                     if (GameEndFlag)
                     {
-                        // TODO
+                        
                     }
                     break;
                 case GameState.State.PlayerTwoTurn:
@@ -101,11 +101,9 @@ namespace MedievalWarfare.WcfLib.GameState
                         // TODO
                     }
                     break;
-                case GameState.State.PlayerOneWin:
+                case GameState.State.PlayerWins:
                     break;
-                case GameState.State.PlayerTwoWin:
-                    break;
-                default:
+                               default:
                     throw new ArgumentOutOfRangeException();
             }
         }

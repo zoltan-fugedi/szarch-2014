@@ -38,6 +38,9 @@ namespace MedievalWarfare.Common
         [DataMember]
         public String Name { get; set; }
 
+        [DataMember]
+        public bool IsWinner { get; set; }
+
         public Player()
         {
             PlayerId = Guid.NewGuid();
@@ -73,6 +76,8 @@ namespace MedievalWarfare.Common
             Neutral = neut;
             Name = name;
         }
+
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 

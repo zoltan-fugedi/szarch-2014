@@ -55,6 +55,7 @@
     <Compile Include="Utility\Command.cs" />
     <Compile Include="Utility\ConstantValues.cs" />
     <Compile Include="Utility\ConstructBuilding.cs" />
+    <Compile Include="Utility\CreateUnit.cs" />
     <Compile Include="Utility\MoveUnit.cs" />
     <Compile Include="Utility\Tile.cs" />
   </ItemGroup>

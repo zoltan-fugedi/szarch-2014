@@ -9,6 +9,7 @@ namespace MedievalWarfare.Common.Utility
 {
     [DataContract]
     [KnownType(typeof(MoveUnit))]
+    [KnownType(typeof(CreateUnit))]
     [KnownType(typeof(ConstructBuilding))]
     public class Command
     {

@@ -18,8 +18,7 @@ namespace MedievalWarfare.WcfLib.GameState
             GameStart,
             PlayerOneTurn,
             PlayerTwoTurn,
-            PlayerOneWin,
-            PlayerTwoWin,
+            PlayerWins,
 
         }
 

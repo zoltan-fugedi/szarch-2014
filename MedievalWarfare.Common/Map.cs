@@ -191,7 +191,7 @@ namespace MedievalWarfare.Common
 
         public void AddNeutCamp(int x, int y, Player neut)
         {
-            AddUnit(x, y, neut);
+            AddUnit(neut,null, x, y, true);
             AddTreasure(x, y, neut);
         }
 
@@ -232,12 +232,12 @@ namespace MedievalWarfare.Common
             if (y > (MaxY / 2) && x > (MaxX / 2))
             {
                 AddBuilding(owner, null,  x, y,  true);
-                AddUnit(x - 1, y - 1, owner);
+                AddUnit(owner, null, x - 1, y - 1, true);
             }
             else
             {
                 AddBuilding(owner, null, x, y, true);
-                AddUnit(x + 1, y + 1, owner);
+                AddUnit(owner, null, x + 1, y + 1, true);
             }
 
         }
@@ -269,6 +269,7 @@ namespace MedievalWarfare.Common
 
             var build = new Building(this[x, y]) { Id = buildingId };
             build.Owner = owner;
+            build.Tile = this[x, y];
             this.ObjectList.Add(build);
             this[x, y].ContentList.Add(build);
 
@@ -297,39 +298,93 @@ namespace MedievalWarfare.Common
 
             var tres = new Treasure(ConstantValues.DefaultTreasure, this[x, y], owner);
             tres.Owner = owner;
+            tres.Tile = this[x, y];
             this.ObjectList.Add(tres);
             this[x, y].ContentList.Add(tres);
             return true;
         }
 
-        public void AddUnit(int x, int y, Player owner)
+        public bool AddUnit(Player owner, Unit u, int x, int y, bool initial = false)
         {
-            // TODO check there can be train
-            Unit unit = null;
-            if (owner.Neutral)
-            {
-                unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseNeutStr, this[x, y]);
-            }
-            else
-            {
-                unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr, this[x, y]);
-            }
-
-            unit.Owner = owner;
             var contents = this[x, y].ContentList.Where(c => (c is Unit) && (c.Owner.Equals(owner)));
-            if (contents.Count() != 0)
+            Guid unitId;
+            if (!initial)
             {
-                foreach (var cont in contents)
+                // Checking prerequirement
+                if (!this[x, y].ContentList.Any(building => (building is Building) && ((Building)building).Owner.PlayerId == owner.PlayerId
+                                                                        && ((Building)building).Population >= ConstantValues.PopCost
+                                                                        && ((Building)building).Owner.Gold >= ConstantValues.UnitCost))
                 {
-                    ((Unit)cont).Strength += ConstantValues.BaseUnitStr;
+                    return false;
                 }
+                //remove cost
+                ((Building)this[x, y].ContentList.Single(building => (building is Building) && ((Building)building).Owner.PlayerId == owner.PlayerId)).Owner.Gold -= ConstantValues.UnitCost;
+                unitId = u.Id;
 
+                //if neutral
+                if (owner.Neutral)
+                {
+                    var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseNeutStr, this[x, y]) { Id = unitId };
+                    unit.Owner = owner;
+                    unit.Tile = this[x, y];
+                    this.ObjectList.Add(unit);
+                    this[x, y].ContentList.Add(unit);
+                }
+                //if not
+                else
+                {
+                    if (contents.Count() != 0)
+                    {
+                        foreach (var cont in contents)
+                        {
+                            ((Unit)cont).Strength += ConstantValues.BaseUnitStr;
+                        }
+
+                    }
+                    else
+                    {
+                        var unit = new Unit(0, ConstantValues.BaseUnitStr, this[x, y]) { Id = unitId };
+                        unit.Owner = owner;
+                        unit.Tile = this[x, y];
+                        this.ObjectList.Add(unit);
+                        this[x, y].ContentList.Add(unit);
+                    }
+                }
             }
             else
             {
-                this.ObjectList.Add(unit);
-                this[x, y].ContentList.Add(unit);
+                unitId = Guid.NewGuid();
+                //if neutral
+                if (owner.Neutral)
+                {
+                    var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseNeutStr, this[x, y]) { Id = unitId };
+                    unit.Owner = owner;
+                    unit.Tile = this[x, y];
+                    this.ObjectList.Add(unit);
+                    this[x, y].ContentList.Add(unit);
+                }
+                //if not
+                else
+                {
+                    if (contents.Count() != 0)
+                    {
+                        foreach (var cont in contents)
+                        {
+                            ((Unit)cont).Strength += ConstantValues.BaseUnitStr;
+                        }
+
+                    }
+                    else
+                    {
+                        var unit = new Unit(ConstantValues.BaseMovement, ConstantValues.BaseUnitStr, this[x, y]) { Id = unitId };
+                        unit.Owner = owner;
+                        unit.Tile = this[x, y];
+                        this.ObjectList.Add(unit);
+                        this[x, y].ContentList.Add(unit);
+                    }
+                }
             }
+            return true;
         }
 
         public void RemoveUnit(int x, int y, Player owner)
@@ -570,5 +625,6 @@ namespace MedievalWarfare.Common
 
         #endregion
 
+        
     }
 }

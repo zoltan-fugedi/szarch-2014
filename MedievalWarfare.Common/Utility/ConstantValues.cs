@@ -22,7 +22,7 @@ namespace MedievalWarfare.Common.Utility
         public const int UnitCost = 500;
         public const int DefaultTreasure = 200;
         public const int PopGrowth = 10;
-        public const int PopCost = 50;
+        public const int PopCost = 0;
         public const int BaseUnitStr = 10;
         public const int BaseNeutStr = 3;
         public const int BaseMovement = 6;
