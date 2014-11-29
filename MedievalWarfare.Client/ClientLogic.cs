@@ -192,7 +192,7 @@ namespace MedievalWarfare.Client
             WaitingForReply = true;
 
         }
-        public async void EndTurn()
+        public void EndTurn()
         {
             if (Selection != Selection.None)
             {
@@ -201,7 +201,7 @@ namespace MedievalWarfare.Client
                 Selection = Selection.None;
                 MyMap.removeRangeIndicator();
             }
-            await proxy.EndTurnAsync(Player);
+            proxy.EndTurnAsync(Player);
             Game.EndPlayerTurn(Game.GetPlayer(Player.PlayerId));
             Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
             ClientState = GameStates.TurnEnded;
