@@ -9,6 +9,7 @@
         <l:BuildingDataVisibilityConverter x:Key="build1" />
         <l:AddUnitDataVisibilityConverter x:Key="build2" />
         <l:SidePanelVisibilityConverter x:Key="side" />
+        <l:ConnectVisibilityConverter x:Key="connect" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -25,7 +26,7 @@
         <Menu Name="gameMenu" IsMainMenu="True" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem Header="_Game">
                 <MenuItem Header="_Connect to Server.." Name="menu_connect"
-                          Click="menu_connect_Click"/>
+                          Click="menu_connect_Click" IsEnabled="{Binding Path=Logic.ClientState, Converter={StaticResource connect}}"/>
                 <Separator />
                 <MenuItem Header="_Exit" Name="menu_exit"
                           Click="menu_exit_Click"/>

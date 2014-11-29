@@ -268,4 +268,36 @@ namespace MedievalWarfare.Client
             return null;
         }
     }
+
+    public class ConnectVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            GameStates enumVal = (GameStates)Enum.Parse(typeof(GameStates), value.ToString());
+            switch (enumVal)
+            {
+                case GameStates.Init:
+                    return true;
+                case GameStates.Connected:
+                    return false;
+                case GameStates.TurnStarted:
+                    return false;
+                case GameStates.TurnEnded:
+                    return false;
+                case GameStates.Victory:
+                    return true;
+                case GameStates.Defeat:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
 }

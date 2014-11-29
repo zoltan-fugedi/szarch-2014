@@ -212,8 +212,19 @@ namespace MedievalWarfare.Client
         {
             ClientState = GameStates.Defeat;
             Message = "Closed the client";
-            await proxy.LeaveAsync(Player);
-            proxy.Close();
+            try 
+	        {
+                await proxy.LeaveAsync(Player);
+                proxy.Close();
+	        }
+	        catch (Exception)
+	        {
+		
+		      
+	        }
+                
+            
+            
         }
 
 
