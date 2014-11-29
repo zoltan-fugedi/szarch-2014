@@ -118,8 +118,15 @@ namespace MedievalWarfare.WcfLib
                     callbackList[players[0].PlayerId].EndGame(false);
                     callbackList[players[1].PlayerId].EndGame(true);
                 }
-            }
 
+                // set new state to server
+                gameStateController.NextState();
+                currentGame = new Game();
+                currentGame.Map.GenerateMap();
+                callbackList.Clear();
+                gameStateController.NextState();
+
+            }
 
         }
 

@@ -104,6 +104,7 @@ namespace MedievalWarfare.WcfLib.GameState
                     }
                     break;
                 case GameState.State.PlayerWins:
+                    CurreState = GameState.State.WaitingForJoin;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
