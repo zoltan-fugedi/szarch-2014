@@ -108,15 +108,15 @@ namespace MedievalWarfare.WcfLib
 
                 var players = currentGame.Players.Where(player => player.Neutral != true).ToList();
 
-                if (currentGame.Players[0].IsWinner)
+                if (players[0].IsWinner)
                 {
-                    callbackList[currentGame.Players[0].PlayerId].EndGame(true);
-                    callbackList[currentGame.Players[1].PlayerId].EndGame(false);
+                    callbackList[players[0].PlayerId].EndGame(true);
+                    callbackList[players[1].PlayerId].EndGame(false);
                 }
                 else
                 {
-                    callbackList[currentGame.Players[0].PlayerId].EndGame(false);
-                    callbackList[currentGame.Players[1].PlayerId].EndGame(true);
+                    callbackList[players[0].PlayerId].EndGame(false);
+                    callbackList[players[1].PlayerId].EndGame(true);
                 }
             }
 
