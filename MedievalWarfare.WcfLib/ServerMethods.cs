@@ -74,13 +74,8 @@ namespace MedievalWarfare.WcfLib
         public void Leave(Player info)
         {
             IClientCallback callBack;
-            if (callbackList.TryRemove(info.PlayerId, out callBack))
-            {
-            }
-            else
-            {
-            }
-
+            callbackList.TryRemove(info.PlayerId, out callBack);
+            
             foreach (var clientCallback in callbackList)
             {
                 clientCallback.Value.EndGame(true);
@@ -106,6 +101,24 @@ namespace MedievalWarfare.WcfLib
 
             }
 
+            if (currentGame.IsEndGame())
+            {
+                gameStateController.GameEndFlag = true;
+                gameStateController.NextState();
+
+                var players = currentGame.Players.Where(player => player.Neutral != true).ToList();
+
+                if (currentGame.Players[0].IsWinner)
+                {
+                    callbackList[currentGame.Players[0].PlayerId].EndGame(true);
+                    callbackList[currentGame.Players[1].PlayerId].EndGame(false);
+                }
+                else
+                {
+                    callbackList[currentGame.Players[0].PlayerId].EndGame(false);
+                    callbackList[currentGame.Players[1].PlayerId].EndGame(true);
+                }
+            }
 
 
         }

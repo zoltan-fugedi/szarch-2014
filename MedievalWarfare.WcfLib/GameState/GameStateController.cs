@@ -7,7 +7,7 @@ using MedievalWarfare.Common;
 
 namespace MedievalWarfare.WcfLib.GameState
 {
-   public class GameStateController
+    public class GameStateController
     {
         public GameState.State CurreState { get; private set; }
 
@@ -87,7 +87,8 @@ namespace MedievalWarfare.WcfLib.GameState
                     }
                     if (GameEndFlag)
                     {
-                        
+                        GameEndFlag = false;
+                        CurreState = GameState.State.PlayerWins;
                     }
                     break;
                 case GameState.State.PlayerTwoTurn:
@@ -98,12 +99,13 @@ namespace MedievalWarfare.WcfLib.GameState
                     }
                     if (GameEndFlag)
                     {
-                        // TODO
+                        GameEndFlag = false;
+                        CurreState = GameState.State.PlayerWins;
                     }
                     break;
                 case GameState.State.PlayerWins:
                     break;
-                               default:
+                default:
                     throw new ArgumentOutOfRangeException();
             }
         }
