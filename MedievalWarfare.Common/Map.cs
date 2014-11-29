@@ -1,7 +1,9 @@
 ﻿using MedievalWarfare.Common.Utility;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -169,24 +171,43 @@ namespace MedievalWarfare.Common
             var neut = new Player(0, true);
             Game.AddPlayer(neut);
 
-
-
-            AddWater(15, 15, 2);
-            AddForest(25, 10, 4);
-            AddForest(40, 15, 8);
-            AddForest(10, 30, 10);
-            AddForest(15, 10, 10);
-            for (int i = 0; i < 25; i++)
+            int x = 0;
+            int y = 0;
+            //string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\Names.txt");
+            var rows = File.ReadAllText(@"Resources\map.csv").Split('\n');
+            foreach (var row in rows)
             {
-                for (int j = 25; j < 27; j++)
+                x = 0;
+                foreach (var cell in row.Split(';')) 
                 {
-                    AddWater(i, j, 2);
+                    switch (cell)
+                    {
+                        case "0":
+                            AddForest(x, y, 0);
+                            break;
+                        case "1":
+                            break;
+                        case "2":
+                            AddWater(x, y, 0);
+                            break;
+                        case "3":
+                            AddMountain(x, y, 0);
+                            break;
+                        case "4":
+                            AddNeutCamp(x, y, neut);
+                            break;
+                        case "5" :
+                            AddForest(x, y, 0);
+                            AddNeutCamp(x, y, neut);
+                            break;
+                        default:
+                            break;
+                    }
+                    x++;
                 }
+                y++;
             }
-            AddWater(15, 15, 2);
 
-            AddMountain(25, 10, 2);
-            AddNeutCamp(5, 5, neut);
         }
 
         public void AddNeutCamp(int x, int y, Player neut)

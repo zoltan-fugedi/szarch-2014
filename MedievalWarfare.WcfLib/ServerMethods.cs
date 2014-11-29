@@ -45,7 +45,7 @@ namespace MedievalWarfare.WcfLib
                     currentGame.AddPlayer(info);
                     if (gameStateController.CurreState == GameState.GameState.State.PlayerOneJoined)
                     {
-                        currentGame.Map.AddNewPlayerObjects(6, 6, info);
+                        currentGame.Map.AddNewPlayerObjects(48, 48, info);
                         Console.WriteLine(string.Format("Player Two joined!"));
                     }
                     else
