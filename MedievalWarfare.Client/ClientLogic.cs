@@ -208,13 +208,13 @@ namespace MedievalWarfare.Client
             ClientState = GameStates.TurnEnded;
             Message = "The Other player is moving";
         }
-        public async void Exit()
+        public void Exit()
         {
             ClientState = GameStates.Defeat;
             Message = "Closed the client";
             try 
 	        {
-                await proxy.LeaveAsync(Player);
+                proxy.LeaveAsync(Player);
                 proxy.Close();
 	        }
 	        catch (Exception)
