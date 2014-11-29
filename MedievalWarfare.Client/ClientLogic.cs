@@ -119,7 +119,7 @@ namespace MedievalWarfare.Client
 
         public ClientLogic(MainWindow window)
         {
-            proxy = new ServerMethodsClient(new InstanceContext(this));
+            
             Player = new Player();
             Game = new Game();
             this.window = window;
@@ -137,6 +137,7 @@ namespace MedievalWarfare.Client
         public void ConnectToServer()
         {
 
+            proxy = new ServerMethodsClient(new InstanceContext(this));
             proxy.Open();
             proxy.JoinAsync(Player);
 
@@ -212,6 +213,7 @@ namespace MedievalWarfare.Client
             ClientState = GameStates.Defeat;
             Message = "Closed the client";
             await proxy.LeaveAsync(Player);
+            proxy.Close();
         }
 
 
@@ -373,6 +375,7 @@ namespace MedievalWarfare.Client
                     default:
                         break;
                 }
+                proxy.Close();
             }
            
         }
