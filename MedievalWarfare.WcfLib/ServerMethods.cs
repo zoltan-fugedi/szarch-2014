@@ -124,7 +124,6 @@ namespace MedievalWarfare.WcfLib
                 currentGame = new Game();
                 currentGame.Map.GenerateMap();
                 callbackList.Clear();
-                gameStateController.NextState();
 
             }
 

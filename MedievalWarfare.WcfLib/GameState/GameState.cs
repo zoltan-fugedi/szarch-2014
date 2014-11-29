@@ -9,7 +9,6 @@ namespace MedievalWarfare.WcfLib.GameState
 {
     public class GameState
     {
-        [Flags]
         public enum State
         {
             WaitingForJoin,
