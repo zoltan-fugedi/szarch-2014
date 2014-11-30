@@ -13,6 +13,7 @@ namespace MedievalWarfare.WcfLib.GameState
 
         public bool CurrentPlayerTurnEnded { get; set; }
         public bool GameEndFlag { get; set; }
+        public bool PlayerLeftFlag { get; set; }
 
         public Player CurrentPlayer
         {
@@ -90,6 +91,11 @@ namespace MedievalWarfare.WcfLib.GameState
                         GameEndFlag = false;
                         CurreState = GameState.State.PlayerWins;
                     }
+                    if (PlayerLeftFlag)
+                    {
+                        PlayerLeftFlag = false;
+                        CurreState = GameState.State.PlayerLeft;
+                    }
                     break;
                 case GameState.State.PlayerTwoTurn:
                     if (CurrentPlayerTurnEnded && !GameEndFlag)
@@ -102,8 +108,16 @@ namespace MedievalWarfare.WcfLib.GameState
                         GameEndFlag = false;
                         CurreState = GameState.State.PlayerWins;
                     }
+                    if (PlayerLeftFlag)
+                    {
+                        PlayerLeftFlag = false;
+                        CurreState = GameState.State.PlayerLeft;
+                    }
                     break;
                 case GameState.State.PlayerWins:
+                    CurreState = GameState.State.WaitingForJoin;
+                    break;
+                case GameState.State.PlayerLeft:
                     CurreState = GameState.State.WaitingForJoin;
                     break;
                 default:

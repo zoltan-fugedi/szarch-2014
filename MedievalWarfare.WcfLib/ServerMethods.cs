@@ -75,11 +75,15 @@ namespace MedievalWarfare.WcfLib
         {
             IClientCallback callBack;
             callbackList.TryRemove(info.PlayerId, out callBack);
-            
+            gameStateController.PlayerLeftFlag = true;
+            gameStateController.NextState();
+
             foreach (var clientCallback in callbackList)
             {
                 clientCallback.Value.EndGame(true);
             }
+            gameStateController.NextState();
+            callbackList.Clear();
         }
 
         public Game GetGameState()
