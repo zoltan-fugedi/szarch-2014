@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" />
+  <xs:element name="Join">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="info" nillable="true" type="q1:Player" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JoinResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Leave">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="info" nillable="true" type="q2:Player" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LeaveResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGameState">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGameStateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="GetGameStateResult" nillable="true" type="q3:Game" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EndTurn">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="info" nillable="true" type="q4:Player" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EndTurnResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateMap">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="command" nillable="true" type="q5:Command" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateMapResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ActionResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="command" nillable="true" type="q6:Command" />
+        <xs:element minOccurs="0" name="result" type="xs:boolean" />
+        <xs:element minOccurs="0" name="msg" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StartGame">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="game" nillable="true" type="q7:Game" />
+        <xs:element minOccurs="0" name="isYourTurn" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StartTurn">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Update">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" minOccurs="0" name="command" nillable="true" type="q8:Command" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EndGame">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="winner" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

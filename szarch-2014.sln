@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedievalWarfare.ServerHosti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedievalWarfare.Client", "MedievalWarfare.Client\MedievalWarfare.Client.csproj", "{B287AF26-2651-4891-A990-56F9514FAE5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedievalWarfare.TestClient", "MedievalWarfare.TestClient\MedievalWarfare.TestClient.csproj", "{4C525F45-AAA6-41B7-938B-E3061BBF08A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B287AF26-2651-4891-A990-56F9514FAE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B287AF26-2651-4891-A990-56F9514FAE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B287AF26-2651-4891-A990-56F9514FAE5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C525F45-AAA6-41B7-938B-E3061BBF08A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C525F45-AAA6-41B7-938B-E3061BBF08A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C525F45-AAA6-41B7-938B-E3061BBF08A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C525F45-AAA6-41B7-938B-E3061BBF08A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
