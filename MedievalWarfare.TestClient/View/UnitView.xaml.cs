@@ -10,24 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace MedievalWarfare.TestClient.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for UnitView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class UnitView : UserControl
     {
-        public MainWindow()
+        public UnitView()
         {
             InitializeComponent();
-        }
-
-        protected override async void OnClosed(EventArgs e)
-        {
-            await ((MainWindowVm)DataContext).Disconnec();
-            base.OnClosed(e);
         }
     }
 }

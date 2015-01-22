@@ -15,5 +15,6 @@
         <BitmapImage x:Key="water" UriSource="resources/waterHex.gif" />
         <BitmapImage x:Key="mountain" UriSource="resources/oreHex.gif" />
         <BitmapImage x:Key="forest" UriSource="resources/woodHex.gif" />
+        <BitmapImage x:Key="blank" UriSource="resources/Hourglass.png" />
     </Application.Resources>
 </Application>

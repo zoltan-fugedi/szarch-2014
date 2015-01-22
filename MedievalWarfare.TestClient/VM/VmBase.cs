@@ -5,11 +5,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MedievalWarfare.TestClient.VM
 {
-    class VmBase: INotifyPropertyChanged
+    public class VmBase: INotifyPropertyChanged
     {
+        public Window View { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

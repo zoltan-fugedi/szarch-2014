@@ -72,15 +72,24 @@
     <Compile Include="Utils\IAsyncCommand.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\ServerCallbacks.cs" />
+    <Compile Include="Utils\StringToImageConverter.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UnitView.xaml.cs">
+      <DependentUpon>UnitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VM\ObjectListVM.cs" />
     <Compile Include="VM\VmBase.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UnitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,6 +145,72 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\castle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\castle_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\castle_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\clayHex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\coin_game.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\coin_menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\construct.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\desertHex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\grass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Hourglass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\menu_strength.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\movement.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\oreHex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\piece_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\piece_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\piece_yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\pop_menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\sheepHex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\train.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\waterHex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\wheatHex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\woodHex.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

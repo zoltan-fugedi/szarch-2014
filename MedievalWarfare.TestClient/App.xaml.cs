@@ -21,15 +21,13 @@ namespace MedievalWarfare.TestClient
         public ServerMethodsClient PlayerTwo { get; set; }
 
         public ServerCallbacks Callbacks { get; set; }
-        public ServerCallbacks Callbacks2 { get; set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             Callbacks = new ServerCallbacks();
-            Callbacks2 = new ServerCallbacks();
 
             PlayerOne = new ServerMethodsClient(new InstanceContext(Callbacks));
-            PlayerTwo = new ServerMethodsClient(new InstanceContext(Callbacks2));
+            PlayerTwo = new ServerMethodsClient(new InstanceContext(Callbacks));
 
             var mainView = new MainWindow();
             var mvm = new MainWindowVm();

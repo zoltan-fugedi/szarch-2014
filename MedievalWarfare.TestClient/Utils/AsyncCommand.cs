@@ -9,15 +9,23 @@ namespace MedievalWarfare.TestClient.Utils
     public class AsyncCommand : AsyncCommandBase
     {
         private readonly Func<Task> _command;
+        private readonly Func<bool> _canexecute;
 
         public AsyncCommand(Func<Task> command)
         {
             _command = command;
+            _canexecute = null;
+        }
+
+        public AsyncCommand(Func<Task> command, Func<bool> canExecute)
+        {
+            _command = command;
+            _canexecute = canExecute;
         }
 
         public override bool CanExecute(object parameter)
         {
-            return true;
+            return _canexecute == null ? true : _canexecute(); ;
         }
 
         public override Task ExecuteAsync(object parameter)

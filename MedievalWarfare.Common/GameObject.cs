@@ -22,6 +22,26 @@ namespace MedievalWarfare.Common
         [DataMember]
         public Tile Tile { get; set; }
 
+        public string Type
+        {
+            get
+            {
+                if (this is Unit)
+                {
+                    return "Unit";
+                }
+                if (this is Building)
+                {
+                    return "Building";
+                }
+                if (this is Treasure)
+                {
+                    return "Treasure";
+                }
+                return "ameObject";
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string p)

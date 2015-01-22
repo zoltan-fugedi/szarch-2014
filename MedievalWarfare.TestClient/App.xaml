@@ -2,6 +2,18 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
-         
+        <BitmapImage x:Key="grass" UriSource="resources/grass.png" />
+        <BitmapImage x:Key="castle" UriSource="resources/castle.png" />
+        <BitmapImage x:Key="coin_game" UriSource="resources/coin_game.png" />
+        <BitmapImage x:Key="unit_blue" UriSource="resources/piece_blue.png" />
+        <BitmapImage x:Key="unit_yellow" UriSource="resources/piece_yellow.png" />
+        <BitmapImage x:Key="unit_red" UriSource="resources/piece_red.png" />
+        <BitmapImage x:Key="castle_blue" UriSource="resources/castle_blue.png" />
+        <BitmapImage x:Key="castle_red" UriSource="resources/castle_red.png" />
+        <BitmapImage x:Key="field" UriSource="resources/sheepHex.gif" />
+        <BitmapImage x:Key="water" UriSource="resources/waterHex.gif" />
+        <BitmapImage x:Key="mountain" UriSource="resources/oreHex.gif" />
+        <BitmapImage x:Key="forest" UriSource="resources/woodHex.gif" />
+        <BitmapImage x:Key="blank" UriSource="resources/Hourglass.png" />
     </Application.Resources>
 </Application>
