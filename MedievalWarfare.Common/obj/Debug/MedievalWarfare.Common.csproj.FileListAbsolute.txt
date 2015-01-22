@@ -1,0 +1,8 @@
+D:\GIT\SZARCH\MedievalWarfare.Common\bin\Debug\MedievalWarfare.Common.dll
+D:\GIT\SZARCH\MedievalWarfare.Common\bin\Debug\MedievalWarfare.Common.pdb
+D:\GIT\SZARCH\MedievalWarfare.Common\bin\Debug\Newtonsoft.Json.dll
+D:\GIT\SZARCH\MedievalWarfare.Common\bin\Debug\Newtonsoft.Json.xml
+D:\GIT\SZARCH\MedievalWarfare.Common\obj\Debug\MedievalWarfare.Common.dll
+D:\GIT\SZARCH\MedievalWarfare.Common\obj\Debug\MedievalWarfare.Common.pdb
+D:\GIT\SZARCH\MedievalWarfare.Common\obj\Debug\MedievalWarfare.Common.csprojResolveAssemblyReference.cache
+D:\GIT\SZARCH\MedievalWarfare.Common\bin\Debug\Resources\map.csv

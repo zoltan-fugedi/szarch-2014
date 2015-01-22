@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="CyrHKHMA7zUVPlfyj2gAUA3u6z8=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="K7BGF3F3O15aFMGtrX1eaEC7q9g=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="netTcpBinding" name="customTcpBinding">
       <properties>
@@ -118,10 +118,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="customTcpBinding" contract="Proxy.IServerMethods" bindingType="netTcpBinding" address="net.tcp://152.66.182.182:8732/ServerMethods" bindingConfiguration="customTcpBinding">
+    <endpoint name="customTcpBinding" contract="Proxy.IServerMethods" bindingType="netTcpBinding" address="net.tcp://localhost:8732/ServerMethods" bindingConfiguration="customTcpBinding">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>net.tcp://152.66.182.182:8732/ServerMethods</serializedValue>
+          <serializedValue>net.tcp://localhost:8732/ServerMethods</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

@@ -21,14 +21,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="net.tcp://152.66.182.182:8732/mex" Protocol="mex" SourceId="1" />
+    <MetadataSource Address="net.tcp://localhost:8732/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="857ea07e-8bc9-47ab-bf8f-53ca715b20e0" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
-    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="7b8286ad-51fe-497b-897e-afe1b10d0342" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
-    <MetadataFile FileName="service21.xsd" MetadataType="Schema" ID="cda3d5d5-ffb4-4ff4-8ce3-ef28307ad2b0" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
-    <MetadataFile FileName="MedievalWarfare.Common1.xsd" MetadataType="Schema" ID="62f8b06f-57b4-40d8-ae35-a71e0f4890e7" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
-    <MetadataFile FileName="MedievalWarfare.Common.Utility1.xsd" MetadataType="Schema" ID="a529d511-86aa-4971-b433-5fc252ee7923" SourceId="1" SourceUrl="net.tcp://152.66.182.182:8732/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="8bcef8c6-0499-40b9-92b9-50318364c2e8" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="6fbd749b-d576-4395-8f98-2da3e020a45b" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="248dfc78-86bd-4e2e-bfee-bd574034fee5" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
+    <MetadataFile FileName="MedievalWarfare.Common.xsd" MetadataType="Schema" ID="2d46b1e0-f747-4e69-9335-1c3d376f0209" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
+    <MetadataFile FileName="MedievalWarfare.Common.Utility.xsd" MetadataType="Schema" ID="341fa3cf-7fd3-47d4-b786-3a1b94a101cd" SourceId="1" SourceUrl="net.tcp://localhost:8732/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

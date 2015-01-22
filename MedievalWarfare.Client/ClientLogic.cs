@@ -33,6 +33,9 @@ namespace MedievalWarfare.Client
 
     public class ClientLogic : Proxy.IServerMethodsCallback, INotifyPropertyChanged
     {
+        
+        
+        
         public GameStates clientState;
         public GameStates ClientState
         {
@@ -59,7 +62,6 @@ namespace MedievalWarfare.Client
         public aObject SelectedObject { get; set; }
 
         Unit selectedUnit;
-
         public Unit SelectedUnit
         {
             get { return selectedUnit; }
@@ -71,7 +73,6 @@ namespace MedievalWarfare.Client
         }
 
         Building selectedBuilding;
-
         public Building SelectedBuilding
         {
             get { return selectedBuilding; }
@@ -83,7 +84,6 @@ namespace MedievalWarfare.Client
         }
 
         Player player;
-
         public Player Player
         {
             get { return player; }
@@ -94,7 +94,8 @@ namespace MedievalWarfare.Client
             }
         }
         public bool WaitingForReply { get; set; }
-        public aHexMap MyMap { get; set; }
+
+        //public aHexMap MyMap { get; set; }
         public Game Game { get; set; }
 
         public MainWindow window;
@@ -134,9 +135,9 @@ namespace MedievalWarfare.Client
         #region Communication: Client --> Server
 
 
-        public void ConnectToServer()
+        public void ConnectToServer(String name)
         {
-
+            Player.Name = name;
             proxy = new ServerMethodsClient(new InstanceContext(this));
             proxy.Open();
             proxy.JoinAsync(Player);
@@ -155,10 +156,11 @@ namespace MedievalWarfare.Client
                 com.Player = Player;
                 com.Position = selectedUnit.Tile;
                 com.Building = new Building();
+                com.Building.Tile = selectedUnit.Tile;
                 proxy.UpdateMapAsync(com);
                 SelectedObject = null;
                 Selection = Selection.None;
-                MyMap.removeRangeIndicator();
+                window.hexCanvas.removeRangeIndicator();
                 WaitingForReply = true;
             }
         }
@@ -172,7 +174,7 @@ namespace MedievalWarfare.Client
                 com.Player = Player;
                 com.Position = SelectedBuilding.Tile;
                 com.Unit = new Unit();
-
+                com.Unit.Tile = SelectedBuilding.Tile;
 
                 proxy.UpdateMapAsync(com);
                 SelectedBuilding = null;
@@ -189,7 +191,7 @@ namespace MedievalWarfare.Client
             proxy.UpdateMapAsync(com);
             SelectedObject = null;
             Selection = Selection.None;
-            MyMap.removeRangeIndicator();
+            window.hexCanvas.removeRangeIndicator();
             WaitingForReply = true;
 
         }
@@ -197,10 +199,10 @@ namespace MedievalWarfare.Client
         {
             if (Selection != Selection.None)
             {
-                MyMap.updateObject(SelectedObject);
+                window.hexCanvas.updateObject(SelectedObject);
                 SelectedObject = null;
                 Selection = Selection.None;
-                MyMap.removeRangeIndicator();
+                window.hexCanvas.removeRangeIndicator();
             }
             proxy.EndTurnAsync(Player);
             Game.EndPlayerTurn(Game.GetPlayer(Player.PlayerId));
@@ -242,13 +244,13 @@ namespace MedievalWarfare.Client
                     if (command is MoveUnit)
                     {
                         var clientresult = Game.Map.MoveUnit(command.Player, ((MoveUnit)command).Unit, ((MoveUnit)command).Position.X, ((MoveUnit)command).Position.Y);
-                        if (!clientresult)
-                        {
-                            Game = proxy.GetGameState();
-                            MyMap = new aHexMap(this, window);
-                            window.mapCanvas.Children.Add(MyMap);
-                        }
-                        MyMap.drawMap(Player);
+                        //if (!clientresult)
+                        //{
+                        //    Game = proxy.GetGameState();
+                        //    MyMap = new aHexMap(this, window);
+                        //    window.mapCanvas.Children.Add(MyMap);
+                        //}
+                        window.hexCanvas.drawMap(Player);
                         WaitingForReply = false;
                         Message = "Successful move";
                     }
@@ -256,13 +258,13 @@ namespace MedievalWarfare.Client
                     {
                         var cmd = command as ConstructBuilding;
                         var clientresult = Game.Map.AddBuilding(cmd.Player, cmd.Building, cmd.Position.X, cmd.Position.Y);
-                        if (!clientresult)
-                        {
-                            Game = proxy.GetGameState();
-                            MyMap = new aHexMap(this, window);
-                            window.mapCanvas.Children.Add(MyMap);
-                        }
-                        MyMap.drawMap(Player);
+                        //if (!clientresult)
+                        //{
+                        //    Game = proxy.GetGameState();
+                        //    MyMap = new aHexMap(this, window);
+                        //    window.mapCanvas.Children.Add(MyMap);
+                        //}
+                        window.hexCanvas.drawMap(Player);
                         WaitingForReply = false;
                         Message = "Successful move";
                     }
@@ -270,20 +272,20 @@ namespace MedievalWarfare.Client
                     {
                         var cmd = command as CreateUnit;
                         var clientresult = Game.Map.AddUnit(cmd.Player, cmd.Unit, cmd.Position.X, cmd.Position.Y);
-                        if (!clientresult)
-                        {
-                            Game = proxy.GetGameState();
-                            MyMap = new aHexMap(this, window);
-                            window.mapCanvas.Children.Add(MyMap);
-                        }
-                        MyMap.drawMap(Player);
+                        //if (!clientresult)
+                        //{
+                        //    Game = proxy.GetGameState();
+                        //    MyMap = new aHexMap(this, window);
+                        //    window.mapCanvas.Children.Add(MyMap);
+                        //}
+                        window.hexCanvas.drawMap(Player);
                         WaitingForReply = false;
                         Message = "Successful move";
                     }
                 }
                 else
                 {
-                    MyMap.drawMap(Player);
+                    window.hexCanvas.drawMap(Player);
                     WaitingForReply = false;
                     Message = "Failed move";
                 }
@@ -297,9 +299,9 @@ namespace MedievalWarfare.Client
         {
             Game = game;
             Player = Game.GetPlayer(Player.PlayerId);
-            MyMap = new aHexMap(this, window);
-            window.mapCanvas.Children.Add(MyMap);
-            MyMap.drawMap(Player);
+            window.hexCanvas.Init();
+
+            window.hexCanvas.drawMap(Player);
             if (isYourTurn)
             {
                 ClientState = GameStates.TurnStarted;
@@ -314,8 +316,12 @@ namespace MedievalWarfare.Client
 
         public void StartTurn()
         {
-            Game.EndPlayerTurn(Game.Players.Single(go => go.PlayerId != Player.PlayerId && !go.Neutral));
-            MyMap.drawMap(Player);
+            var p = Game.Players.FirstOrDefault(go => go.PlayerId != Player.PlayerId && !go.Neutral);
+            if (p != null)
+            {
+                Game.EndPlayerTurn(p);
+            }
+            window.hexCanvas.drawMap(Player);
             Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
             ClientState = GameStates.TurnStarted;
             Message = "It is your turn to move";
@@ -329,10 +335,9 @@ namespace MedievalWarfare.Client
                 if (!result)
                 {
                     Game = proxy.GetGameState();
-                    MyMap = new aHexMap(this, window);
-                    window.mapCanvas.Children.Add(MyMap);
+                    window.hexCanvas.Init();
                 }
-                MyMap.drawMap(Player);
+                window.hexCanvas.drawMap(Player);
             }
             if (command is ConstructBuilding)
             {
@@ -341,10 +346,9 @@ namespace MedievalWarfare.Client
                 if (!clientresult)
                 {
                     Game = proxy.GetGameState();
-                    MyMap = new aHexMap(this, window);
-                    window.mapCanvas.Children.Add(MyMap);
+                    window.hexCanvas.Init();
                 }
-                MyMap.drawMap(Player);
+                window.hexCanvas.drawMap(Player);
 
             }
             if (command is CreateUnit)
@@ -354,10 +358,10 @@ namespace MedievalWarfare.Client
                 if (!clientresult)
                 {
                     Game = proxy.GetGameState();
-                    MyMap = new aHexMap(this, window);
-                    window.mapCanvas.Children.Add(MyMap);
+                    window.hexCanvas.Init();
+                    
                 }
-                MyMap.drawMap(Player);
+                window.hexCanvas.drawMap(Player);
             }
             Player.Gold = Game.GetPlayer(Player.PlayerId).Gold;
             ClientState = GameStates.TurnEnded;
@@ -374,12 +378,12 @@ namespace MedievalWarfare.Client
                 switch (winner)
                 {
                     case true:
-                        MyMap.Clear();
+                        window.hexCanvas.Clear();
                         ClientState = GameStates.Victory;
                         Message = "You're Winner";
                         break;
                     case false:
-                        MyMap.Clear();
+                        window.hexCanvas.Clear();
                         ClientState = GameStates.Defeat;
                         Message = "Defeat";
                         break;
@@ -408,8 +412,8 @@ namespace MedievalWarfare.Client
                         if (sel.GameObject.Owner.PlayerId == Player.PlayerId)
                         {
                             SelectedObject = sel;
-                            MyMap.updateObject(SelectedObject);
-                            MyMap.drawRangeIndicator(sel.GameObject);
+                            window.hexCanvas.updateObject(SelectedObject);
+                            window.hexCanvas.drawRangeIndicator(sel.GameObject);
                             SelectedUnit = (Unit)sel.GameObject;
                             Selection = Selection.FUnit;
                             Message = "Selected a firendly unit";
@@ -417,7 +421,7 @@ namespace MedievalWarfare.Client
                         else
                         {
                             SelectedObject = sel;
-                            MyMap.updateObject(SelectedObject);
+                            window.hexCanvas.updateObject(SelectedObject);
                             SelectedUnit = (Unit)sel.GameObject;
                             Selection = Selection.EUnit;
                             Message = "Selected an enemy unit";
@@ -428,7 +432,7 @@ namespace MedievalWarfare.Client
                         if (sel.GameObject.Owner.PlayerId == Player.PlayerId)
                         {
                             SelectedObject = sel;
-                            MyMap.updateObject(SelectedObject);
+                            window.hexCanvas.updateObject(SelectedObject);
                             Selection = Selection.FBuilding;
                             SelectedBuilding = (Building)sel.GameObject;
                             Message = "Selected a friendly building";
@@ -436,7 +440,7 @@ namespace MedievalWarfare.Client
                         else
                         {
                             SelectedObject = sel;
-                            MyMap.updateObject(SelectedObject);
+                            window.hexCanvas.updateObject(SelectedObject);
                             Selection = Selection.EBuilding;
                             SelectedBuilding = (Building)sel.GameObject;
                             Message = "Selected an enemy building";
@@ -448,10 +452,10 @@ namespace MedievalWarfare.Client
                     //deselect
                     if (sel.Equals(SelectedObject))
                     {
-                        MyMap.updateObject(SelectedObject);
+                        window.hexCanvas.updateObject(SelectedObject);
                         SelectedObject = null;
                         Selection = Selection.None;
-                        MyMap.removeRangeIndicator();
+                        window.hexCanvas.removeRangeIndicator();
                         Message = "It is your turn to move";
                     }
                     //select different
@@ -461,21 +465,21 @@ namespace MedievalWarfare.Client
                         {
                             if (sel.GameObject.Owner.PlayerId == Player.PlayerId)
                             {
-                                MyMap.updateObject(SelectedObject);
-                                MyMap.removeRangeIndicator();
+                                window.hexCanvas.updateObject(SelectedObject);
+                                window.hexCanvas.removeRangeIndicator();
                                 SelectedObject = sel;
-                                MyMap.updateObject(SelectedObject);
-                                MyMap.drawRangeIndicator(sel.GameObject);
+                                window.hexCanvas.updateObject(SelectedObject);
+                                window.hexCanvas.drawRangeIndicator(sel.GameObject);
                                 SelectedUnit = (Unit)sel.GameObject;
                                 Selection = Selection.FUnit;
                                 Message = "Selected a firendly unit";
                             }
                             else
                             {
-                                MyMap.updateObject(SelectedObject);
-                                MyMap.removeRangeIndicator();
+                                window.hexCanvas.updateObject(SelectedObject);
+                                window.hexCanvas.removeRangeIndicator();
                                 SelectedObject = sel;
-                                MyMap.updateObject(SelectedObject);
+                                window.hexCanvas.updateObject(SelectedObject);
                                 SelectedUnit = (Unit)sel.GameObject;
                                 Selection = Selection.EUnit;
                                 Message = "Selected an enemy unit";
@@ -485,20 +489,20 @@ namespace MedievalWarfare.Client
                         {
                             if (sel.GameObject.Owner.PlayerId == Player.PlayerId)
                             {
-                                MyMap.updateObject(SelectedObject);
-                                MyMap.removeRangeIndicator();
+                                window.hexCanvas.updateObject(SelectedObject);
+                                window.hexCanvas.removeRangeIndicator();
                                 SelectedObject = sel;
-                                MyMap.updateObject(SelectedObject);
+                                window.hexCanvas.updateObject(SelectedObject);
                                 SelectedBuilding = (Building)sel.GameObject;
                                 Selection = Selection.FBuilding;
                                 Message = "Selected a friendly building";
                             }
                             else
                             {
-                                MyMap.updateObject(SelectedObject);
-                                MyMap.removeRangeIndicator();
+                                window.hexCanvas.updateObject(SelectedObject);
+                                window.hexCanvas.removeRangeIndicator();
                                 SelectedObject = sel;
-                                MyMap.updateObject(SelectedObject);
+                                window.hexCanvas.updateObject(SelectedObject);
                                 SelectedBuilding = (Building)sel.GameObject;
                                 Selection = Selection.EBuilding;
                                 Message = "Selected an enemy building";
@@ -521,7 +525,7 @@ namespace MedievalWarfare.Client
                         Unit go = (Unit)SelectedObject.GameObject;
                         SelectedObject = null;
                         Selection = Selection.None;
-                        MyMap.removeRangeIndicator();
+                        window.hexCanvas.removeRangeIndicator();
                         MoveUnit(tile, go);
                         break;
                     case Selection.FBuilding:

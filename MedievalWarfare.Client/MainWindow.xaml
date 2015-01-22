@@ -10,110 +10,249 @@
         <l:AddUnitDataVisibilityConverter x:Key="build2" />
         <l:SidePanelVisibilityConverter x:Key="side" />
         <l:ConnectVisibilityConverter x:Key="connect" />
+        <l:ErrorCollectionToVisibility x:Key="error" />
+
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="250" />
+ 
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="250" />
 
-        </Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
 
-        <Menu Name="gameMenu" IsMainMenu="True" VerticalAlignment="Top" Grid.ColumnSpan="2">
-            <MenuItem Header="_Game">
-                <MenuItem Header="_Connect to Server.." Name="menu_connect"
-                          Click="menu_connect_Click" IsEnabled="{Binding Path=Logic.ClientState, Converter={StaticResource connect}}"/>
-                <Separator />
-                <MenuItem Header="_Exit" Name="menu_exit"
+            <Menu Name="gameMenu" IsMainMenu="True" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                <MenuItem Header="_Game">
+                    <MenuItem Header="_Connect to Server.." Name="menu_connect"
+                          Click="menu_connect_Click" IsEnabled="{Binding Path=Logic.ClientState, Converter={StaticResource connect}}">
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="_Exit" Name="menu_exit"
                           Click="menu_exit_Click"/>
-            </MenuItem>
-        </Menu>
-        <ScrollViewer Name="mapScroller" Grid.Row="1" 
+                </MenuItem>
+            </Menu>
+
+            <ScrollViewer Name="mapScroller" Grid.Row="1" 
                       Grid.Column="0"
                       HorizontalScrollBarVisibility="Auto"
                       HorizontalAlignment="Left"
                       VerticalAlignment="top"
                       >
-            <Canvas Name="mapCanvas" Width="2300" Height="3100" >
-            </Canvas>
-        </ScrollViewer>
-        <TextBox Name="InfoBar" Text="{Binding Path=Logic.Message}" Grid.Row="2" IsReadOnly="True" Grid.ColumnSpan="2" TextAlignment="Center"></TextBox>
 
-        <Grid  Grid.Row="1" Grid.Column="1" Background="LightGray" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition />
-                <RowDefinition Height="100" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25"/>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="25"/>
-
-            </Grid.ColumnDefinitions>
-            <Label  Grid.Column="1" Grid.Row="2" ToolTip="Player gold" Visibility="{Binding Path=Logic.ClientState, Converter={StaticResource side}}">
-                <StackPanel>
-                    <Image Source="resources/coin_menu.png" Height="50" />
-                </StackPanel>
-            </Label>
-            <TextBox Text="{Binding Path=Logic.Player.Gold}" Name="GoldTextBox" Grid.Column="2" Grid.Row="2" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14" Visibility="{Binding Path=Logic.ClientState, Converter={StaticResource side}}"></TextBox>
-
-            <Label  Grid.Column="1" Grid.Row="5" ToolTip="Unit strength" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit1}}" >
-                <StackPanel>
-                    <Image Source="resources/menu_strength.png" Height="50" />
-                </StackPanel>
-            </Label>
-            <TextBox Name="UnitStrTextBox" Text="{Binding Path=Logic.SelectedUnit.Strength}" Grid.Column="2" Grid.Row="5" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit1}}"></TextBox>
-
-            <Label  Grid.Column="1" Grid.Row="6" ToolTip="Unit movement distance" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit1}}">
-                <StackPanel>
-                    <Image Source="resources/movement.png" Height="50" />
-                </StackPanel>
-            </Label>
-            <TextBox Name="UnitMvtTextBox" Text="{Binding Path=Logic.SelectedUnit.Movement}" Grid.Column="2" Grid.Row="6" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit1}}"></TextBox>
-
-            <Button Name="AddBuilding" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Spend all movement points to add a castle to this tile" Click="AddBuilding_Click" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit2}}">
-                <StackPanel>
-                    <Image Source="resources/construct.png" Height="50" />
-                </StackPanel>
-            </Button>
+                <l:HexMapCanvas x:Name="hexCanvas" Width="2300" Height="3100" Logic="{Binding Path=Logic}"></l:HexMapCanvas>
 
 
-            <Label  Grid.Column="1" Grid.Row="10" ToolTip="Current Building Population" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource build1}}">
-                <StackPanel>
-                    <Image Source="resources/pop_menu.png" Height="55" />
-                </StackPanel>
-            </Label>
-            <TextBox Name="BuildingPopTextBox" IsEnabled="{Binding }" Text="{Binding Path=Logic.SelectedBuilding.Population}" Grid.Column="2" Grid.Row="10" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource build1}}"></TextBox>
+            </ScrollViewer>
+            <TextBox Name="InfoBar" Text="{Binding Path=Logic.Message}" Grid.Row="2" IsReadOnly="True" Grid.ColumnSpan="2" TextAlignment="Center"></TextBox>
 
-            <Button Name="AddUnit" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Spend population points to add units to this tile" Click="AddUnit_Click" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource build2}}">
-                <StackPanel>
-                    <Image Source="resources/train.png" Height="50" />
-                </StackPanel>
-            </Button>
+            <Grid  Grid.Row="1" Grid.Column="1" Background="GhostWhite" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition />
+                    <RowDefinition Height="100" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
 
-            <Button Name="EndTurn" Grid.Row="13" Grid.ColumnSpan="4" ToolTip="End Turn" Click="EndTurn_Click" Visibility="{Binding Path=Logic.ClientState, Converter={StaticResource side}}">
-                <StackPanel>
-                    <Image Source="resources/Hourglass.png" Height="85" />
-                </StackPanel>
-            </Button>
-            
-        </Grid>       
+                </Grid.ColumnDefinitions>
+                <Label  Grid.Column="1" Grid.Row="2" ToolTip="Player gold" Visibility="{Binding Path=Logic.ClientState, Converter={StaticResource side}}">
+                    <StackPanel>
+                        <Image Source="resources/coin_menu.png" Height="50" />
+                    </StackPanel>
+                </Label>
+                <TextBox Text="{Binding Path=Logic.Player.Gold}" Name="GoldTextBox" Grid.Column="2" Grid.Row="2" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14" Visibility="{Binding Path=Logic.ClientState, Converter={StaticResource side}}"></TextBox>
+
+                <Label  Grid.Column="1" Grid.Row="5" ToolTip="Unit strength" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit1}}" >
+                    <StackPanel>
+                        <Image Source="resources/menu_strength.png" Height="50" />
+                    </StackPanel>
+                </Label>
+                <TextBox Name="UnitStrTextBox" Text="{Binding Path=Logic.SelectedUnit.Strength}" Grid.Column="2" Grid.Row="5" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit1}}"></TextBox>
+
+                <Label  Grid.Column="1" Grid.Row="6" ToolTip="Unit movement distance" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit1}}">
+                    <StackPanel>
+                        <Image Source="resources/movement.png" Height="50" />
+                    </StackPanel>
+                </Label>
+                <TextBox Name="UnitMvtTextBox" Text="{Binding Path=Logic.SelectedUnit.Movement}" Grid.Column="2" Grid.Row="6" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit1}}"></TextBox>
+
+                <Button Name="AddBuilding" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Spend all movement points to add a castle to this tile" Click="AddBuilding_Click" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource unit2}}">
+                    <StackPanel>
+                        <Image Source="resources/construct.png" Height="50" />
+                    </StackPanel>
+                </Button>
+
+
+                <Label  Grid.Column="1" Grid.Row="10" ToolTip="Current Building Population" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource build1}}">
+                    <StackPanel>
+                        <Image Source="resources/pop_menu.png" Height="55" />
+                    </StackPanel>
+                </Label>
+                <TextBox Name="BuildingPopTextBox" IsEnabled="{Binding }" Text="{Binding Path=Logic.SelectedBuilding.Population}" Grid.Column="2" Grid.Row="10" IsReadOnly="True" Height="30" TextAlignment="Center" TextBlock.FontSize="14" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource build1}}"></TextBox>
+
+                <Button Name="AddUnit" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Spend population points to add units to this tile" Click="AddUnit_Click" Visibility="{Binding Path=Logic.Selection, Converter={StaticResource build2}}">
+                    <StackPanel>
+                        <Image Source="resources/train.png" Height="50" />
+                    </StackPanel>
+                </Button>
+
+                <Button Name="EndTurn" Grid.Row="13" Grid.ColumnSpan="4" ToolTip="End Turn" Click="EndTurn_Click" Visibility="{Binding Path=Logic.ClientState, Converter={StaticResource side}}">
+                    <StackPanel>
+                        <Image Source="resources/Hourglass.png" Height="85" />
+                    </StackPanel>
+                </Button>
+
+            </Grid>
+        <Popup Name="ConnectPopup" IsEnabled="True" IsOpen="False" Height="300" Width="300" PlacementTarget="{Binding ElementName=gameMenu}" Placement="Bottom" AllowsTransparency="True"
+          PopupAnimation="Fade">
+            <Viewport3D >
+                <Viewport3D.Camera>
+                    <PerspectiveCamera Position="0, 0, 4"/>
+                </Viewport3D.Camera>
+                <Viewport2DVisual3D x:Name="v2dv3d">
+                    <Viewport2DVisual3D.Transform>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Angle="0" Axis="0, 1, 0" />
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                    </Viewport2DVisual3D.Transform>
+                    <Viewport2DVisual3D.Geometry>
+                        <MeshGeometry3D Positions="-1,1,0 -1,-1,0 1,-1,0 1,1,0"
+                    TextureCoordinates="0,0 0,1 1,1 1,0" TriangleIndices="0 1 2 0 2 3"/>
+                    </Viewport2DVisual3D.Geometry>
+
+                    <Viewport2DVisual3D.Material >
+                        <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True" Brush="White"/>
+                    </Viewport2DVisual3D.Material>
+                    <Border Background="GhostWhite" BorderBrush="DarkGray" BorderThickness="2" Height="200" Width="200">
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                <BeginStoryboard >
+                                    <Storyboard >
+                                        <Rotation3DAnimation Storyboard.TargetName="v2dv3d"
+                                                    Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
+                                                    Duration="0:0:0.5"
+                                                    BeginTime="0:0:0">
+                                            <Rotation3DAnimation.From>
+                                                <AxisAngleRotation3D Angle="0" Axis="0, 1, 0" />
+                                            </Rotation3DAnimation.From>
+                                            <Rotation3DAnimation.To>
+                                                <AxisAngleRotation3D Angle="90" Axis="0, 1, 0" />
+                                            </Rotation3DAnimation.To>
+                                        </Rotation3DAnimation>
+                                        <Rotation3DAnimation Storyboard.TargetName="v2dv3d"
+                                                    Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
+                                                    Duration="0:0:0.5"
+                                                    BeginTime="0:0:0.5">
+                                            <Rotation3DAnimation.From>
+                                                <AxisAngleRotation3D Angle="-90" Axis="0, 1, 0" />
+                                            </Rotation3DAnimation.From>
+                                            <Rotation3DAnimation.To>
+                                                <AxisAngleRotation3D Angle="0" Axis="0, 1, 0" />
+                                            </Rotation3DAnimation.To>
+                                        </Rotation3DAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition  />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                                Connect to server as...
+                            </TextBlock>
+                            <Label Name="NameLabel" Content="Player name:" Grid.Row="1"  Grid.Column="0" Background="GhostWhite" VerticalAlignment="Center"></Label >
+                            <TextBox Name="NameBox" 
+                                     Grid.Row="1"  
+                                     Grid.Column="1" 
+                                     VerticalAlignment="Center" 
+                                     Margin="10,0,10,0" 
+                                     >
+                                <TextBox.Text>
+                                    <Binding Path="PlayerName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <l:PlayerNameRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Background" Value="Red" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=NameBox, Path=(Validation.HasError)}" Value="false" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" Value="White" />
+                                            </MultiDataTrigger>
+                                            <Trigger Property="Validation.HasError" Value="true">
+                                                <Setter Property="ToolTip"
+                                                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            <Button Name="PopupOK" Content="OK" Click="PopupOK_Click" Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="2" Margin="60,50,60,20">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="IsEnabled" Value="false" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=NameBox, Path=(Validation.HasError)}" Value="false" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="true" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Viewport2DVisual3D>
+                <ModelVisual3D>
+                    <ModelVisual3D.Content>
+                        <DirectionalLight Color="#FFFFFFFF" Direction="0,0,-1"/>
+                    </ModelVisual3D.Content>
+                </ModelVisual3D>
+            </Viewport3D>
+
+        </Popup>
+
     </Grid>
+        
+   
+
+
 </Window>

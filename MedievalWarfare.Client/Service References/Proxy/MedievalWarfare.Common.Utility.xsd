@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common.Utility" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" />
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="Tile">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="ContentList" nillable="true" type="q1:ArrayOfGameObject" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="Map" nillable="true" type="q2:Map" />
+      <xs:element minOccurs="0" name="Type" type="tns:TileType" />
+      <xs:element minOccurs="0" name="X" type="xs:int" />
+      <xs:element minOccurs="0" name="Y" type="xs:int" />
+      <xs:element minOccurs="0" name="traversable" type="xs:boolean" />
+    </xs:sequence>
+    <xs:attribute ref="ser:Id" />
+    <xs:attribute ref="ser:Ref" />
+  </xs:complexType>
+  <xs:element name="Tile" nillable="true" type="tns:Tile" />
+  <xs:simpleType name="TileType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Field" />
+      <xs:enumeration value="Water" />
+      <xs:enumeration value="Mountain" />
+      <xs:enumeration value="Forest" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TileType" nillable="true" type="tns:TileType" />
+  <xs:complexType name="ArrayOfTile">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Tile" nillable="true" type="tns:Tile" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTile" nillable="true" type="tns:ArrayOfTile" />
+  <xs:complexType name="Command">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="Player" nillable="true" type="q3:Player" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Command" nillable="true" type="tns:Command" />
+  <xs:complexType name="CreateUnit">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Command">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Position" nillable="true" type="tns:Tile" />
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="Unit" nillable="true" type="q4:Unit" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CreateUnit" nillable="true" type="tns:CreateUnit" />
+  <xs:complexType name="MoveUnit">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Command">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Position" nillable="true" type="tns:Tile" />
+          <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="Unit" nillable="true" type="q5:Unit" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MoveUnit" nillable="true" type="tns:MoveUnit" />
+  <xs:complexType name="ConstructBuilding">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Command">
+        <xs:sequence>
+          <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MedievalWarfare.Common" minOccurs="0" name="Building" nillable="true" type="q6:Building" />
+          <xs:element minOccurs="0" name="Position" nillable="true" type="tns:Tile" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ConstructBuilding" nillable="true" type="tns:ConstructBuilding" />
+</xs:schema>

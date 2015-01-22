@@ -15,6 +15,15 @@ namespace MedievalWarfare.ServerHosting
             using(var service = new ServiceHost(typeof(ServerMethods)))
             {
                 service.Open();
+                try
+                {
+                    Console.WriteLine(service.BaseAddresses.First().AbsoluteUri);
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
                 Console.ReadKey();
             }
 

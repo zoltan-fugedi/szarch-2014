@@ -76,6 +76,13 @@ namespace MedievalWarfare.Common
             Neutral = neut;
             Name = name;
         }
+        public Player(Guid id, int gold,  String name)
+        {
+            PlayerId = id;
+            Gold = gold;
+            Neutral = false;
+            Name = name;
+        }
 
         
 

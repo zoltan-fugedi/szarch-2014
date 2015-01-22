@@ -18,6 +18,9 @@ using MedievalWarfare.Common;
 using System.ComponentModel;
 using MedievalWarfare.Common.Utility;
 using System.Globalization;
+using System.Windows.Media.Media3D;
+using System.Windows.Media.Animation;
+using System.Collections.ObjectModel;
 
 
 namespace MedievalWarfare.Client
@@ -26,10 +29,36 @@ namespace MedievalWarfare.Client
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [CallbackBehavior(UseSynchronizationContext = false)]
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
         public ClientLogic Logic { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public String name = "";
+        public String PlayerName
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
+                OnPropertyChanged("PlayerName");
+
+            }
+        }
+
+        private void OnPropertyChanged(string p)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(p));
+            }
+        }
 
         /// <summary>
         /// 
@@ -37,14 +66,13 @@ namespace MedievalWarfare.Client
         /// </summary>
         public MainWindow()
         {
-            
+
             InitializeComponent();
+            
             DataContext = this;
             Logic = new ClientLogic(this);
 
         }
-
-  
 
         #region Event Handlers
 
@@ -75,7 +103,11 @@ namespace MedievalWarfare.Client
         /// <param name="e"></param>
         private void menu_connect_Click(object sender, RoutedEventArgs e)
         {
-            Logic.ConnectToServer();
+
+            ConnectPopup.IsOpen = true;
+            
+            gameMenu.IsEnabled = false;
+            //Logic.ConnectToServer();
         }
 
         private void AddBuilding_Click(object sender, RoutedEventArgs e)
@@ -93,10 +125,37 @@ namespace MedievalWarfare.Client
             Logic.EndTurn();
         }
 
+       
+        private void PopupOK_Click(object sender, RoutedEventArgs e)
+        {
+            Logic.ConnectToServer(PlayerName);
+            ConnectPopup.IsOpen = false;
+            gameMenu.IsEnabled = true;
+        }
         #endregion
 
         
     }
+    #region Converters
+
+    class ErrorCollectionToVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var collection = value as ReadOnlyCollection<ValidationError>;
+            if (collection != null && collection.Count > 0)
+                return Visibility.Visible;
+            else
+                return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return new object();
+        }
+    }
+
+
     public class UnitDataVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType,
@@ -107,22 +166,22 @@ namespace MedievalWarfare.Client
             {
                 case Selection.None:
                     return Visibility.Hidden;
-                   
+
                 case Selection.FUnit:
                     return Visibility.Visible;
-                    
+
                 case Selection.FBuilding:
                     return Visibility.Hidden;
-                    
+
                 case Selection.EUnit:
                     return Visibility.Visible;
-                  
+
                 case Selection.EBuilding:
                     return Visibility.Hidden;
-                 
+
                 default:
                     return Visibility.Hidden;
-            }      
+            }
 
         }
 
@@ -158,7 +217,7 @@ namespace MedievalWarfare.Client
 
                 default:
                     return Visibility.Hidden;
-            } 
+            }
         }
 
         public object ConvertBack(object value, Type targetType,
@@ -192,7 +251,7 @@ namespace MedievalWarfare.Client
 
                 default:
                     return Visibility.Hidden;
-            } 
+            }
         }
 
         public object ConvertBack(object value, Type targetType,
@@ -299,5 +358,10 @@ namespace MedievalWarfare.Client
         {
             return null;
         }
+        #endregion
+        
+        
+        
     }
+
 }

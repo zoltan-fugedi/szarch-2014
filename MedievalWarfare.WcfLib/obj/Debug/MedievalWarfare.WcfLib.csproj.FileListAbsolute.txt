@@ -1,0 +1,9 @@
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\bin\Debug\MedievalWarfare.WcfLib.dll.config
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\bin\Debug\MedievalWarfare.WcfLib.dll
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\bin\Debug\MedievalWarfare.WcfLib.pdb
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\bin\Debug\MedievalWarfare.Common.dll
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\bin\Debug\MedievalWarfare.Common.pdb
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\obj\Debug\MedievalWarfare.WcfLib.csprojResolveAssemblyReference.cache
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\obj\Debug\MedievalWarfare.WcfLib.dll
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\obj\Debug\MedievalWarfare.WcfLib.pdb
+D:\GIT\SZARCH\MedievalWarfare.WcfLib\bin\Debug\Resources\map.csv
