@@ -17,8 +17,8 @@ namespace MedievalWarfare.Common
         public Guid PlayerId { get; set; }
 
         int gold;
-        
-        
+
+
         [DataMember]
         public int Gold
         {
@@ -48,36 +48,13 @@ namespace MedievalWarfare.Common
             Neutral = false;
         }
 
-        public Player(int gold)
-        {
-            PlayerId = Guid.NewGuid();
-            Gold = gold;
-            Neutral = false;
-        }
-
-        public Player(Guid id, int gold)
-        {
-            PlayerId = id;
-            Gold = gold;
-            Neutral = false;
-        }
-
         public Player(int gold, bool neut)
         {
             PlayerId = Guid.NewGuid();
             Gold = gold;
             Neutral = neut;
+            Name = "Neutral";
         }
-
-        public Player(Guid id, int gold, bool neut, String name)
-        {
-            PlayerId = id;
-            Gold = gold;
-            Neutral = neut;
-            Name = name;
-        }
-
-        
 
         public event PropertyChangedEventHandler PropertyChanged;
 

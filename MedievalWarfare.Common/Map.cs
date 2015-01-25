@@ -173,7 +173,6 @@ namespace MedievalWarfare.Common
 
             int x = 0;
             int y = 0;
-            //string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\Names.txt");
             var rows = File.ReadAllText(@"Resources\map.csv").Split('\n');
             foreach (var row in rows)
             {

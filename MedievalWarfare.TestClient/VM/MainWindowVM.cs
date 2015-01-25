@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using MedievalWarfare.Common;
 using MedievalWarfare.Common.Utility;
+using MedievalWarfare.TestClient.Db;
 using MedievalWarfare.TestClient.Proxy;
 using MedievalWarfare.TestClient.Utils;
 using MedievalWarfare.TestClient.View;
@@ -36,8 +37,21 @@ namespace MedievalWarfare.TestClient
 
         #region Props
 
-        public bool PlayerOneTurn { get; set; }
-        public ObjectListVM unitVM { get; set; }
+        public DbManager DbManager { get; set; }
+
+        private bool _playerOneTurn;
+
+        public bool PlayerOneTurn
+        {
+            get { return _playerOneTurn; }
+            set
+            {
+                _playerOneTurn = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObjectListVM UnitVm { get; set; }
 
         public GameObject SelectedGameObject { get; set; }
 
@@ -47,7 +61,8 @@ namespace MedievalWarfare.TestClient
         #region Commands
 
         public AsyncCommand ConnectCommand { get; set; }
-        public RelayCommand TurnEndCommand { get; set; }
+        public AsyncCommand TurnEndCommand { get; set; }
+        public AsyncCommand InitDb { get; set; }
         public RelayCommand ExitCommand { get; set; }
         public AsyncCommand DisconnectCommand { get; set; }
 
@@ -61,15 +76,26 @@ namespace MedievalWarfare.TestClient
                     CurrentApp.PlayerTwo.Open();
                     await CurrentApp.PlayerTwo.JoinAsync(PlayerTwo);
 
-                    PlayerOneTurn = true;
+                    PlayerOneTurn = CurrentApp.Callbacks.PlayerOneTurn;
 
                     IsConnected = true;
                     OnPropertyChanged("IsConnected");
 
-                    CurrentApp.Callbacks.Map.ObjectList.ForEach(unitVM.objectList.Add);
-                });
+                    CurrentApp.Callbacks.Map.ObjectList.ForEach(UnitVm.objectList.Add);
+                }, () => !IsConnected);
 
-            TurnEndCommand = new RelayCommand((arg) => CurrentPlayerMethods.EndTurn(CurrentPlayer));
+            InitDb = new AsyncCommand(async () =>
+            {
+                await DbManager.InitDbAsync(CurrentApp.Callbacks.Map);
+                await DbManager.AddPlayerAsync(PlayerOne);
+                await DbManager.AddPlayerAsync(PlayerTwo);
+            }, () => IsConnected);
+
+            TurnEndCommand = new AsyncCommand(async () =>
+            {
+                await CurrentPlayerMethods.EndTurnAsync(CurrentPlayer);
+
+            });
 
             ExitCommand = new RelayCommand((arg) => CurrentApp.Shutdown());
         }
@@ -81,10 +107,11 @@ namespace MedievalWarfare.TestClient
 
         public MainWindowVm()
         {
-            PlayerOne = new Player();
-            PlayerTwo = new Player();
+            PlayerOne = new Player { Name = "PlayerOne" };
+            PlayerTwo = new Player { Name = "PlayerTwo" };
+            DbManager = new DbManager();
             IsConnected = false;
-            unitVM = new ObjectListVM(PlayerOne.PlayerId);
+            UnitVm = new ObjectListVM(PlayerOne.PlayerId);
             InitMenuCommands();
         }
 

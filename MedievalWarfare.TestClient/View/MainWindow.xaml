@@ -14,11 +14,12 @@
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
                 <MenuItem Header="_Connect" Command="{Binding Path=ConnectCommand}" />
+                <MenuItem Header="_Init Db" Command="{Binding Path=InitDb}" />
                 <Separator />
                 <MenuItem Header="_Exit" Command="{Binding Path=ExitCommand}" />
             </MenuItem>
         </Menu>
-        <ListView Grid.Row="1" Width="200" Height="300" SelectedItem="{Binding Path=SelectedGameObject}" ItemsSource="{Binding Path=unitVM.UnitList}" Visibility="{Binding Path=IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}" x:Name="unitListVew" >
+        <ListView Grid.Row="1" Width="200" Height="300" SelectedItem="{Binding Path=SelectedGameObject}" ItemsSource="{Binding Path=UnitVm.UnitList}" Visibility="{Binding Path=IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}" x:Name="unitListVew" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <views:UnitView/>

@@ -8,25 +8,14 @@
              xmlns:l="clr-namespace:MedievalWarfare.TestClient.Utils">
     <UserControl.Resources>
         <l:StringToImageConverter x:Key="StringToImage"/>
-
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Image Grid.RowSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="30" MaxWidth="30" Source="{Binding Path=Type, Converter={StaticResource StringToImage}}" />
+        <Image HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="30" MaxWidth="30" Source="{Binding Path=Type, Converter={StaticResource StringToImage}}" />
         <!--<LineBreak/>-->
-        <TextBlock Grid.Column="1" Grid.Row="0" Text="Coord " />
-        <TextBlock Grid.Column="1" Grid.Row="1">
-            <TextBlock Text="X:" />
-            <TextBlock Text="{Binding Path=Tile.X}"  />
-            <TextBlock Text=" Y:" />
-            <TextBlock Text="{Binding Path=Tile.Y}"  />
-        </TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Text="{Binding Path=Owner.Name}" />
     </Grid>
 </UserControl>

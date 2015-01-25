@@ -25,7 +25,6 @@ namespace MedievalWarfare.Common
         }
         public void AddPlayer(Player p)
         {
-            
             Players.Add(p);
         }
 

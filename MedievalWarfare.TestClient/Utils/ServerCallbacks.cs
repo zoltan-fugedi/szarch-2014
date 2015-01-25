@@ -11,35 +11,29 @@ namespace MedievalWarfare.TestClient.Utils
     public class ServerCallbacks : Proxy.IServerMethodsCallback
     {
         public Map Map { get; set; }
+        public bool PlayerOneTurn { get; set; }
 
         public void ActionResult(Command command, bool result, string msg)
         {
-            var a = 10;
-
         }
 
         public void StartGame(Game game, bool isYourTurn)
         {
-            var a = 10;
             Map = game.Map;
+            PlayerOneTurn = false;
         }
 
         public void StartTurn()
         {
-            var a = 10;
-
+            PlayerOneTurn = !PlayerOneTurn;
         }
 
         public void Update(Command command)
         {
-
-            var a = 10;
-
         }
 
         public void EndGame(bool winner)
         {
-            var a = 10;
         }
     }
 }
