@@ -80,10 +80,12 @@
     </Compile>
     <Compile Include="Utils\AsyncCommand.cs" />
     <Compile Include="Utils\AsyncCommandBase.cs" />
+    <Compile Include="Utils\BoolToColorConverter.cs" />
     <Compile Include="Utils\IAsyncCommand.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\ServerCallbacks.cs" />
     <Compile Include="Utils\StringToImageConverter.cs" />
+    <Compile Include="Utils\TextBoxValidator.cs" />
     <Compile Include="Utils\TypeToTabIndexConverter.cs" />
     <Compile Include="View\HistoryView.xaml.cs">
       <DependentUpon>HistoryView.xaml</DependentUpon>

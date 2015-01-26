@@ -1,13 +1,16 @@
 ﻿<Window x:Class="MedievalWarfare.TestClient.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="400" Width="800"
-        xmlns:views="clr-namespace:MedievalWarfare.TestClient.View">
+        Title="MainWindow" Height="500" Width="500"
+        xmlns:views="clr-namespace:MedievalWarfare.TestClient.View"
+        xmlns:u="clr-namespace:MedievalWarfare.TestClient.Utils">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <u:BoolToColorConverter x:Key="BoolToColorConverter" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -29,13 +32,52 @@
         </Menu>
         <CheckBox  Grid.Row="1" Grid.Column="0" IsChecked="{Binding Path=UnitVm.Filter}" Margin="6,5,5,5" Visibility="{Binding Path=IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}"  />
         <Label Grid.Row="1" Grid.Column="0" Content="Filter" Margin="20,0,400,5" Grid.ColumnSpan="2" Visibility="{Binding Path=IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <ListView  Grid.Row="1" Grid.Column="0" Width="200" Height="300" SelectedItem="{Binding Path=SelectedGameObject}" ItemsSource="{Binding Path=UnitVm.UnitList}" Visibility="{Binding Path=IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}" x:Name="unitListVew" Margin="20,20,82,0" HorizontalAlignment="Left" >
+        <ListView  Grid.Row="1" Grid.Column="0" Width="200" Height="250" SelectedItem="{Binding Path=SelectedGameObject}" ItemsSource="{Binding Path=UnitVm.UnitList}" Visibility="{Binding Path=IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="10,27,0,0" HorizontalAlignment="Left" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <views:ObjectListView/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <views:ObjectView Grid.Row="1" Grid.Column="1" DataContext="{Binding Path=SelectedGameObject}" Width="400" Height="200" Visibility="{Binding Path=IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <views:ObjectView Grid.Row="1" Grid.Column="1" DataContext="{Binding Path=SelectedGameObject}" Width="200" Height="200" Margin="10,40,-9,34" />
+        <StackPanel HorizontalAlignment="Center" Grid.Column="1" Grid.Row="2">
+            <Label HorizontalAlignment="Center" Content="Move unit command"/>
+            <StackPanel  HorizontalAlignment="Center" Orientation="Horizontal" >
+                <StackPanel >
+                    <Label Content="X:" HorizontalAlignment="Center" />
+                    <TextBox Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" 
+                                      Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+                        <TextBox.Text>
+                            <Binding Path="UnitX" Mode="TwoWay">
+                                <Binding.ValidationRules>
+                                    <u:TextBoxValidator/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel>
+                    <Label Content="Y:" HorizontalAlignment="Center" />
+                    <TextBox Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" 
+                                      Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+                        <TextBox.Text>
+                            <Binding Path="UnitY" Mode="TwoWay" >
+                                <Binding.ValidationRules>
+                                    <u:TextBoxValidator/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                </StackPanel>
+            </StackPanel>
+            <Button Content="Send Command" Command="{Binding Path=SendCommand}" MaxWidth="150" HorizontalAlignment="Center" Margin="10,0,0,0" />
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding Path=ServerResponse}" IsEnabled="False" VerticalAlignment="Center" />
+                <Label Content="Server response"/>
+                <CheckBox IsChecked="{Binding Path=ClientResponse}" IsEnabled="False" VerticalAlignment="Center" />
+                <Label Content="Cleint response"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

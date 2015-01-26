@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using MedievalWarfare.Common;
 using MedievalWarfare.Common.Utility;
 using MedievalWarfare.TestClient.Db.Entities;
@@ -284,6 +286,7 @@ namespace MedievalWarfare.TestClient.Db
         {
             FlushAsync().Wait();
         }
+        
         public async Task FlushAsync()
         {
             using (var ctx = new Context(connString))
@@ -304,18 +307,21 @@ namespace MedievalWarfare.TestClient.Db
             }
         }
 
-        public void PrintAllCommands()
+        public List<string> PrintAllCommands()
         {
             using (var ctx = new Context(connString))
             {
+                var retVal = new List<string>();
                 var cmds = from c in ctx.Commands select c;
                 foreach (var command in cmds)
                 {
-                    Console.WriteLine(String.Format("Command Type: {0}; Command ID: {1}; User Name: {2}; Game Object ID: {3}; GO Coordinates: {4},{5}; Target Coordinates: {6},{7}",
+                    retVal.Add( String.Format("Command Type: {0}; Command ID: {1}; User Name: {2}; Game Object ID: {3}; GO Coordinates: {4},{5}; Target Coordinates: {6},{7}",
                         command.Type, command.Id, command.Owner.Name,
                         command.TargetObject.Id, command.TargetObject.LocationX,
                         command.TargetObject.LocationY, command.TargetX, command.TargetY));
                 }
+
+                return retVal;
             }
         }
 

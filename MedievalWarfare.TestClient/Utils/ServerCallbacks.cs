@@ -12,6 +12,8 @@ namespace MedievalWarfare.TestClient.Utils
     {
         public Map Map { get; set; }
 
+        public bool ServerResult { get; set; }
+
         public void ActionResult(Command command, bool result, string msg)
         {
         }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using MedievalWarfare.Common;
+using MedievalWarfare.Common.Utility;
 using MedievalWarfare.TestClient.Db;
 using MedievalWarfare.TestClient.Proxy;
 using MedievalWarfare.TestClient.Utils;
@@ -8,7 +9,7 @@ using MedievalWarfare.TestClient.View;
 
 namespace MedievalWarfare.TestClient.VM
 {
-    class MainWindowVm : VmBase
+    class MainWindowVm : VmBase, Proxy.IServerMethodsCallback
     {
 
         #region Accessors
@@ -43,6 +44,50 @@ namespace MedievalWarfare.TestClient.VM
             }
         }
 
+        private bool _clientResponse;
+        public bool ClientResponse
+        {
+            get { return _clientResponse; }
+            set
+            {
+                _clientResponse = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _serverResponse;
+        public bool ServerResponse
+        {
+            get { return _serverResponse; }
+            set
+            {
+                _serverResponse = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _untiX;
+        public int UnitX
+        {
+            get { return _untiX; }
+            set
+            {
+                _untiX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _untiY;
+        public int UnitY
+        {
+            get { return _untiY; }
+            set
+            {
+                _untiY = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObjectListVM UnitVm { get; set; }
 
         private GameObject _selectedGameObject;
@@ -63,6 +108,7 @@ namespace MedievalWarfare.TestClient.VM
         #region Commands
 
         public AsyncCommand ConnectCommand { get; set; }
+        public AsyncCommand SendCommand { get; set; }
         public AsyncCommand TurnEndCommand { get; set; }
         public AsyncCommand InitDb { get; set; }
         public AsyncCommand PrintHistory { get; set; }
@@ -83,15 +129,14 @@ namespace MedievalWarfare.TestClient.VM
                     IsConnected = true;
                     OnPropertyChanged("IsConnected");
 
-                    CurrentApp.Callbacks.Map.ObjectList.ForEach(UnitVm.objectList.Add);
+                    Map.ObjectList.ForEach(UnitVm.objectList.Add);
+
+                    ServerResponse = false;
+                    ClientResponse = false;
+
                 }, () => !IsConnected);
 
-            InitDb = new AsyncCommand(async () =>
-            {
-                await DbManager.InitDbAsync(CurrentApp.Callbacks.Map);
-                await DbManager.AddPlayerAsync(PlayerOne);
-                await DbManager.AddPlayerAsync(PlayerTwo);
-            }, () => IsConnected);
+            InitDb = new AsyncCommand(async () => await DbManager.InitDbAsync(Map), () => IsConnected);
 
             PrintHistory = new AsyncCommand(async () =>
             {
@@ -108,7 +153,27 @@ namespace MedievalWarfare.TestClient.VM
             }, () => IsConnected);
 
             ExitCommand = new RelayCommand((arg) => CurrentApp.Shutdown());
+
+            SendCommand = new AsyncCommand(async () =>
+            {
+                if (UnitX > 0 && UnitY > 0)
+                {
+                    var command = new MoveUnit
+                    {
+                        Position = new Tile(UnitX, UnitY, Map),
+                        Unit = SelectedGameObject as Unit,
+                        Player = CurrentPlayer
+                    };
+                    await CurrentPlayerMethods.UpdateMapAsync(command);
+                    ClientResponse = Map.MoveUnit(CurrentPlayer, SelectedGameObject as Unit, UnitX, UnitY);
+                   await  DbManager.AddCommandAsync(command);
+                    var a = 11;
+                }
+            }, () => IsConnected);
+
         }
+
+
 
         #endregion
 
@@ -122,6 +187,8 @@ namespace MedievalWarfare.TestClient.VM
             DbManager = new DbManager();
             UnitVm = new ObjectListVM(PlayerOne.PlayerId);
             IsConnected = false;
+            ServerResponse = true;
+            ClientResponse = true;
             InitMenuCommands();
         }
 
@@ -129,5 +196,35 @@ namespace MedievalWarfare.TestClient.VM
         {
             await CurrentPlayerMethods.LeaveAsync(CurrentPlayer);
         }
+
+        #region callbacks
+
+        public Map Map { get; set; }
+
+
+        public void ActionResult(Command command, bool result, string msg)
+        {
+            ServerResponse = result;
+        }
+
+        public void StartGame(Game game, bool isYourTurn)
+        {
+            Map = game.Map;
+        }
+
+        public void StartTurn()
+        {
+
+        }
+
+        public void Update(Command command)
+        {
+        }
+
+        public void EndGame(bool winner)
+        {
+        }
+
+        #endregion
     }
 }

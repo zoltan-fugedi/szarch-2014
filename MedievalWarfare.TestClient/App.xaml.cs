@@ -25,16 +25,18 @@ namespace MedievalWarfare.TestClient
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            Callbacks = new ServerCallbacks();
-
-            PlayerOne = new ServerMethodsClient(new InstanceContext(Callbacks));
-            PlayerTwo = new ServerMethodsClient(new InstanceContext(Callbacks));
-
             var mainView = new MainWindow();
             var mvm = new MainWindowVm();
 
             mainView.DataContext = mvm;
             mainView.Show();
+
+            Callbacks = new ServerCallbacks();
+
+            PlayerOne = new ServerMethodsClient(new InstanceContext(mvm));
+            PlayerTwo = new ServerMethodsClient(new InstanceContext(mvm));
+
+           
 
             base.OnStartup(e);
         }

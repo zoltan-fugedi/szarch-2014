@@ -91,7 +91,9 @@ namespace MedievalWarfare.TestClient.View
         {
             ConsoleOutput.Add(ConsoleInput);
 
-            DbManager.PrintAllCommands();
+            var list = DbManager.PrintAllCommands();
+
+            list.ForEach(consoleOutput.Add);
 
             ConsoleInput = String.Empty;
         }
