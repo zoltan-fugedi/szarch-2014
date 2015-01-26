@@ -9,6 +9,7 @@ using System.Windows;
 using MedievalWarfare.TestClient.Proxy;
 using MedievalWarfare.TestClient.Utils;
 using MedievalWarfare.TestClient.View;
+using MedievalWarfare.TestClient.VM;
 
 namespace MedievalWarfare.TestClient
 {

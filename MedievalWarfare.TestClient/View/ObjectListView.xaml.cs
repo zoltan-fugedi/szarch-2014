@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace MedievalWarfare.TestClient.View
 {
     /// <summary>
-    /// Interaction logic for UnitView.xaml
+    /// Interaction logic for ObjectListView.xaml
     /// </summary>
-    public partial class UnitView : UserControl
+    public partial class ObjectListView : UserControl
     {
-        public UnitView()
+        public ObjectListView()
         {
             InitializeComponent();
         }

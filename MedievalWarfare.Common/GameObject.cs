@@ -38,8 +38,9 @@ namespace MedievalWarfare.Common
                 {
                     return "Treasure";
                 }
-                return "ameObject";
+                return "GameObject";
             }
+            set { var a = value; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

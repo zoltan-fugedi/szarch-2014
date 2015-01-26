@@ -34,9 +34,9 @@ namespace MedievalWarfare.Common.Utility
         [DataMember]
         public List<GameObject> ContentList { get; set; }
         [DataMember]
-        public int X { get; private set; }
+        public int X { get; set; }
         [DataMember]
-        public int Y { get; private set; }
+        public int Y { get; set; }
         [DataMember]
         public bool traversable = true;
         [DataMember]
@@ -46,7 +46,7 @@ namespace MedievalWarfare.Common.Utility
             Map = map;
             Y = y;
             X = x;
-            
+
             ContentList = new List<GameObject>();
 
         }
@@ -65,7 +65,7 @@ namespace MedievalWarfare.Common.Utility
                     }
                     catch (Exception)
                     {
-                        
+
                     }
                 }
                 return ret;
@@ -89,7 +89,7 @@ namespace MedievalWarfare.Common.Utility
                                 return Map[X + 1, Y];
                         case Direction.SE:
                             if (X % 2 == 0)
-                                return Map[X + 1, Y ];
+                                return Map[X + 1, Y];
                             else
                                 return Map[X + 1, Y + 1];
                         case Direction.S:
